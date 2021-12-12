@@ -1,4 +1,5 @@
 type ValueType =
+	| 'script'
 	| 'void'
 	| 'passthrough'
 	| 'boolean'
