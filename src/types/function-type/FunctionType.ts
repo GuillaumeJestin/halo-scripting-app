@@ -5,7 +5,7 @@ import FunctionNodeType from "../node-type/FunctionNodeType";
 type FunctionType = {
   symbol: string;
   name: string;
-  description: ReactNode;
+  description?: ReactNode;
   arguments: (ValueType | ValueType[] | ((node: FunctionNodeType) => ValueType))[];
   optionalArguments?: number[];
   additionalArguments?: ValueType | ValueType[] | ((node: FunctionNodeType) => ValueType);
