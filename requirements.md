@@ -5,6 +5,7 @@
 - If
 - Random Execution
 - Wake
+- Sleep
 - Set Variable
 - Variable
 - Macro

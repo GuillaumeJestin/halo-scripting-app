@@ -7,11 +7,14 @@ import ReactDOM from 'react-dom'
 // code
 import * as serviceWorker from './serviceWorker'
 // components
-import App from './Components/React/App'
+import App from './App'
+import { BrowserRouter } from "react-router-dom";
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App />
+		<BrowserRouter>
+			<App />
+		</BrowserRouter>
 	</React.StrictMode>,
 	document.getElementById('root')
 )
