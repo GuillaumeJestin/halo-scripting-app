@@ -1168,7 +1168,7 @@ const HCEFunctions: FunctionType[] = [
 	{
 		symbol: "core_save_name",
 		name: "core_save_name",
-		description: "Saves debug game state to core\<path>",
+		description: "Saves debug game state to core\\<path>",
 		arguments: [
 			"string"
 		],
@@ -1177,13 +1177,13 @@ const HCEFunctions: FunctionType[] = [
 	{
 		symbol: "core_load_at_startup",
 		name: "core_load_at_startup",
-		description: "Loads debug game state from core\core.bin as soon as the map is initialized",
+		description: "Loads debug game state from core\\core.bin as soon as the map is initialized",
 		arguments: []
 	},
 	{
 		symbol: "core_load_name_at_startup",
 		name: "core_load_name_at_startup",
-		description: "Loads debug game state from core\<path> as soon as the map is initialized",
+		description: "Loads debug game state from core\\<path> as soon as the map is initialized",
 		arguments: [
 			"string"
 		]

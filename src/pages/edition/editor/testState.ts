@@ -2,98 +2,98 @@ import NodeType from "../../../types/node-type/NodeType";
 
 export default [
   {
-    "id": "1",
-    "type": "script",
-    "data": {
-      "name": "MyScript",
-      "type": "startup"
+    id: "1",
+    type: "script",
+    data: {
+      name: "MyScript",
+      type: "startup",
     },
-    "position": {
-      "x": -250,
-      "y": -250
+    position: {
+      x: -350,
+      y: -250
     }
   },
   {
-    "id": "2",
-    "type": "variable",
-    "data": {
-      "name": "Device",
-      "type": "device"
+    id: "2",
+    type: "variable",
+    data: {
+      variableId: "a"
     },
-    "position": {
-      "x": -250,
-      "y": -100
+    position: {
+      x: -250,
+      y: -100
     }
   },
   {
-    "id": "3",
-    "type": "function",
-    "data": {
-      "function": "device_get_power"
+    id: "get_power",
+    type: "function",
+    data: {
+      function: "device_get_power",
+      category: "common"
     },
-    "position": {
-      "x": -50,
-      "y": -150
+    position: {
+      x: -50,
+      y: -150
     }
   },
+  // {
+  //   id: "4",
+  //   type: "setVariable",
+  //   position: {
+  //     x: 100,
+  //     y: -50
+  //   }
+  // },
   {
-    "id": "4",
-    "type": "setVariable",
-    "position": {
-      "x": 100,
-      "y": -50
-    }
-  },
-  {
-    "id": "5",
-    "type": "function",
-    "data": {
-      "function": "+",
-      "argumentsValue": [
+    id: "5",
+    type: "function",
+    data: {
+      function: "+",
+      category: "common",
+      argumentsValue: [
         {
-          "index": 1,
-          "value": 66
+          index: 1,
+          value: 66
         }
       ]
     },
-    "position": {
-      "x": -50,
-      "y": 0
+    position: {
+      x: -50,
+      y: 0
     }
   },
   {
-    "id": "6",
-    "type": "variable",
-    "data": {
-      "name": "My_number_var",
-      "type": "real"
+    id: "6",
+    type: "variable",
+    data: {
+      variableId: "b"
     },
-    "position": {
-      "x": -250,
-      "y": 100
+    position: {
+      x: -350,
+      y: 100
     }
   },
   {
-    "id": "7",
-    "type": "variable",
-    "data": {
-      "name": "TrueOrFalse",
-      "type": "boolean"
+    id: "7",
+    type: "variable",
+    data: {
+      variableId: "c",
     },
-    "position": {
-      "x": 0,
-      "y": 250
+    position: {
+      x: -70,
+      y: 300
     }
   },
   {
-    "id": "8",
-    "type": "function",
-    "data": {
-      "function": "player_camera_control"
+    id: "8",
+    type: "function",
+    data: {
+      function: "player_camera_control",
+      category: "common",
     },
-    "position": {
-      "x": 150,
-      "y": 150
+    position: {
+      x: 150,
+      y: 200
     }
   }
 ] as NodeType[]

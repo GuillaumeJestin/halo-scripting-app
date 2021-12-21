@@ -1603,19 +1603,19 @@ const CommonFunctions: FunctionType[] = [
 	{
 		symbol: "core_save",
 		name: "core_save",
-		description: "Saves debug game state to core\core.bin",
+		description: "Saves debug game state to core\\core.bin",
 		arguments: []
 	},
 	{
 		symbol: "core_load",
 		name: "core_load",
-		description: "Loads debug game state from core\core.bin",
+		description: "Loads debug game state from core\\core.bin",
 		arguments: []
 	},
 	{
 		symbol: "core_load_name",
 		name: "core_load_name",
-		description: "Loads debug game state from core\<path>",
+		description: "Loads debug game state from core\\<path>",
 		arguments: [
 			"string"
 		]

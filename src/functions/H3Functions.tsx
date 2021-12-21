@@ -6203,7 +6203,7 @@ const H3Functions: FunctionType[] = [
 	{
 		symbol: "core_save_name",
 		name: "core_save_name",
-		description: "Saves debug game state to core\<path>",
+		description: "Saves debug game state to core\\<path>",
 		arguments: [
 			"string"
 		]
@@ -6211,13 +6211,13 @@ const H3Functions: FunctionType[] = [
 	{
 		symbol: "core_load_game",
 		name: "core_load_game",
-		description: "Loads level and game state from core\core.bin",
+		description: "Loads level and game state from core\\core.bin",
 		arguments: []
 	},
 	{
 		symbol: "core_load_game_name",
 		name: "core_load_game_name",
-		description: "Loads level and game state from core\<path>",
+		description: "Loads level and game state from core\\<path>",
 		arguments: [
 			"string"
 		]
@@ -9574,7 +9574,7 @@ const H3Functions: FunctionType[] = [
 	{
 		symbol: "network_storage_set_storage_user",
 		name: "network_storage_set_storage_user",
-		description: "<user> Use the network file stored on untracked\<user>.",
+		description: "<user> Use the network file stored on untracked\\<user>.",
 		arguments: [
 			"string"
 		]
@@ -10762,7 +10762,7 @@ const H3Functions: FunctionType[] = [
 	{
 		symbol: "drop_permutation",
 		name: "drop_permutation",
-		description: "Drops the named tag e.g. objects\characters\brute\brute.biped using the specified permutation. permutations are specified as a comma-delimited string of region=permutation pairs (e.g. region1=permutation1,region2=permutation2).",
+		description: "Drops the named tag e.g. objects\\characters\brute\brute.biped using the specified permutation. permutations are specified as a comma-delimited string of region=permutation pairs (e.g. region1=permutation1,region2=permutation2).",
 		arguments: [
 			"string",
 			"string"

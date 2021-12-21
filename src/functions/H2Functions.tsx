@@ -3116,7 +3116,7 @@ const H2Functions: FunctionType[] = [
 	{
 		symbol: "core_save_name",
 		name: "core_save_name",
-		description: "Saves debug game state to core\<path>",
+		description: "Saves debug game state to core\\<path>",
 		arguments: [
 			"string"
 		]
@@ -3124,13 +3124,13 @@ const H2Functions: FunctionType[] = [
 	{
 		symbol: "core_load_game",
 		name: "core_load_game",
-		description: "Loads level and game state from core\core.bin",
+		description: "Loads level and game state from core\\core.bin",
 		arguments: []
 	},
 	{
 		symbol: "core_load_game_name",
 		name: "core_load_game_name",
-		description: "Loads level and game state from core\<path>",
+		description: "Loads level and game state from core\\<path>",
 		arguments: [
 			"string"
 		]
@@ -5628,7 +5628,7 @@ const H2Functions: FunctionType[] = [
 	{
 		symbol: "rally_point_save_name",
 		name: "rally_point_save_name",
-		description: "Saves game state as rally point to core\<path>",
+		description: "Saves game state as rally point to core\\<path>",
 		arguments: [
 			"string"
 		]

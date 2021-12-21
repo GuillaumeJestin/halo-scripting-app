@@ -7,6 +7,8 @@ const createWindow = () => {
 
 	// Create the browser window.
 	const mainWindow = new BrowserWindow({
+		width: 1200,
+		height: 800,
 		webPreferences: {
 			devTools: isDev, // toggles whether devtools are available. to use node write window.require('<node-name>')
 			nodeIntegration: true // turn this off if you don't mean to use node
