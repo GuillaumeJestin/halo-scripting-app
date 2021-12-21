@@ -31,7 +31,7 @@ const useEdges = (id: string) => {
     console.log(res)
 
     return res;
-  }, [edges]);
+  }, [edges, id]);
 }
 
 export default useEdges;

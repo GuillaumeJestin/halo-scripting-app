@@ -1,12 +1,12 @@
-import ReactFlow, { addEdge, Background, BackgroundVariant, Edge } from "react-flow-renderer";
+import ReactFlow, { Background, BackgroundVariant, Edge, ReactFlowProvider } from "react-flow-renderer";
 import NodeType from "../../../types/node-type/NodeType";
 import VariableType from "../../../types/variable-type/VariableType";
 import VariableContext from "./contexts/VariableContext";
 import FunctionNode from "./nodes/FunctionNode";
 import ScriptNode from "./nodes/ScriptNode";
 import VariableNode from "./nodes/VariableNode";
-import { v4 as uuidv4 } from 'uuid';
 import FlowEdge from "./edges/FlowEdge";
+import createEdge from "./utility/createEdge";
 
 type EditorType = {
   elements: (NodeType | Edge)[];
@@ -35,8 +35,11 @@ const Editor = ({ elements, variables, setElements }: EditorType) => {
         edgeTypes={edgeTypes}
         defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
         onConnect={params => {
-          const edge: Edge = { ...params, id: uuidv4(), type: "flow" } as any;
-          setElements([...elements, edge]);
+          console.log(params);
+          const edge = createEdge(params);
+          if (edge) {
+            setElements([...elements, edge]);
+          }
         }}
       >
         <Background
@@ -50,4 +53,12 @@ const Editor = ({ elements, variables, setElements }: EditorType) => {
   </>);
 }
 
-export default Editor;
+const EditorWrapper = (props: EditorType) => {
+  return (
+    <ReactFlowProvider>
+      <Editor {...props} />
+    </ReactFlowProvider>
+  )
+}
+
+export default EditorWrapper;

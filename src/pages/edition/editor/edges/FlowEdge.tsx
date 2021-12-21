@@ -29,11 +29,11 @@ const FlowEdge = ({
 
   useEffect(() => {
     setSourceCoords(getCoords(source, sourceHandleId, project));
-  }, [sourceX, sourceY]);
+  }, [sourceX, sourceY, project, source, sourceHandleId]);
 
   useEffect(() => {
     setTargetCoords(getCoords(target, targetHandleId, project));
-  }, [targetX, targetY]);
+  }, [targetX, targetY, project, target, targetHandleId]);
 
   return <path d={createPath(sourceCoords, targetCoords)} stroke="white" strokeWidth={4} fill="none" />;
 }
