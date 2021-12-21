@@ -1,12 +1,12 @@
 import { useState } from "react";
-import { Edge } from "react-flow-renderer";
+import EdgeType from "../../types/edge-type/EdgeType";
 import NodeType from "../../types/node-type/NodeType";
 import VariableType from "../../types/variable-type/VariableType";
 import Editor from "./editor/Editor";
 import testState from "./editor/testState";
 
 const EditionPage = () => {
-  const [elements, setElements] = useState<(NodeType | Edge)[]>(testState);
+  const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
   const [variables, setVariables] = useState<VariableType[]>([
     { id: "a", name: "My Device", type: "device" },
     { id: "b", name: "My number var", type: "real" },

@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { FlowInput, FlowOutput } from "../constants/FlowHandlers";
 import { useUpdateNodeInternals } from "react-flow-renderer";
 import ValueHandler from "../edges/ValueHandler";
+import { ArgumentValue, ReturnsValue } from "../constants/ValueHandlers";
 
 const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
   const category = data.category;
@@ -81,7 +82,7 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
 
               return (
                 <ValueContainer key={index}>
-                  <ValueHandler type="target" id={"argument-" + index} valueType={type} />
+                  <ValueHandler type="target" id={ArgumentValue + "-" + index} valueType={type} />
                   <div style={{ marginLeft: "0.25rem" }}>{name}</div>
                 </ValueContainer>
               )
@@ -97,7 +98,7 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
                 return (
                   <ValueContainer>
                     <div style={{ marginRight: "0.25rem" }}>{name}</div>
-                    <ValueHandler type="source" id={"returns"} valueType={type} />
+                    <ValueHandler type="source" id={ReturnsValue} valueType={type} />
                   </ValueContainer>
                 )
               })()
