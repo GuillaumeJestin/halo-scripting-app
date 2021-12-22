@@ -5,9 +5,10 @@ type FlowHandlerProp = {
   type: 'source' | 'target';
   id: string;
   connected?: boolean;
+  isConnectable?: boolean;
 }
 
-const FlowHandler = ({ type, id, connected }: FlowHandlerProp) => {
+const FlowHandler = ({ type, id, connected, isConnectable }: FlowHandlerProp) => {
 
   const properties = connected ?
     {
@@ -25,6 +26,7 @@ const FlowHandler = ({ type, id, connected }: FlowHandlerProp) => {
   return (
     <div style={{ position: "relative", display: "inline-flex" }} id={id}>
       <StyledHandle
+        isConnectable={isConnectable}
         type={type}
         position={type === "source" ? Position.Right : Position.Left}
         id={id}

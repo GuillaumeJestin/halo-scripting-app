@@ -116,8 +116,9 @@ type PointProps = {
 
 const Point = ({ index, setElements, id, coords, color }: PointProps) => {
 
+  const zoom = useStoreState(state => state.transform[2]);
+
   const bind = useDrag(({ delta }) => {
-    console.log(delta);
     setElements(elements => {
       const newElements = [...elements];
 
@@ -128,7 +129,7 @@ const Point = ({ index, setElements, id, coords, color }: PointProps) => {
 
         const points = [...(edge.data?.points || [])];
 
-        points[index] = { x: points[index].x + delta[0], y: points[index].y + delta[1] };
+        points[index] = { x: points[index].x + delta[0] / zoom, y: points[index].y + delta[1] / zoom };
 
         edge.data = {
           ...edge.data,
@@ -177,10 +178,11 @@ const Point = ({ index, setElements, id, coords, color }: PointProps) => {
       onClick={onClick}
       cx={coords.x}
       cy={coords.y}
-      r={5}
-      fill={`rgb(${color[0]},${color[1]},${color[2]})`}
-      style={{ cursor: "grab", backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}
+      r={1}
+      style={{ cursor: "grab" }}
       {...bind()}
+      stroke={`rgb(${color[0]},${color[1]},${color[2]})`}
+      strokeWidth={9}
     />
   )
 }

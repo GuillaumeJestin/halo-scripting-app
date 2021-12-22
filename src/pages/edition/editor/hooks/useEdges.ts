@@ -27,9 +27,6 @@ const useEdges = (id: string) => {
       }
     });
 
-    console.log("Edges form " + id);
-    console.log(res)
-
     return res;
   }, [edges, id]);
 }

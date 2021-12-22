@@ -68,7 +68,7 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
       <NodeContent>
         <FlowContainer>
           <FlowHandler type="target" id={FlowInput} connected={isFlowConnected} />
-          {isFlowConnected && <FlowHandler type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} />}
+          {isFlowConnected && <FlowHandler type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} isConnectable={!edges.outgoers[FlowOutput]} />}
         </FlowContainer>
         <div style={{ fontStyle: "italic", fontSize: "0.75rem", margin: "0.5rem 0" }}>
           {functionDefinition?.description}
@@ -80,9 +80,13 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
 
               const name = _.isEqual(arg, ["real", "short", "long"]) ? "Number" : _.capitalize(type.split("_").join(" "));
 
+              const id = ArgumentValue + "-" + index;
+
+              const connected = !!edges.incomers[id];
+
               return (
                 <ValueContainer key={index}>
-                  <ValueHandler type="target" id={ArgumentValue + "-" + index} valueType={type} />
+                  <ValueHandler type="target" id={id} valueType={type} connected={connected} />
                   <div style={{ marginLeft: "0.25rem" }}>{name}</div>
                 </ValueContainer>
               )
@@ -95,10 +99,12 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
 
                 const name = _.capitalize(type.split("_").join(" "));
 
+                const connected = !!edges.outgoers[ReturnsValue];
+
                 return (
                   <ValueContainer>
                     <div style={{ marginRight: "0.25rem" }}>{name}</div>
-                    <ValueHandler type="source" id={ReturnsValue} valueType={type} />
+                    <ValueHandler type="source" id={ReturnsValue} valueType={type} connected={connected} />
                   </ValueContainer>
                 )
               })()

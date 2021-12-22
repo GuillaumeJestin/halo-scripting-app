@@ -14,6 +14,18 @@ export default [
     }
   },
   {
+    id: "100",
+    type: "script",
+    data: {
+      name: "Second",
+      type: "startup",
+    },
+    position: {
+      x: -350,
+      y: 250
+    }
+  },
+  {
     id: "2",
     type: "variable",
     data: {
@@ -95,13 +107,5 @@ export default [
       x: 150,
       y: 200
     }
-  },
-  {
-    id: "01e12a64-719e-42b8-a9a5-6e95bbd8df02",
-    source: "6",
-    sourceHandle: "variable-value",
-    target: "get_power",
-    targetHandle: "argument-0",
-    type: "value"
   }
 ] as NodeType[]

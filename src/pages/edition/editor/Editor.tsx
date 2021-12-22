@@ -41,7 +41,7 @@ const Editor = ({ elements, variables, setElements }: EditorType) => {
           defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
           onConnect={params => {
             console.log(params);
-            const edge = createEdge(params);
+            const edge = createEdge(params, elements);
             if (edge) {
               setElements([...elements, edge]);
             }
