@@ -8,7 +8,7 @@ type FunctionNodeType = Omit<Node, "data" | "type"> & {
     category: FunctionCategoryType;
     argumentsValue?: {
       index: number;
-      value?: string | number;
+      value?: string;
     }[];
   }
 };

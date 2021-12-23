@@ -8,12 +8,13 @@ type ValueHandlerProp = {
   id: string;
   connected?: boolean;
   valueType: ValueType;
+  isConnectable?: boolean;
 }
 
 const SIZE = 16;
 const INNER_SIZE = 10;
 
-const ValueHandler = ({ type, id, connected, valueType }: ValueHandlerProp) => {
+const ValueHandler = ({ type, id, connected, valueType, isConnectable }: ValueHandlerProp) => {
 
   const color = TypesColors[valueType] || TypesColors.default;
 
@@ -23,6 +24,7 @@ const ValueHandler = ({ type, id, connected, valueType }: ValueHandlerProp) => {
         type={type}
         position={type === "source" ? Position.Right : Position.Left}
         id={id}
+        isConnectable={isConnectable}
       />
       <Circle
         style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}

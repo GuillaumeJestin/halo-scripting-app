@@ -64,7 +64,7 @@ export default [
       category: "common",
       argumentsValue: [
         {
-          index: 1,
+          index: 0,
           value: 66
         }
       ]

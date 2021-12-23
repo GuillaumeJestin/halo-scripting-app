@@ -7,9 +7,12 @@ const MAX_CURVE_OFFSET = 150;
 
 const createPath = (sourceCoords: XYPosition, targetCoords: XYPosition, points?: XYPosition[]) => {
 
-  const intervals = createIntervals(sourceCoords, targetCoords, points);
+  const start = { x: sourceCoords.x + OFFSET, y: sourceCoords.y };
+  const end = { x: targetCoords.x - OFFSET, y: targetCoords.y };
 
-  return intervals.map(interval => getIntervalPath(interval)).join(" ");
+  const intervals = createIntervals(start, end, points);
+
+  return `M ${sourceCoords.x} ${sourceCoords.y} L ${start.x} ${start.y}` + intervals.map(interval => getIntervalPath(interval)).join(" ") + `M ${end.x} ${end.y} L ${targetCoords.x} ${targetCoords.y}`;
 }
 
 export default createPath;
@@ -21,13 +24,11 @@ const getIntervalPath = (interval: [XYPosition, XYPosition]) => {
   const curveOffset = _.clamp((end.x - start.x) / 2, MIN_CURVE_OFFSET, MAX_CURVE_OFFSET);
 
   const p1 = start;
-  const p2 = { x: start.x + OFFSET, y: start.y };
-  const c1 = { x: p2.x + curveOffset, y: p2.y };
-  const p3 = { x: end.x - OFFSET, y: end.y };
-  const c2 = { x: p3.x - curveOffset, y: p3.y };
-  const p4 = end;
+  const c1 = { x: p1.x + curveOffset, y: p1.y };
+  const p2 = end;
+  const c2 = { x: p2.x - curveOffset, y: p2.y };
 
-  return `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${p3.x} ${p3.y} L ${p4.x} ${p4.y}`;
+  return `M ${p1.x} ${p1.y} C ${c1.x} ${c1.y}, ${c2.x} ${c2.y}, ${p2.x} ${p2.y}`;
 }
 
 const createIntervals = (sourceCoords: XYPosition, targetCoords: XYPosition, points?: XYPosition[]): [XYPosition, XYPosition][] => {

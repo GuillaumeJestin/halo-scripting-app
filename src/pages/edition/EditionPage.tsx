@@ -16,7 +16,7 @@ const EditionPage = () => {
   console.log(elements)
 
   return (
-    <div style={{ height: "100%", width: "100%", backgroundColor: "#383849" }}>
+    <div style={{ height: "100%", width: "100%", backgroundColor: "var(--darker)" }}>
       <Editor {...{ variables, setVariables, elements, setElements }} />
     </div>
   )

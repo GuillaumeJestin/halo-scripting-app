@@ -1,4 +1,3 @@
-import _ from "lodash";
 import { useEffect, useState } from "react";
 import { useZoomPanHelper, XYPosition } from "react-flow-renderer";
 import createPath from "./createPath";
