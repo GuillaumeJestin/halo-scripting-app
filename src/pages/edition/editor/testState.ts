@@ -65,7 +65,7 @@ export default [
       argumentsValue: [
         {
           index: 0,
-          value: 66
+          value: "66"
         }
       ]
     },
