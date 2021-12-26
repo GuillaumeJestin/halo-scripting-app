@@ -66,6 +66,7 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
               if (isEdge(edge) && edge.source === nodeId && edge.sourceHandle === id) {
                 return true;
               }
+              return false;
             }) as EdgeType | undefined;
             if (start) startingEdges.push(start);
           }

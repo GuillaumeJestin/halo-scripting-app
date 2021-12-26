@@ -8,6 +8,7 @@ const getInputFlowFromNode = (elements: (NodeType | EdgeType)[], nodeId: string)
     if (isEdge(edge) && edge.target === nodeId && isInputFlowHandle(edge.targetHandle)) {
       return true;
     }
+    return false;
   }) as EdgeType[];
 }
 

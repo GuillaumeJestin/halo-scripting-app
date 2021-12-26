@@ -8,6 +8,7 @@ const getOutpuFlowFromNode = (elements: (NodeType | EdgeType)[], nodeId: string)
     if (isEdge(edge) && edge.source === nodeId && isOutputFlowHandle(edge.sourceHandle)) {
       return true;
     }
+    return false;
   }) as EdgeType[];
 }
 

@@ -23,6 +23,7 @@ import PressableDiv from "../../../../common/PressableDiv";
 import NodeType from "../../../../types/node-type/NodeType";
 import EdgeType from "../../../../types/edge-type/EdgeType";
 import TextInput from "../../../../common/TextInput";
+import Checkbox from "../../../../common/Checkbox";
 
 const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
   const category = data.category;
@@ -219,7 +220,12 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
                 <ValueContainer key={index}>
                   <ValueHandler nodeId={id} type="target" id={argId} valueType={type} connected={connected} isConnectable={!connected} />
                   <div style={{ marginLeft: "0.25rem" }}>{name}</div>
-                  {!connected && <TextInput value={value} onChange={onValueChange} style={{ margin: "0 .25rem" }} />}
+                  {!connected &&
+                    (type === "boolean" ?
+                      <Checkbox value={value === "true"} onChange={value => onValueChange(value ? "true" : "false")} style={{ margin: "0 .25rem" }} />
+                      :
+                      <TextInput value={value} onChange={onValueChange} style={{ margin: "0 .25rem" }} />)
+                  }
                   {isAdditional && <PressableDiv onPress={() => onRemoveArgument(index)} style={{ display: "flex" }}><BiMinus /></PressableDiv>}
                 </ValueContainer>
               )

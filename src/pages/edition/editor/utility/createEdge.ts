@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from 'uuid';
 import EdgeType from "../../../../types/edge-type/EdgeType";
 import NodeType from "../../../../types/node-type/NodeType";
 import VariableType from "../../../../types/variable-type/VariableType";
+import checkForFlowLoop from "./checkForFlowLoop";
 import getValueTypefromNode from "./getValueTypefromNode";
 import isInputFlowHandle from "./isInputFlowHandle";
 import isInputValueHandle from "./isInputValueHandle";
@@ -17,6 +18,11 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
   if (isOutputFlowHandle(params.sourceHandle) && isInputFlowHandle(params.targetHandle)) {
     // Checking if the source is not already connected
     if (elements.some(edge => isEdge(edge) && edge.source === params.source && edge.sourceHandle === params.sourceHandle)) {
+      return undefined;
+    }
+
+    // Checking that creating that node won't create an execution loop
+    if (checkForFlowLoop([...elements, { ...params, id: uuidv4(), type: "flow" } as EdgeType])) {
       return undefined;
     }
 

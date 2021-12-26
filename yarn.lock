@@ -2197,6 +2197,11 @@
   dependencies:
     "@babel/types" "^7.3.0"
 
+"@types/bintrees@^1.0.3":
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/@types/bintrees/-/bintrees-1.0.3.tgz#44723d00ec44cc9a6607efd93f6d9837b26d8c48"
+  integrity sha512-A/LCJoFzbF6TIfRZ6IzWHaxthLSGj2qiOXiIWn4xjjbaZIZ8+97SUzgIU8E/n1v2ozc2aDGdzwkA2hfXozgKNg==
+
 "@types/color-convert@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@types/color-convert/-/color-convert-2.0.0.tgz#8f5ee6b9e863dcbee5703f5a517ffb13d3ea4e22"
@@ -3712,6 +3717,11 @@ bindings@^1.5.0:
   integrity sha512-p2q/t/mhvuOj/UeLlV6566GD/guowlr0hHxClI0W9m7MWYkL1F0hLo+0Aexs9HSPCtR1SXQ0TD3MMKrXZajbiQ==
   dependencies:
     file-uri-to-path "1.0.0"
+
+bintrees@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/bintrees/-/bintrees-1.0.2.tgz#49f896d6e858a4a499df85c38fb399b9aff840f8"
+  integrity sha1-SfiW1uhYpKSZ34XDj7OZua/4QPg=
 
 bluebird-lst@^1.0.9:
   version "1.0.9"
@@ -6289,6 +6299,11 @@ fast-levenshtein@^2.0.6, fast-levenshtein@~2.0.6:
   resolved "https://registry.yarnpkg.com/fast-levenshtein/-/fast-levenshtein-2.0.6.tgz#3d8a5c66883a16a30ca8643e851f19baa7797917"
   integrity sha1-PYpcZog6FqMMqGQ+hR8Zuqd5eRc=
 
+fast-string-compare@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/fast-string-compare/-/fast-string-compare-2.0.0.tgz#c69460852479feb170dd955add8ec0ca9c715cc6"
+  integrity sha512-1KZUgDMTxz1SoAMLDri1wM0/qCMuJBDrJfevWrUOy/nL9UF7676b5pkLM7K9PdjdnatJnZ4wRMNHZ7iaHqVnEQ==
+
 fastq@^1.6.0:
   version "1.13.0"
   resolved "https://registry.yarnpkg.com/fastq/-/fastq-1.13.0.tgz#616760f88a7526bdfc596b7cab8c18938c36b98c"
@@ -6809,6 +6824,15 @@ graceful-fs@^4.2.4:
   version "4.2.8"
   resolved "https://registry.yarnpkg.com/graceful-fs/-/graceful-fs-4.2.8.tgz#e412b8d33f5e006593cbd3cee6df9f2cebbe802a"
   integrity sha512-qkIilPUYcNhJpd33n0GBXTB1MMPp14TxEsEs0pTrsSVucApsYzW5V+Q8Qxhik6KU3evy+qkAAowTByymK0avdg==
+
+graph-cycles@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/graph-cycles/-/graph-cycles-2.0.1.tgz#e7da51ad4d3f263f054fa0cf018aec8732326b98"
+  integrity sha512-lE8Qn14/77vDKRPasaoWcmutxI/ScAJ9mOLPu68mt9TMVIeYyp3t11HNcnDr0q/lmDI5itt4TclAm7q5a0gxVw==
+  dependencies:
+    fast-string-compare "^2.0.0"
+    rotated-array-set "^2.0.0"
+    short-tree "^2.0.0"
 
 growly@^1.3.0:
   version "1.3.0"
@@ -11516,6 +11540,11 @@ rollup@^1.31.1:
     "@types/node" "*"
     acorn "^7.1.0"
 
+rotated-array-set@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/rotated-array-set/-/rotated-array-set-2.0.0.tgz#36495a61ea12e2447376c69be6d412b4de1ed00a"
+  integrity sha512-1tPB51yz69z5UMmobBcM4G7QvOzI8yS4YvZV790RYiANgL94ZmMDAwPv6QyF7ouwpEssFF8bVE+qzvIOBUiTDQ==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"
@@ -11865,6 +11894,14 @@ shellwords@^0.1.1:
   version "0.1.1"
   resolved "https://registry.yarnpkg.com/shellwords/-/shellwords-0.1.1.tgz#d6b9181c1a48d397324c84871efbcfc73fc0654b"
   integrity sha512-vFwSUfQvqybiICwZY5+DAWIPLKsWO31Q91JSKl3UYv+K5c2QRPzn0qzec6QPu1Qc9eHYItiP3NdJqNVqetYAww==
+
+short-tree@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/short-tree/-/short-tree-2.0.0.tgz#f95821cd5c5a5e13991904ff3046bc57be355779"
+  integrity sha512-iMtPBvS0uL9wShaRZgx59Yf59D7MezDQZnkwUofKPg1/zapO5v/qhTAa6t/oI+f/GACkWFJWZwfSjh7dMPdYww==
+  dependencies:
+    "@types/bintrees" "^1.0.3"
+    bintrees "^1.0.2"
 
 side-channel@^1.0.4:
   version "1.0.4"
