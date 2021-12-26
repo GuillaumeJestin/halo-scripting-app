@@ -24,7 +24,7 @@ const VariableNode = ({ data, id }: NodeProps<VariableNodeType>) => {
     <NodeContainer id={id}>
       <NodeHeader style={{ display: "flex", alignItems: "center" }} leftColor={variableColor} rightColor={variableColor} >
         <div style={{ flex: 1, fontWeight: "bold", fontSize: "1.25rem", paddingRight: "2rem" }}>{variable?.name}</div>
-        {variable && <ValueHandler type="source" id={VariableValue} valueType={variable.type} connected={connected} />}
+        {variable && <ValueHandler nodeId={id} type="source" id={VariableValue} valueType={variable.type} connected={connected} />}
       </NodeHeader>
     </NodeContainer>
   )

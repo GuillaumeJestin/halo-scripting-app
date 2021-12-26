@@ -163,8 +163,8 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
       </NodeHeader>
       <NodeContent>
         <FlowContainer>
-          <FlowHandler type="target" id={FlowInput} connected={isFlowConnected} />
-          {isFlowConnected && <FlowHandler type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} isConnectable={!edges.outgoers[FlowOutput]} />}
+          <FlowHandler nodeId={id} type="target" id={FlowInput} connected={isFlowConnected} />
+          {isFlowConnected && <FlowHandler nodeId={id} type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} isConnectable={!edges.outgoers[FlowOutput]} />}
         </FlowContainer>
         <div style={{ fontStyle: "italic", fontSize: "0.75rem", margin: "0.5rem 0" }}>
           {functionDefinition?.description}
@@ -217,7 +217,7 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
 
               return (
                 <ValueContainer key={index}>
-                  <ValueHandler type="target" id={argId} valueType={type} connected={connected} isConnectable={!connected} />
+                  <ValueHandler nodeId={id} type="target" id={argId} valueType={type} connected={connected} isConnectable={!connected} />
                   <div style={{ marginLeft: "0.25rem" }}>{name}</div>
                   {!connected && <TextInput value={value} onChange={onValueChange} style={{ margin: "0 .25rem" }} />}
                   {isAdditional && <PressableDiv onPress={() => onRemoveArgument(index)} style={{ display: "flex" }}><BiMinus /></PressableDiv>}
@@ -244,7 +244,7 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
                 return (
                   <ValueContainer>
                     <div style={{ marginRight: "0.25rem" }}>{name}</div>
-                    <ValueHandler type="source" id={ReturnsValue} valueType={type} connected={connected} />
+                    <ValueHandler nodeId={id} type="source" id={ReturnsValue} valueType={type} connected={connected} />
                   </ValueContainer>
                 )
               })()

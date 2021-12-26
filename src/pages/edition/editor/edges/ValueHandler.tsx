@@ -1,7 +1,11 @@
-import { Handle, Position } from "react-flow-renderer";
+import _ from "lodash";
+import { useContext, useEffect, useRef } from "react";
+import { Handle, isEdge, Position } from "react-flow-renderer";
 import styled from "styled-components";
+import useKeyPress from "../../../../common/useKeyPress";
 import TypesColors from "../../../../theme/types-colors/TypesColors";
 import ValueType from "../../../../types/value-type/ValueType";
+import ElementsContext from "../contexts/ElementsContext";
 
 type ValueHandlerProp = {
   type: 'source' | 'target';
@@ -9,22 +13,72 @@ type ValueHandlerProp = {
   connected?: boolean;
   valueType: ValueType;
   isConnectable?: boolean;
+  nodeId: string;
 }
 
 const SIZE = 16;
 const INNER_SIZE = 10;
 
-const ValueHandler = ({ type, id, connected, valueType, isConnectable }: ValueHandlerProp) => {
+const ValueHandler = ({ type, id, connected, valueType, isConnectable, nodeId }: ValueHandlerProp) => {
 
   const color = TypesColors[valueType] || TypesColors.default;
 
+  const isContolPressed = useKeyPress(["control", "meta"]);
+
+  const containerRef = useRef<HTMLDivElement>(null!);
+  const handleRef = useRef<HTMLDivElement>(null!);
+
+  const { setElements } = useContext(ElementsContext);
+
+  useEffect(() => {
+    if (isContolPressed) {
+      const container = containerRef.current;
+      const handle = handleRef.current;
+
+      const containerCallback = (e: MouseEvent) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // Removing all connected edges to this handle :)
+        setElements(elements => {
+          const newElements = [...elements];
+
+          _.remove(newElements, edge => {
+            if (isEdge(edge)) {
+              return (
+                (type === "source" && edge.source === nodeId && edge.sourceHandle === id) ||
+                (type === "target" && edge.target === nodeId && edge.targetHandle === id)
+              )
+            }
+          });
+
+          return newElements;
+        });
+      }
+
+      const handleCallback = (e: MouseEvent) => {
+        e.preventDefault();
+      }
+
+      container.addEventListener("mousedown", containerCallback);
+      handle.addEventListener("mousedown", handleCallback);
+
+      return () => {
+        container.removeEventListener("mousedown", containerCallback);
+        handle.removeEventListener("mousedown", handleCallback);
+      }
+    }
+  }, [isContolPressed, id, setElements, type, nodeId]);
+
   return (
-    <div style={{ position: "relative", display: "inline-flex" }} id={id}>
+    <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id}>
       <StyledHandle
+        ref={handleRef}
         type={type}
         position={type === "source" ? Position.Right : Position.Left}
         id={id}
-        isConnectable={isConnectable}
+        isConnectable={isConnectable && !isContolPressed}
+        style={isContolPressed ? { cursor: "pointer" } : {}}
       />
       <Circle
         style={{ backgroundColor: `rgb(${color[0]},${color[1]},${color[2]})` }}
