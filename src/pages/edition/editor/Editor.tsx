@@ -1,7 +1,6 @@
 import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from "react-flow-renderer";
 import NodeType from "../../../types/node-type/NodeType";
 import VariableType from "../../../types/variable-type/VariableType";
-import VariableContext from "./contexts/VariableContext";
 import FunctionNode from "./nodes/FunctionNode";
 import ScriptNode from "./nodes/ScriptNode";
 import VariableNode from "./nodes/VariableNode";
@@ -9,14 +8,11 @@ import FlowEdge from "./edges/FlowEdge";
 import createEdge from "./utility/createEdge";
 import ValueEdge from "./edges/ValueEdge";
 import EdgeType from "../../../types/edge-type/EdgeType";
-import ElementsContext from "./contexts/ElementsContext";
-
-type EditorType = {
-  elements: (NodeType | EdgeType)[];
-  setElements: React.Dispatch<React.SetStateAction<(NodeType | EdgeType)[]>>;
-  variables: VariableType[];
-  setVariables: (nodes: VariableType[]) => void;
-}
+import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer } from "./store/EditorReducer";
+import { applyMiddleware, createStore, Dispatch } from "redux";
+import { Provider, useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useEffect, useMemo, useRef } from "react";
+import _ from "lodash";
 
 const nodeTypes = {
   script: ScriptNode,
@@ -29,40 +25,79 @@ const edgeTypes = {
   value: ValueEdge,
 };
 
-const Editor = ({ elements, variables, setElements }: EditorType) => {
+const Editor = () => {
+
+  const elements = useSelector<EditorReducerState, (NodeType | EdgeType)[]>(state => state.elements, shallowEqual);
+  const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
+
+  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
   return (<>
-    <VariableContext.Provider value={{ variables }}>
-      <ElementsContext.Provider value={{ setElements }}>
-        <ReactFlow
-          elements={elements}
-          nodeTypes={nodeTypes}
-          edgeTypes={edgeTypes}
-          defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
-          onConnect={params => {
-            console.log(params);
-            const edge = createEdge(params, elements, variables);
-            if (edge) {
-              setElements([...elements, edge]);
-            }
-          }}
-        >
-          <Background
-            variant={BackgroundVariant.Lines}
-            gap={48}
-            size={2}
-            color="rgba(255,255,255,0.16)"
-          />
-        </ReactFlow>
-      </ElementsContext.Provider>
-    </VariableContext.Provider>
+    <ReactFlow
+      ref={ref => { ref && dispatch({ type: ActionSetContainer, container: ref }) }}
+      style={{ backgroundColor: "var(--darker)" }}
+      elements={elements}
+      nodeTypes={nodeTypes}
+      edgeTypes={edgeTypes}
+      defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
+      onConnect={params => {
+        console.log(params);
+        const edge = createEdge(params, elements, variables);
+        if (edge) {
+          dispatch({ type: ActionSetElements, elements: [...elements, edge] });
+        }
+      }}
+    >
+      <Background
+        variant={BackgroundVariant.Lines}
+        gap={48}
+        size={2}
+        color="rgba(255,255,255,0.16)"
+      />
+    </ReactFlow>
   </>);
 }
 
-const EditorWrapper = (props: EditorType) => {
+type EditorWrapperProps = {
+  elements: (NodeType | EdgeType)[];
+  setElements: (elements: (NodeType | EdgeType)[]) => void;
+  variables: VariableType[];
+}
+
+const EditorWrapper = ({ elements, setElements, variables }: EditorWrapperProps) => {
+
+  const setElementsRef = useRef(setElements);
+  useEffect(() => { setElementsRef.current = setElements }, [setElements]);
+
+  const store = useMemo(() => createStore(
+    EditorReducer,
+    { elements, variables, macros: [] },
+    applyMiddleware(
+      store => next => action => {
+        const result: EditorReducerState = next(action);
+
+        setElementsRef.current((store.getState() as EditorReducerState).elements);
+
+        return result;
+      }
+    )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  ), []);
+
+  useEffect(() => {
+    if (
+      !_.isEqual(elements, store.getState().elements) ||
+      !_.isEqual(variables, store.getState().variables)
+    ) {
+      store.dispatch({ type: ActionSetState, elements, variables, macros: [] })
+    }
+  }, [elements, variables, store]);
+
   return (
     <ReactFlowProvider>
-      <Editor {...props} />
+      <Provider store={store}>
+        <Editor />
+      </Provider>
     </ReactFlowProvider>
   )
 }

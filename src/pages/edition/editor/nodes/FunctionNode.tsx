@@ -5,7 +5,7 @@ import NodeProps from "./NodeProps";
 import TypesColors from "../../../../theme/types-colors/TypesColors";
 import Functions from "../../../../functions/Functions";
 import _ from "lodash";
-import { useContext, useEffect, useMemo } from "react";
+import { useEffect, useMemo } from "react";
 import NodeContent from "./NodeContent";
 import FlowHandler from "../edges/FlowHandler";
 import useEdges from "../hooks/useEdges";
@@ -18,12 +18,14 @@ import ValueType from "../../../../types/value-type/ValueType";
 import { BsPlusLg } from "react-icons/bs";
 import { BiMinus } from "react-icons/bi";
 import Button from "../../../../common/Button";
-import ElementsContext from "../contexts/ElementsContext";
 import PressableDiv from "../../../../common/PressableDiv";
 import NodeType from "../../../../types/node-type/NodeType";
 import EdgeType from "../../../../types/edge-type/EdgeType";
 import TextInput from "../../../../common/TextInput";
 import Checkbox from "../../../../common/Checkbox";
+import { ActionSetElements, EditorReducerAction } from "../store/EditorReducer";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 
 const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
   const category = data.category;
@@ -69,89 +71,93 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
     updateNodeInternals(id);
   }, [isFlowConnected, id, updateNodeInternals]);
 
-  const { setElements } = useContext(ElementsContext)
+  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
   const additionalArgumentsType = functionDefinition?.additionalArguments;
   const additionalArguments = _.compact(data.argumentsValue?.filter(({ index }) => index >= (functionDefinition?.arguments.length || 0)).map(() => additionalArgumentsType));
   const onAddArgument = () => {
-    setElements(elements => {
-      const newElements = [...elements];
+    dispatch({
+      type: ActionSetElements, setElements: elements => {
+        const newElements = [...elements];
 
-      updateNode(newElements, id, node => {
-        if (isNode(node) && node.type === "function") {
-          const newNode = { ...node };
+        updateNode(newElements, id, node => {
+          if (isNode(node) && node.type === "function") {
+            const newNode = { ...node };
 
-          let argumentIndex = functionDefinition?.arguments.length || 0;
-          if (newNode.data.argumentsValue) {
-            const biggestIndex = _.max(newNode.data.argumentsValue.map(({ index }) => index));
-            if (biggestIndex !== undefined && biggestIndex >= argumentIndex) {
-              argumentIndex = biggestIndex + 1;
-            }
-          }
-
-          newNode.data = {
-            ...newNode.data,
-            argumentsValue: [...(newNode.data.argumentsValue || []), { index: argumentIndex }]
-          };
-
-          return newNode;
-        }
-      })
-
-      return newElements;
-    })
-  }
-  const onRemoveArgument = (argIndex: number) => {
-    setElements(elements => {
-      const newElements = [...elements];
-
-      // Removing the edge that could be connected to that value
-      const targetHandle = ArgumentValue + "-" + argIndex;
-      const edgeId = newElements.find(edge => isEdge(edge) && edge.targetHandle === targetHandle)?.id;
-      updateNode(newElements, edgeId);
-
-      const handlesToUpdate: string[] = [];
-
-      updateNode(newElements, id, node => {
-        if (isNode(node) && node.type === "function") {
-          const newNode = { ...node };
-
-          if (newNode.data.argumentsValue) {
-            // Gathering also edges to update
-            const newArgumentsValue = newNode.data.argumentsValue.filter(arg => arg.index !== argIndex).map(arg => {
-              if (arg.index > argIndex) {
-                handlesToUpdate.push(ArgumentValue + "-" + arg.index);
-                return { ...arg, index: arg.index - 1 };
+            let argumentIndex = functionDefinition?.arguments.length || 0;
+            if (newNode.data.argumentsValue) {
+              const biggestIndex = _.max(newNode.data.argumentsValue.map(({ index }) => index));
+              if (biggestIndex !== undefined && biggestIndex >= argumentIndex) {
+                argumentIndex = biggestIndex + 1;
               }
-              return arg;
-            });
+            }
 
             newNode.data = {
               ...newNode.data,
-              argumentsValue: newArgumentsValue,
-            }
-          }
-
-          return newNode;
-        }
-      });
-
-      // Updating edges from higher indexes
-      handlesToUpdate.forEach(targetHandle => {
-
-        const id = newElements.find(edge => isEdge(edge) && edge.targetHandle === targetHandle)?.id;
-
-        updateNode(newElements, id, (edge) => {
-          if (isEdge(edge) && edge.targetHandle) {
-            const argIndex = _.toNumber(edge.targetHandle.split("-")[1]) - 1;
-            return {
-              ...edge,
-              targetHandle: ArgumentValue + "-" + argIndex,
+              argumentsValue: [...(newNode.data.argumentsValue || []), { index: argumentIndex }]
             };
+
+            return newNode;
+          }
+        })
+
+        return newElements;
+      }
+    })
+  }
+  const onRemoveArgument = (argIndex: number) => {
+    dispatch({
+      type: ActionSetElements, setElements: elements => {
+        const newElements = [...elements];
+
+        // Removing the edge that could be connected to that value
+        const targetHandle = ArgumentValue + "-" + argIndex;
+        const edgeId = newElements.find(edge => isEdge(edge) && edge.targetHandle === targetHandle)?.id;
+        updateNode(newElements, edgeId);
+
+        const handlesToUpdate: string[] = [];
+
+        updateNode(newElements, id, node => {
+          if (isNode(node) && node.type === "function") {
+            const newNode = { ...node };
+
+            if (newNode.data.argumentsValue) {
+              // Gathering also edges to update
+              const newArgumentsValue = newNode.data.argumentsValue.filter(arg => arg.index !== argIndex).map(arg => {
+                if (arg.index > argIndex) {
+                  handlesToUpdate.push(ArgumentValue + "-" + arg.index);
+                  return { ...arg, index: arg.index - 1 };
+                }
+                return arg;
+              });
+
+              newNode.data = {
+                ...newNode.data,
+                argumentsValue: newArgumentsValue,
+              }
+            }
+
+            return newNode;
           }
         });
-      });
 
-      return newElements;
+        // Updating edges from higher indexes
+        handlesToUpdate.forEach(targetHandle => {
+
+          const id = newElements.find(edge => isEdge(edge) && edge.targetHandle === targetHandle)?.id;
+
+          updateNode(newElements, id, (edge) => {
+            if (isEdge(edge) && edge.targetHandle) {
+              const argIndex = _.toNumber(edge.targetHandle.split("-")[1]) - 1;
+              return {
+                ...edge,
+                targetHandle: ArgumentValue + "-" + argIndex,
+              };
+            }
+          });
+        });
+
+        return newElements;
+      }
     })
   }
 
@@ -186,33 +192,35 @@ const FunctionNode = ({ data, id }: NodeProps<FunctionNodeType>) => {
               const value = data.argumentsValue?.find(arg => arg.index === index)?.value;
 
               const onValueChange = (value: string) => {
-                setElements(elements => {
-                  const newElements = [...elements];
+                dispatch({
+                  type: ActionSetElements, setElements: elements => {
+                    const newElements = [...elements];
 
-                  updateNode(newElements, id, node => {
-                    if (isNode(node) && node.type === "function") {
-                      const newNode = { ...node };
+                    updateNode(newElements, id, node => {
+                      if (isNode(node) && node.type === "function") {
+                        const newNode = { ...node };
 
-                      const newArgumentsValue = [...(newNode.data.argumentsValue || [])];
-                      const argIndex = newArgumentsValue.findIndex(arg => arg.index === index);
+                        const newArgumentsValue = [...(newNode.data.argumentsValue || [])];
+                        const argIndex = newArgumentsValue.findIndex(arg => arg.index === index);
 
 
-                      if (argIndex >= 0) {
-                        newArgumentsValue[argIndex] = { ...newArgumentsValue[argIndex], value };
-                      } else {
-                        newArgumentsValue.push({ index, value });
+                        if (argIndex >= 0) {
+                          newArgumentsValue[argIndex] = { ...newArgumentsValue[argIndex], value };
+                        } else {
+                          newArgumentsValue.push({ index, value });
+                        }
+
+                        newNode.data = {
+                          ...newNode.data,
+                          argumentsValue: newArgumentsValue
+                        };
+
+                        return newNode;
                       }
+                    })
 
-                      newNode.data = {
-                        ...newNode.data,
-                        argumentsValue: newArgumentsValue
-                      };
-
-                      return newNode;
-                    }
-                  })
-
-                  return newElements;
+                    return newElements;
+                  }
                 })
               }
 

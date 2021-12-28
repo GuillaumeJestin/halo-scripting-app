@@ -1,10 +1,12 @@
 import _ from 'lodash';
-import { useRef, useContext, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Handle, isEdge, isNode, Position } from 'react-flow-renderer';
+import { useDispatch } from 'react-redux';
+import { Dispatch } from 'redux';
 import styled from 'styled-components';
 import useKeyPress from '../../../../common/useKeyPress';
 import EdgeType from '../../../../types/edge-type/EdgeType';
-import ElementsContext from '../contexts/ElementsContext';
+import { ActionSetElements, EditorReducerAction } from '../store/EditorReducer';
 import getInputFlowFromNode from '../utility/getInputFlowFromNode';
 import getOutpuFlowFromNode from '../utility/getOutpuFlowFromNode';
 
@@ -37,7 +39,7 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
   const containerRef = useRef<HTMLDivElement>(null!);
   const handleRef = useRef<HTMLDivElement>(null!);
 
-  const { setElements } = useContext(ElementsContext);
+  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
   useEffect(() => {
     if (isContolPressed) {
@@ -48,57 +50,59 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
         e.preventDefault();
         e.stopPropagation();
 
-        setElements(elements => {
-          const newElements = [...elements];
+        dispatch({
+          type: ActionSetElements, setElements: elements => {
+            const newElements = [...elements];
 
-          // Gathering all edges to remove, we gotta remove all the flow from this node until the end of the execution line
-          const edgesToRemove: string[] = [];
-          const startingEdges: EdgeType[] = [];
+            // Gathering all edges to remove, we gotta remove all the flow from this node until the end of the execution line
+            const edgesToRemove: string[] = [];
+            const startingEdges: EdgeType[] = [];
 
-          if (type === "target") {
-            elements.forEach(edge => {
-              if (isEdge(edge) && edge.target === nodeId && edge.targetHandle === id) {
-                startingEdges.push(edge);
-              }
-            })
-          } else {
-            const start = elements.find(edge => {
-              if (isEdge(edge) && edge.source === nodeId && edge.sourceHandle === id) {
-                return true;
-              }
-              return false;
-            }) as EdgeType | undefined;
-            if (start) startingEdges.push(start);
-          }
-
-          startingEdges.forEach(edge => edgesToRemove.push(edge.id));
-
-          const recursiveWalk = (edge: EdgeType) => {
-            const node = elements.find(node => isNode(node) && node.id === edge.target);
-
-            if (node) {
-              const inputFlow = getInputFlowFromNode(elements, node.id);
-
-              const arWeContinuing = inputFlow.filter(edge => edgesToRemove.includes(edge.id)).length === inputFlow.length;
-
-              if (arWeContinuing) {
-                const outputFlow = getOutpuFlowFromNode(elements, node.id);
-
-                outputFlow.forEach(edge => edgesToRemove.push(edge.id));
-
-                outputFlow.forEach(edge => recursiveWalk(edge));
-              }
+            if (type === "target") {
+              elements.forEach(edge => {
+                if (isEdge(edge) && edge.target === nodeId && edge.targetHandle === id) {
+                  startingEdges.push(edge);
+                }
+              })
+            } else {
+              const start = elements.find(edge => {
+                if (isEdge(edge) && edge.source === nodeId && edge.sourceHandle === id) {
+                  return true;
+                }
+                return false;
+              }) as EdgeType | undefined;
+              if (start) startingEdges.push(start);
             }
-          };
 
-          startingEdges.forEach(edge => recursiveWalk(edge));
+            startingEdges.forEach(edge => edgesToRemove.push(edge.id));
 
-          // Removing all connected edges to this handle :)
-          _.remove(newElements, edge => {
-            return isEdge(edge) && edgesToRemove.includes(edge.id)
-          });
+            const recursiveWalk = (edge: EdgeType) => {
+              const node = elements.find(node => isNode(node) && node.id === edge.target);
 
-          return newElements;
+              if (node) {
+                const inputFlow = getInputFlowFromNode(elements, node.id);
+
+                const arWeContinuing = inputFlow.filter(edge => edgesToRemove.includes(edge.id)).length === inputFlow.length;
+
+                if (arWeContinuing) {
+                  const outputFlow = getOutpuFlowFromNode(elements, node.id);
+
+                  outputFlow.forEach(edge => edgesToRemove.push(edge.id));
+
+                  outputFlow.forEach(edge => recursiveWalk(edge));
+                }
+              }
+            };
+
+            startingEdges.forEach(edge => recursiveWalk(edge));
+
+            // Removing all connected edges to this handle :)
+            _.remove(newElements, edge => {
+              return isEdge(edge) && edgesToRemove.includes(edge.id)
+            });
+
+            return newElements;
+          }
         });
       }
 
@@ -114,7 +118,7 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
         handle.removeEventListener("mousedown", handleCallback);
       }
     }
-  }, [isContolPressed, id, setElements, type, nodeId]);
+  }, [isContolPressed, id, dispatch, type, nodeId]);
 
   return (
     <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id}>

@@ -1,16 +1,17 @@
-import { useContext } from "react";
+import { shallowEqual, useSelector } from "react-redux";
 import TypesColors from "../../../../theme/types-colors/TypesColors";
 import VariableNodeType from "../../../../types/node-type/VariableNodeType";
+import VariableType from "../../../../types/variable-type/VariableType";
 import { VariableValue } from "../constants/ValueHandlers";
-import VariableContext from "../contexts/VariableContext";
 import ValueHandler from "../edges/ValueHandler";
 import useEdges from "../hooks/useEdges";
+import { EditorReducerState } from "../store/EditorReducer";
 import NodeContainer from "./NodeContainer";
 import NodeHeader from "./NodeHeader";
 import NodeProps from "./NodeProps";
 
 const VariableNode = ({ data, id }: NodeProps<VariableNodeType>) => {
-  const { variables } = useContext(VariableContext);
+  const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
 
   const variable = variables.find(variable => variable.id === data.variableId);
 

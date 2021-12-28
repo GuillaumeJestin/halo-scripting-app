@@ -7,18 +7,31 @@ import testState from "./editor/testState";
 
 const EditionPage = () => {
   const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
-  const [variables, setVariables] = useState<VariableType[]>([
+  const [variables] = useState<VariableType[]>([
     { id: "a", name: "My Device", type: "device" },
     { id: "b", name: "My number var", type: "real" },
     { id: "c", name: "TrueOrFalse", type: "boolean" },
   ]);
 
-  console.log(elements)
+  console.log(elements);
 
   return (
-    <div style={{ height: "100%", width: "100%", backgroundColor: "var(--darker)" }}>
-      <Editor {...{ variables, setVariables, elements, setElements }} />
-    </div>
+    <>
+      <div>
+        HELLO WORLD
+      </div>
+      <div style={{ flex: 1, display: "flex" }}>
+        <div >
+          fedasfwe
+        </div>
+        <div style={{ flex: 1 }}>
+          <Editor {...{ variables, elements, setElements }} />
+        </div>
+        <div >
+          fedasfwe
+        </div>
+      </div>
+    </>
   )
 }
 

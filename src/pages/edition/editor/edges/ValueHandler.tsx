@@ -1,11 +1,13 @@
 import _ from "lodash";
-import { useContext, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Handle, isEdge, Position } from "react-flow-renderer";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
 import styled from "styled-components";
 import useKeyPress from "../../../../common/useKeyPress";
 import TypesColors from "../../../../theme/types-colors/TypesColors";
 import ValueType from "../../../../types/value-type/ValueType";
-import ElementsContext from "../contexts/ElementsContext";
+import { ActionSetElements, EditorReducerAction } from "../store/EditorReducer";
 
 type ValueHandlerProp = {
   type: 'source' | 'target';
@@ -28,7 +30,7 @@ const ValueHandler = ({ type, id, connected, valueType, isConnectable, nodeId }:
   const containerRef = useRef<HTMLDivElement>(null!);
   const handleRef = useRef<HTMLDivElement>(null!);
 
-  const { setElements } = useContext(ElementsContext);
+  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
   useEffect(() => {
     if (isContolPressed) {
@@ -40,19 +42,21 @@ const ValueHandler = ({ type, id, connected, valueType, isConnectable, nodeId }:
         e.stopPropagation();
 
         // Removing all connected edges to this handle :)
-        setElements(elements => {
-          const newElements = [...elements];
+        dispatch({
+          type: ActionSetElements, setElements: elements => {
+            const newElements = [...elements];
 
-          _.remove(newElements, edge => {
-            if (isEdge(edge)) {
-              return (
-                (type === "source" && edge.source === nodeId && edge.sourceHandle === id) ||
-                (type === "target" && edge.target === nodeId && edge.targetHandle === id)
-              )
-            }
-          });
+            _.remove(newElements, edge => {
+              if (isEdge(edge)) {
+                return (
+                  (type === "source" && edge.source === nodeId && edge.sourceHandle === id) ||
+                  (type === "target" && edge.target === nodeId && edge.targetHandle === id)
+                )
+              }
+            });
 
-          return newElements;
+            return newElements;
+          }
         });
       }
 
@@ -68,7 +72,7 @@ const ValueHandler = ({ type, id, connected, valueType, isConnectable, nodeId }:
         handle.removeEventListener("mousedown", handleCallback);
       }
     }
-  }, [isContolPressed, id, setElements, type, nodeId]);
+  }, [isContolPressed, id, dispatch, type, nodeId]);
 
   return (
     <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id}>
