@@ -63,6 +63,8 @@ const ValueEdge = ({
 
   const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
+  const zoom = useStoreState(state => state.transform[2]);
+
   const onPathClick = (e: React.MouseEvent<SVGPathElement>) => {
     const coords = project({ x: e.clientX, y: e.clientY });
 
@@ -81,7 +83,7 @@ const ValueEdge = ({
 
           edge.data = {
             ...edge.data,
-            points: [...(edge.data?.points || []), { x: coords.x - offsetX, y: coords.y - offsetY }]
+            points: [...(edge.data?.points || []), { x: coords.x - offsetX / zoom, y: coords.y - offsetY / zoom }]
           }
 
           newElements[index] = { ...edge };

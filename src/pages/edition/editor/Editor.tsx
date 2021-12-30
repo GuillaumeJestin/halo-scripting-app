@@ -1,4 +1,4 @@
-import ReactFlow, { Background, BackgroundVariant, ReactFlowProvider } from "react-flow-renderer";
+import ReactFlow, { Background, BackgroundVariant, OnLoadParams, ReactFlowProvider } from "react-flow-renderer";
 import NodeType from "../../../types/node-type/NodeType";
 import VariableType from "../../../types/variable-type/VariableType";
 import FunctionNode from "./nodes/FunctionNode";
@@ -11,7 +11,7 @@ import EdgeType from "../../../types/edge-type/EdgeType";
 import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer } from "./store/EditorReducer";
 import { applyMiddleware, createStore, Dispatch } from "redux";
 import { Provider, useSelector, useDispatch, shallowEqual } from "react-redux";
-import { useEffect, useMemo, useRef } from "react";
+import { forwardRef, ForwardedRef, useEffect, useMemo, useRef } from "react";
 import _ from "lodash";
 
 const nodeTypes = {
@@ -25,7 +25,11 @@ const edgeTypes = {
   value: ValueEdge,
 };
 
-const Editor = () => {
+type EditorProps = {
+  instanceRef?: ForwardedRef<OnLoadParams<NodeType | EdgeType>>;
+}
+
+const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) => {
 
   const elements = useSelector<EditorReducerState, (NodeType | EdgeType)[]>(state => state.elements, shallowEqual);
   const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
@@ -34,7 +38,25 @@ const Editor = () => {
 
   return (<>
     <ReactFlow
-      ref={ref => { ref && dispatch({ type: ActionSetContainer, container: ref }) }}
+      onLoad={(instance: OnLoadParams<NodeType | EdgeType>) => {
+        if (instanceRef) {
+          if (typeof instanceRef === "function") {
+            instanceRef(instance);
+          } else {
+            instanceRef.current = instance;
+          }
+        }
+      }}
+      ref={flowRef => {
+        flowRef && dispatch({ type: ActionSetContainer, container: flowRef });
+        if (ref) {
+          if (typeof ref === "function") {
+            ref(flowRef);
+          } else {
+            ref.current = flowRef;
+          }
+        }
+      }}
       style={{ backgroundColor: "var(--darker)" }}
       elements={elements}
       nodeTypes={nodeTypes}
@@ -56,15 +78,16 @@ const Editor = () => {
       />
     </ReactFlow>
   </>);
-}
+})
 
 type EditorWrapperProps = {
   elements: (NodeType | EdgeType)[];
   setElements: (elements: (NodeType | EdgeType)[]) => void;
   variables: VariableType[];
+  instanceRef?: ForwardedRef<OnLoadParams<NodeType | EdgeType>>;
 }
 
-const EditorWrapper = ({ elements, setElements, variables }: EditorWrapperProps) => {
+const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements, setElements, variables, instanceRef }, ref) => {
 
   const setElementsRef = useRef(setElements);
   useEffect(() => { setElementsRef.current = setElements }, [setElements]);
@@ -96,10 +119,10 @@ const EditorWrapper = ({ elements, setElements, variables }: EditorWrapperProps)
   return (
     <ReactFlowProvider>
       <Provider store={store}>
-        <Editor />
+        <Editor ref={ref} instanceRef={instanceRef} />
       </Provider>
     </ReactFlowProvider>
   )
-}
+})
 
 export default EditorWrapper;

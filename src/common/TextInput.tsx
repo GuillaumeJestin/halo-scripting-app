@@ -7,9 +7,11 @@ type TextInputProps = {
   onChange?: (value: string) => void;
   style?: CSSProperties;
   fontSize?: number | string;
+  placeholder?: string;
+  noAdaptiveSize?: boolean;
 }
 
-const TextInput = ({ value, onChange, style, fontSize: _fontSize }: TextInputProps) => {
+const TextInput = ({ value, onChange, style, fontSize: _fontSize, placeholder, noAdaptiveSize }: TextInputProps) => {
 
   const widthControlRef = useRef<HTMLDivElement>(null!);
   const [width, setWidth] = useState(0);
@@ -24,7 +26,8 @@ const TextInput = ({ value, onChange, style, fontSize: _fontSize }: TextInputPro
   return (
     <>
       <Container
-        style={{ width, ...style, fontSize }}
+        placeholder={placeholder}
+        style={{ ...(noAdaptiveSize ? {} : { width }), ...style, fontSize }}
         value={value || ""}
         onChange={e => {
           const value = e.target?.value || "";

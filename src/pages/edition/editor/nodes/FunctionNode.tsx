@@ -291,7 +291,7 @@ const updateNode = (elements: (NodeType | EdgeType)[], id: string | undefined, u
   }
 }
 
-const getArgumentName = (arg: ValueType | ValueType[]) => {
+export const getArgumentName = (arg: ValueType | ValueType[]) => {
   const type = Array.isArray(arg) ? arg[0] : arg;
 
   return _.isEqual(arg, ["real", "short", "long"]) ? "Number" : _.capitalize(type.split("_").join(" "));
