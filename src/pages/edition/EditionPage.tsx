@@ -13,7 +13,7 @@ import VariablesList from "./side-bar/variables/VariablesList";
 
 const EditionPage = () => {
   const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
-  const [variables, setVariable] = useState<VariableType[]>([
+  const [variables, setVariables] = useState<VariableType[]>([
     { id: "a", name: "My Device", type: "device" },
     { id: "b", name: "My number var", type: "real" },
     { id: "c", name: "TrueOrFalse", type: "boolean" },
@@ -62,9 +62,59 @@ const EditionPage = () => {
     }
   }, []);
 
-  const onVariableChange = (variable: VariableType) => {
+  const onVariableChange = (variable: VariableType, start?: boolean) => {
     console.log(variable);
+    setVariables(variables => {
+      if (start) {
+        return [variable, ...variables];
+      }
+
+      const newVariables = [...variables];
+
+      const index = newVariables.findIndex(v => v.id === variable.id);
+
+      if (index >= 0) {
+        newVariables[index] = variable;
+      } else {
+        newVariables.push(variable);
+      }
+
+      return newVariables;
+    });
   };
+
+  const onVariableDragEnd = useCallback((event: MouseEvent, offset: { x: number, y: number }, variable: VariableType) => {
+    // Checking if the dragged function is inside the editor view
+    const editorBoundingRect = editorRef.current?.getBoundingClientRect();
+    const editorX = editorBoundingRect?.x ?? 0;
+    const editorY = editorBoundingRect?.y ?? 0;
+    const editorWidth = editorBoundingRect?.width ?? 0;
+    const editorHeight = editorBoundingRect?.height ?? 0;
+    if (
+      event.clientX >= editorX && event.clientX <= (editorX + editorWidth) &&
+      event.clientY >= editorY && event.clientY <= (editorY + editorHeight)
+    ) {
+      const coords = instanceRef.current?.project({ x: event.clientX - offset.x, y: event.clientY - offset.y }) || { x: 0, y: 0 };
+      const zoom = instanceRef.current?.toObject().zoom ?? 1;
+
+      setElements((elements) => {
+        return [
+          {
+            id: uuidv4(),
+            type: "variable",
+            data: {
+              variableId: variable.id
+            },
+            position: {
+              x: coords.x - editorX / zoom,
+              y: coords.y - editorY / zoom,
+            }
+          },
+          ...elements
+        ];
+      })
+    }
+  }, []);
 
   return (
     <>
@@ -80,7 +130,7 @@ const EditionPage = () => {
         </div>
         <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto" }}>
           {/* <FunctionsList onDragEnd={onFunctionDragEnd} /> */}
-          <VariablesList variables={variables} onVariableChange={onVariableChange} />
+          <VariablesList variables={variables} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} />
         </div>
       </div>
     </>

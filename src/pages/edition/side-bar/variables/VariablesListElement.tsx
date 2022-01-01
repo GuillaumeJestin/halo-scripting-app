@@ -11,23 +11,24 @@ import ListElementContainer from "../ListElementContainer";
 type VariablesListElementProps = {
   variable: VariableType;
   onVariableChange: (variable: VariableType) => void;
+  onVariableDragEnd: (event: MouseEvent, offset: { x: number; y: number; }, variable: VariableType) => void
 }
 
-const VariablesListElement = ({ variable }: VariablesListElementProps) => {
+const VariablesListElement = ({ variable, onVariableChange, onVariableDragEnd }: VariablesListElementProps) => {
 
   return (
-    <ListElementContainer >
+    <ListElementContainer onDragEnd={(event, offset) => onVariableDragEnd(event, offset, variable)} >
       <div style={{ display: "flex" }}>
         <div>Name</div>
-        <TextInput value={variable.name} fontSize="1rem" style={{ flex: 1, width: undefined }} />
+        <TextInput value={variable.name} fontSize="1rem" style={{ flex: 1, width: undefined }} onChange={name => onVariableChange({ ...variable, name })} />
       </div>
       <div style={{ display: "flex" }}>
         <div>Type</div>
-        {/* <TextInput value={variable.type} /> */}
         <Dropdown
-          options={ValueTypes}
+          options={ValueTypes.slice(1)}
           optionDisplay={TypeDisplay}
           selected={variable.type}
+          onSelection={type => onVariableChange({ ...variable, type })}
         />
       </div>
     </ListElementContainer>
