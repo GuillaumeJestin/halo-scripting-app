@@ -1,11 +1,13 @@
-import { useState } from "react";
+import { forwardRef, memo, useEffect, useState } from "react";
 import FunctionType from "../../../../types/function-type/FunctionType";
 import ListElementContainer from "../ListElementContainer";
 import { HiOutlineChevronLeft } from "react-icons/hi";
+import { RiNumber1, RiNumber2, RiNumber3 } from "react-icons/ri";
 import PressableDiv from "../../../../common/PressableDiv";
 import { motion, AnimatePresence } from "framer-motion";
 import ArgumentDisplay from "./ArgumentDisplay";
 import FunctionCategoryType from "../../../../types/function-type/FunctionCategoryType";
+import _ from "lodash";
 
 type FunctionsListElementProps = {
   function: FunctionType;
@@ -13,18 +15,26 @@ type FunctionsListElementProps = {
   onDragEnd: (event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => void;
 }
 
-const FunctionsListElement = ({ function: func, category, onDragEnd }: FunctionsListElementProps) => {
+const cache: Partial<{ [key in FunctionCategoryType]: { [key: string]: boolean } }> = {};
 
-  const [open, setOpen] = useState(false);
+const FunctionsListElement = forwardRef<HTMLDivElement, FunctionsListElementProps>(({ function: func, category, onDragEnd }, ref) => {
 
-  const isThereAnyArgs = func.arguments.length > 0 || func.additionalArguments
+  const id = func.id;
+
+  const [open, setOpen] = useState(cache[category]?.[id] || false);
+
+  useEffect(() => {
+    _.set(cache, `["${category}"]["${id}"]`, open);
+  }, [open, category, id]);
+
+  const isThereAnyArgs = func.arguments.length > 0 || func.additionalArguments;
 
   return (
-    <ListElementContainer onDragEnd={(e, offset) => onDragEnd(e, offset, func, category)}>
+    <ListElementContainer ref={ref} onDragEnd={(e, offset) => onDragEnd(e, offset, func, category)}>
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 1, fontWeight: "bold", wordBreak: "break-all" }}>{func.name}</div>
+        <div style={{ flex: 1, fontWeight: "bold", wordBreak: "break-all" }}>{getCategoryIcon(category)} {getName(func.name)}</div>
         <PressableDiv onPress={() => setOpen(o => !o)}>
-          <motion.div animate={{ transform: `rotate(${open ? "-90" : "0"}deg)` }}>
+          <motion.div initial={{ transform: `rotate(${open ? "-90" : "0"}deg)` }} animate={{ transform: `rotate(${open ? "-90" : "0"}deg)` }}>
             <HiOutlineChevronLeft />
           </motion.div>
         </PressableDiv>
@@ -66,6 +76,21 @@ const FunctionsListElement = ({ function: func, category, onDragEnd }: Functions
       </AnimatePresence>
     </ListElementContainer>
   );
-}
+})
 
-export default FunctionsListElement;
+export default memo(FunctionsListElement);
+
+const getName = (name: string) => _.capitalize(name.split("_").join(" "));
+
+const getCategoryIcon = (category: FunctionCategoryType) => {
+  switch (category) {
+    case "hce":
+      return <RiNumber1 />
+    case "h2":
+      return <RiNumber2 />
+    case "h3":
+      return <RiNumber3 />
+  }
+
+  return undefined;
+}

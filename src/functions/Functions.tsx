@@ -10,6 +10,6 @@ const Functions: { [key in FunctionCategoryType]: FunctionType[] } = {
   hce: HCEFunctions,
   h2: H2Functions,
   h3: H3Functions,
-}
+};
 
 export default Functions;

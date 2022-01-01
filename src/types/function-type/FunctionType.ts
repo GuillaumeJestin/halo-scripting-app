@@ -10,6 +10,7 @@ type FunctionType = {
   optionalArguments?: number[];
   additionalArguments?: ValueType | ValueType[]/* | ((node: FunctionNodeType) => ValueType)*/;
   returns?: ValueType /*| ((node: FunctionNodeType) => ValueType)*/;
+  id: string;
 }
 
 export default FunctionType;

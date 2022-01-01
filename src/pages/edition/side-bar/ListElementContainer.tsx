@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import { FaEllipsisV } from "react-icons/fa";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import mergeRefs from "react-merge-refs";
 
 type ListElementContainerProps = {
   children: React.ReactNode;
   onDragEnd?: (event: MouseEvent, offset: { x: number, y: number }) => void;
 }
 
-const ListElementContainer = ({ children, onDragEnd }: ListElementContainerProps) => {
+const ListElementContainer = forwardRef<HTMLDivElement, ListElementContainerProps>(({ children, onDragEnd }, ref) => {
 
   const [isDragging, setIsDragging] = useState(false);
   const [width, setWidth] = useState(0);
@@ -65,7 +66,7 @@ const ListElementContainer = ({ children, onDragEnd }: ListElementContainerProps
 
   return (
     <>
-      <Container ref={containerRef}>
+      <Container ref={mergeRefs([containerRef, ref])}>
         <IconContainer ref={ellipsisRef}>
           <FaEllipsisV />
           <FaEllipsisV />
@@ -92,7 +93,7 @@ const ListElementContainer = ({ children, onDragEnd }: ListElementContainerProps
       }
     </>
   );
-}
+})
 
 const Container = styled.div`
   background-color: var(--lighter);
@@ -101,10 +102,6 @@ const Container = styled.div`
   margin-bottom: 0.75rem;
   display: flex;
   align-items: center;
-  
-  &:last-child {
-    margin-bottom: 0;
-  }
 `
 
 const IconContainer = styled.div`

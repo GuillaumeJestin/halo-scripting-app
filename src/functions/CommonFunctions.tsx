@@ -7,7 +7,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Returns true if all specified expressions are true.",
 		arguments: [],
 		additionalArguments: "boolean",
-		returns: "boolean"
+		returns: "boolean",
+		id: "and"
 	},
 	{
 		symbol: "or",
@@ -15,7 +16,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Returns true if any specified expressions are true.",
 		arguments: [],
 		additionalArguments: "boolean",
-		returns: "boolean"
+		returns: "boolean",
+		id: "or"
 	},
 	{
 		symbol: "+",
@@ -27,7 +29,8 @@ const CommonFunctions: FunctionType[] = [
 			"short",
 			"long"
 		],
-		returns: "real"
+		returns: "real",
+		id: "+"
 	},
 	{
 		symbol: "-",
@@ -45,7 +48,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "real"
+		returns: "real",
+		id: "-"
 	},
 	{
 		symbol: "*",
@@ -57,7 +61,8 @@ const CommonFunctions: FunctionType[] = [
 			"short",
 			"long"
 		],
-		returns: "real"
+		returns: "real",
+		id: "*"
 	},
 	{
 		symbol: "/",
@@ -75,7 +80,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "real"
+		returns: "real",
+		id: "/"
 	},
 	{
 		symbol: "min",
@@ -87,7 +93,8 @@ const CommonFunctions: FunctionType[] = [
 			"short",
 			"long"
 		],
-		returns: "real"
+		returns: "real",
+		id: "min"
 	},
 	{
 		symbol: "max",
@@ -99,7 +106,8 @@ const CommonFunctions: FunctionType[] = [
 			"short",
 			"long"
 		],
-		returns: "real"
+		returns: "real",
+		id: "max"
 	},
 	{
 		symbol: "=",
@@ -109,7 +117,8 @@ const CommonFunctions: FunctionType[] = [
 			"boolean",
 			"boolean"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "="
 	},
 	{
 		symbol: "!=",
@@ -119,7 +128,8 @@ const CommonFunctions: FunctionType[] = [
 			"boolean",
 			"boolean"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "!="
 	},
 	{
 		symbol: ">",
@@ -137,7 +147,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: ">"
 	},
 	{
 		symbol: "<",
@@ -155,7 +166,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "<"
 	},
 	{
 		symbol: ">=",
@@ -173,7 +185,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: ">="
 	},
 	{
 		symbol: "<=",
@@ -191,7 +204,8 @@ const CommonFunctions: FunctionType[] = [
 				"long"
 			]
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "<="
 	},
 	{
 		symbol: "unit",
@@ -200,7 +214,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object"
 		],
-		returns: "unit"
+		returns: "unit",
+		id: "unit"
 	},
 	{
 		symbol: "not",
@@ -209,7 +224,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"boolean"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "not"
 	},
 	{
 		symbol: "pin",
@@ -220,7 +236,8 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real"
 		],
-		returns: "real"
+		returns: "real",
+		id: "pin"
 	},
 	{
 		symbol: "print",
@@ -228,14 +245,16 @@ const CommonFunctions: FunctionType[] = [
 		description: "Prints a string to the console.",
 		arguments: [
 			"string"
-		]
+		],
+		id: "print"
 	},
 	{
 		symbol: "players",
 		name: "players",
 		description: "Returns a list of the players (DO NOT USE TO COUNT PLAYERS IN COOP GAME, USE game_coop_player_count)",
 		arguments: [],
-		returns: "object_list"
+		returns: "object_list",
+		id: "players"
 	},
 	{
 		symbol: "volume_teleport_players_not_inside",
@@ -244,7 +263,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"trigger_volume",
 			"cutscene_flag"
-		]
+		],
+		id: "volume_teleport_players_not_inside"
 	},
 	{
 		symbol: "volume_test_object",
@@ -254,7 +274,8 @@ const CommonFunctions: FunctionType[] = [
 			"trigger_volume",
 			"object"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "volume_test_object"
 	},
 	{
 		symbol: "volume_test_objects",
@@ -264,7 +285,8 @@ const CommonFunctions: FunctionType[] = [
 			"trigger_volume",
 			"object_list"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "volume_test_objects"
 	},
 	{
 		symbol: "volume_test_objects_all",
@@ -274,7 +296,8 @@ const CommonFunctions: FunctionType[] = [
 			"trigger_volume",
 			"object_list"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "volume_test_objects_all"
 	},
 	{
 		symbol: "object_teleport",
@@ -283,7 +306,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"cutscene_flag"
-		]
+		],
+		id: "object_teleport"
 	},
 	{
 		symbol: "object_set_facing",
@@ -292,7 +316,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"cutscene_flag"
-		]
+		],
+		id: "object_set_facing"
 	},
 	{
 		symbol: "object_set_shield",
@@ -301,7 +326,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"real"
-		]
+		],
+		id: "object_set_shield"
 	},
 	{
 		symbol: "object_create",
@@ -309,7 +335,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Creates an object from the scenario.",
 		arguments: [
 			"object_name"
-		]
+		],
+		id: "object_create"
 	},
 	{
 		symbol: "object_destroy",
@@ -317,7 +344,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Destroys an object.",
 		arguments: [
 			"object"
-		]
+		],
+		id: "object_destroy"
 	},
 	{
 		symbol: "object_create_anew",
@@ -325,7 +353,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Creates an object, destroying it first if it already exists.",
 		arguments: [
 			"object_name"
-		]
+		],
+		id: "object_create_anew"
 	},
 	{
 		symbol: "object_create_containing",
@@ -333,7 +362,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Creates all objects from the scenario whose names contain the given substring.",
 		arguments: [
 			"string"
-		]
+		],
+		id: "object_create_containing"
 	},
 	{
 		symbol: "object_create_anew_containing",
@@ -341,7 +371,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Creates anew all objects from the scenario whose names contain the given substring.",
 		arguments: [
 			"string"
-		]
+		],
+		id: "object_create_anew_containing"
 	},
 	{
 		symbol: "object_destroy_containing",
@@ -349,13 +380,15 @@ const CommonFunctions: FunctionType[] = [
 		description: "Destroys all objects from the scenario whose names contain the given substring.",
 		arguments: [
 			"string"
-		]
+		],
+		id: "object_destroy_containing"
 	},
 	{
 		symbol: "object_destroy_all",
 		name: "object_destroy_all",
 		description: "Destroys all non player objects.",
-		arguments: []
+		arguments: [],
+		id: "object_destroy_all"
 	},
 	{
 		symbol: "objects_delete_by_definition",
@@ -363,7 +396,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Deletes all objects of type <definition>",
 		arguments: [
 			"object_definition"
-		]
+		],
+		id: "objects_delete_by_definition"
 	},
 	{
 		symbol: "list_get",
@@ -373,7 +407,8 @@ const CommonFunctions: FunctionType[] = [
 			"object_list",
 			"short"
 		],
-		returns: "object"
+		returns: "object",
+		id: "list_get"
 	},
 	{
 		symbol: "list_count",
@@ -382,7 +417,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list"
 		],
-		returns: "short"
+		returns: "short",
+		id: "list_count"
 	},
 	{
 		symbol: "list_count_not_dead",
@@ -391,7 +427,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list"
 		],
-		returns: "short"
+		returns: "short",
+		id: "list_count_not_dead"
 	},
 	{
 		symbol: "effect_new",
@@ -400,7 +437,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"effect",
 			"cutscene_flag"
-		]
+		],
+		id: "effect_new"
 	},
 	{
 		symbol: "damage_new",
@@ -409,7 +447,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"damage",
 			"cutscene_flag"
-		]
+		],
+		id: "damage_new"
 	},
 	{
 		symbol: "objects_can_see_object",
@@ -420,7 +459,8 @@ const CommonFunctions: FunctionType[] = [
 			"object",
 			"real"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "objects_can_see_object"
 	},
 	{
 		symbol: "objects_can_see_flag",
@@ -431,7 +471,8 @@ const CommonFunctions: FunctionType[] = [
 			"cutscene_flag",
 			"real"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "objects_can_see_flag"
 	},
 	{
 		symbol: "objects_distance_to_object",
@@ -441,7 +482,8 @@ const CommonFunctions: FunctionType[] = [
 			"object_list",
 			"object"
 		],
-		returns: "real"
+		returns: "real",
+		id: "objects_distance_to_object"
 	},
 	{
 		symbol: "objects_distance_to_flag",
@@ -451,19 +493,22 @@ const CommonFunctions: FunctionType[] = [
 			"object_list",
 			"cutscene_flag"
 		],
-		returns: "real"
+		returns: "real",
+		id: "objects_distance_to_flag"
 	},
 	{
 		symbol: "script_recompile",
 		name: "script_recompile",
 		description: "Recompiles scripts.",
-		arguments: []
+		arguments: [],
+		id: "script_recompile"
 	},
 	{
 		symbol: "script_doc",
 		name: "script_doc",
 		description: "Saves a file called hs_doc.txt with parameters for all script commands.",
-		arguments: []
+		arguments: [],
+		id: "script_doc"
 	},
 	{
 		symbol: "help",
@@ -471,7 +516,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Prints a description of the named function.",
 		arguments: [
 			"string"
-		]
+		],
+		id: "help"
 	},
 	{
 		symbol: "random_range",
@@ -481,7 +527,8 @@ const CommonFunctions: FunctionType[] = [
 			"short",
 			"short"
 		],
-		returns: "short"
+		returns: "short",
+		id: "random_range"
 	},
 	{
 		symbol: "real_random_range",
@@ -491,13 +538,15 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real"
 		],
-		returns: "real"
+		returns: "real",
+		id: "real_random_range"
 	},
 	{
 		symbol: "physics_constants_reset",
 		name: "physics_constants_reset",
 		description: "Resets all physics constants to earthly values",
-		arguments: []
+		arguments: [],
+		id: "physics_constants_reset"
 	},
 	{
 		symbol: "physics_set_gravity",
@@ -505,7 +554,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Set global gravity acceleration relative to halo standard gravity",
 		arguments: [
 			"real"
-		]
+		],
+		id: "physics_set_gravity"
 	},
 	{
 		symbol: "breakable_surfaces_enable",
@@ -513,7 +563,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Enables or disables breakability of all breakable surfaces on level",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "breakable_surfaces_enable"
 	},
 	{
 		symbol: "recording_play",
@@ -523,7 +574,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"cutscene_recording"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "recording_play"
 	},
 	{
 		symbol: "recording_play_and_delete",
@@ -533,7 +585,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"cutscene_recording"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "recording_play_and_delete"
 	},
 	{
 		symbol: "recording_play_and_hover",
@@ -543,7 +596,8 @@ const CommonFunctions: FunctionType[] = [
 			"vehicle",
 			"cutscene_recording"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "recording_play_and_hover"
 	},
 	{
 		symbol: "recording_kill",
@@ -551,7 +605,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Kill the specified unit's cutscene recording.",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "recording_kill"
 	},
 	{
 		symbol: "recording_time",
@@ -560,7 +615,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "short"
+		returns: "short",
+		id: "recording_time"
 	},
 	{
 		symbol: "object_set_ranged_attack_inhibited",
@@ -569,7 +625,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"boolean"
-		]
+		],
+		id: "object_set_ranged_attack_inhibited"
 	},
 	{
 		symbol: "object_set_melee_attack_inhibited",
@@ -578,13 +635,15 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"boolean"
-		]
+		],
+		id: "object_set_melee_attack_inhibited"
 	},
 	{
 		symbol: "objects_dump_memory",
 		name: "objects_dump_memory",
 		description: "Debugs object memory usage",
-		arguments: []
+		arguments: [],
+		id: "objects_dump_memory"
 	},
 	{
 		symbol: "object_set_scale",
@@ -594,7 +653,8 @@ const CommonFunctions: FunctionType[] = [
 			"object",
 			"real",
 			"short"
-		]
+		],
+		id: "object_set_scale"
 	},
 	{
 		symbol: "objects_detach",
@@ -603,13 +663,15 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object",
 			"object"
-		]
+		],
+		id: "objects_detach"
 	},
 	{
 		symbol: "garbage_collect_now",
 		name: "garbage_collect_now",
 		description: "Causes all garbage objects except those visible to a player to be collected immediately",
-		arguments: []
+		arguments: [],
+		id: "garbage_collect_now"
 	},
 	{
 		symbol: "object_cannot_take_damage",
@@ -617,7 +679,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Prevents an object from taking damage",
 		arguments: [
 			"object_list"
-		]
+		],
+		id: "object_cannot_take_damage"
 	},
 	{
 		symbol: "object_can_take_damage",
@@ -625,7 +688,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Allows an object to take damage again",
 		arguments: [
 			"object_list"
-		]
+		],
+		id: "object_can_take_damage"
 	},
 	{
 		symbol: "objects_predict",
@@ -633,7 +697,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Loads textures/geometry/sounds necessary to present objects that are about to come on-screen",
 		arguments: [
 			"object_list"
-		]
+		],
+		id: "objects_predict"
 	},
 	{
 		symbol: "object_type_predict",
@@ -641,7 +706,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Loads textures necessary to draw an object that's about to come on-screen.",
 		arguments: [
 			"object_definition"
-		]
+		],
+		id: "object_type_predict"
 	},
 	{
 		symbol: "render_lights",
@@ -650,7 +716,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"boolean"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "render_lights"
 	},
 	{
 		symbol: "scenery_get_animation_time",
@@ -659,7 +726,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"scenery"
 		],
-		returns: "short"
+		returns: "short",
+		id: "scenery_get_animation_time"
 	},
 	{
 		symbol: "unit_can_blink",
@@ -668,7 +736,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"boolean"
-		]
+		],
+		id: "unit_can_blink"
 	},
 	{
 		symbol: "unit_open",
@@ -676,7 +745,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Opens the hatches on the given unit",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_open"
 	},
 	{
 		symbol: "unit_close",
@@ -684,7 +754,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Closes the hatches on a given unit",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_close"
 	},
 	{
 		symbol: "unit_kill",
@@ -692,7 +763,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Kills a given unit, no saving throw",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_kill"
 	},
 	{
 		symbol: "unit_kill_silent",
@@ -700,7 +772,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Kills a given unit silently (doesn't make them play their normal death animation or sound)",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_kill_silent"
 	},
 	{
 		symbol: "unit_get_custom_animation_time",
@@ -709,7 +782,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "short"
+		returns: "short",
+		id: "unit_get_custom_animation_time"
 	},
 	{
 		symbol: "unit_stop_custom_animation",
@@ -717,7 +791,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Stops the custom animation running on the given unit.",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_stop_custom_animation"
 	},
 	{
 		symbol: "unit_is_playing_custom_animation",
@@ -726,7 +801,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "unit_is_playing_custom_animation"
 	},
 	{
 		symbol: "unit_aim_without_turning",
@@ -735,7 +811,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"boolean"
-		]
+		],
+		id: "unit_aim_without_turning"
 	},
 	{
 		symbol: "unit_set_enterable_by_player",
@@ -744,7 +821,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"boolean"
-		]
+		],
+		id: "unit_set_enterable_by_player"
 	},
 	{
 		symbol: "unit_exit_vehicle",
@@ -752,7 +830,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Makes a unit exit its vehicle",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "unit_exit_vehicle"
 	},
 	{
 		symbol: "unit_set_maximum_vitality",
@@ -762,7 +841,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"real",
 			"real"
-		]
+		],
+		id: "unit_set_maximum_vitality"
 	},
 	{
 		symbol: "units_set_maximum_vitality",
@@ -772,7 +852,8 @@ const CommonFunctions: FunctionType[] = [
 			"object_list",
 			"real",
 			"real"
-		]
+		],
+		id: "units_set_maximum_vitality"
 	},
 	{
 		symbol: "unit_set_current_vitality",
@@ -782,7 +863,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"real",
 			"real"
-		]
+		],
+		id: "unit_set_current_vitality"
 	},
 	{
 		symbol: "units_set_current_vitality",
@@ -792,13 +874,15 @@ const CommonFunctions: FunctionType[] = [
 			"object_list",
 			"real",
 			"real"
-		]
+		],
+		id: "units_set_current_vitality"
 	},
 	{
 		symbol: "magic_melee_attack",
 		name: "magic_melee_attack",
 		description: "Causes player's unit to start a melee attack",
-		arguments: []
+		arguments: [],
+		id: "magic_melee_attack"
 	},
 	{
 		symbol: "vehicle_riders",
@@ -807,7 +891,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "object_list"
+		returns: "object_list",
+		id: "vehicle_riders"
 	},
 	{
 		symbol: "vehicle_driver",
@@ -816,7 +901,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "unit"
+		returns: "unit",
+		id: "vehicle_driver"
 	},
 	{
 		symbol: "vehicle_gunner",
@@ -825,7 +911,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "unit"
+		returns: "unit",
+		id: "vehicle_gunner"
 	},
 	{
 		symbol: "unit_get_health",
@@ -834,7 +921,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "real"
+		returns: "real",
+		id: "unit_get_health"
 	},
 	{
 		symbol: "unit_get_shield",
@@ -843,7 +931,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "real"
+		returns: "real",
+		id: "unit_get_shield"
 	},
 	{
 		symbol: "unit_get_total_grenade_count",
@@ -852,7 +941,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit"
 		],
-		returns: "short"
+		returns: "short",
+		id: "unit_get_total_grenade_count"
 	},
 	{
 		symbol: "unit_has_weapon",
@@ -862,7 +952,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"object_definition"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "unit_has_weapon"
 	},
 	{
 		symbol: "unit_has_weapon_readied",
@@ -872,7 +963,8 @@ const CommonFunctions: FunctionType[] = [
 			"unit",
 			"object_definition"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "unit_has_weapon_readied"
 	},
 	{
 		symbol: "unit_doesnt_drop_items",
@@ -880,7 +972,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Prevents any of the given units from dropping weapons or grenades when they die",
 		arguments: [
 			"object_list"
-		]
+		],
+		id: "unit_doesnt_drop_items"
 	},
 	{
 		symbol: "unit_impervious",
@@ -889,7 +982,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list",
 			"boolean"
-		]
+		],
+		id: "unit_impervious"
 	},
 	{
 		symbol: "unit_suspended",
@@ -898,7 +992,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"boolean"
-		]
+		],
+		id: "unit_suspended"
 	},
 	{
 		symbol: "device_set_never_appears_locked",
@@ -907,7 +1002,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device",
 			"boolean"
-		]
+		],
+		id: "device_set_never_appears_locked"
 	},
 	{
 		symbol: "device_get_power",
@@ -916,7 +1012,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device"
 		],
-		returns: "real"
+		returns: "real",
+		id: "device_get_power"
 	},
 	{
 		symbol: "device_set_power",
@@ -925,7 +1022,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device",
 			"real"
-		]
+		],
+		id: "device_set_power"
 	},
 	{
 		symbol: "device_set_position",
@@ -935,7 +1033,8 @@ const CommonFunctions: FunctionType[] = [
 			"device",
 			"real"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "device_set_position"
 	},
 	{
 		symbol: "device_get_position",
@@ -944,7 +1043,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device"
 		],
-		returns: "real"
+		returns: "real",
+		id: "device_get_position"
 	},
 	{
 		symbol: "device_set_position_immediate",
@@ -953,7 +1053,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device",
 			"real"
-		]
+		],
+		id: "device_set_position_immediate"
 	},
 	{
 		symbol: "device_group_get",
@@ -962,7 +1063,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device_group"
 		],
-		returns: "real"
+		returns: "real",
+		id: "device_group_get"
 	},
 	{
 		symbol: "device_group_set_immediate",
@@ -971,7 +1073,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device_group",
 			"real"
-		]
+		],
+		id: "device_group_set_immediate"
 	},
 	{
 		symbol: "device_one_sided_set",
@@ -980,7 +1083,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device",
 			"boolean"
-		]
+		],
+		id: "device_one_sided_set"
 	},
 	{
 		symbol: "device_operates_automatically_set",
@@ -989,7 +1093,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device",
 			"boolean"
-		]
+		],
+		id: "device_operates_automatically_set"
 	},
 	{
 		symbol: "device_group_change_only_once_more_set",
@@ -998,43 +1103,50 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"device_group",
 			"boolean"
-		]
+		],
+		id: "device_group_change_only_once_more_set"
 	},
 	{
 		symbol: "breakable_surfaces_reset",
 		name: "breakable_surfaces_reset",
 		description: "Restores all breakable surfaces",
-		arguments: []
+		arguments: [],
+		id: "breakable_surfaces_reset"
 	},
 	{
 		symbol: "cheat_all_powerups",
 		name: "cheat_all_powerups",
 		description: "Drops all powerups near player",
-		arguments: []
+		arguments: [],
+		id: "cheat_all_powerups"
 	},
 	{
 		symbol: "cheat_all_weapons",
 		name: "cheat_all_weapons",
 		description: "Drops all weapons near player",
-		arguments: []
+		arguments: [],
+		id: "cheat_all_weapons"
 	},
 	{
 		symbol: "cheat_all_vehicles",
 		name: "cheat_all_vehicles",
 		description: "Drops all vehicles on player",
-		arguments: []
+		arguments: [],
+		id: "cheat_all_vehicles"
 	},
 	{
 		symbol: "cheat_teleport_to_camera",
 		name: "cheat_teleport_to_camera",
 		description: "Teleports player to camera location",
-		arguments: []
+		arguments: [],
+		id: "cheat_teleport_to_camera"
 	},
 	{
 		symbol: "cheats_load",
 		name: "cheats_load",
 		description: "Reloads the cheats.txt file",
-		arguments: []
+		arguments: [],
+		id: "cheats_load"
 	},
 	{
 		symbol: "ai_attach",
@@ -1043,7 +1155,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"ai"
-		]
+		],
+		id: "ai_attach"
 	},
 	{
 		symbol: "ai_detach",
@@ -1051,7 +1164,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Detaches the specified unit from all AI.",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "ai_detach"
 	},
 	{
 		symbol: "ai_place",
@@ -1059,7 +1173,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Places the specified squad on the map.",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_place"
 	},
 	{
 		symbol: "ai_kill",
@@ -1067,7 +1182,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Instantly kills the specified encounter and/or squad.",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_kill"
 	},
 	{
 		symbol: "ai_kill_silent",
@@ -1075,7 +1191,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Instantly and silently (no animation or sound played) kills the specified encounter and/or squad.",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_kill_silent"
 	},
 	{
 		symbol: "ai_erase",
@@ -1083,13 +1200,15 @@ const CommonFunctions: FunctionType[] = [
 		description: "Erases the specified encounter and/or squad.",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_erase"
 	},
 	{
 		symbol: "ai_erase_all",
 		name: "ai_erase_all",
 		description: "Erases all AI.",
-		arguments: []
+		arguments: [],
+		id: "ai_erase_all"
 	},
 	{
 		symbol: "ai_select",
@@ -1097,7 +1216,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Selects the specified squad.",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_select"
 	},
 	{
 		symbol: "ai_set_deaf",
@@ -1106,7 +1226,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_set_deaf"
 	},
 	{
 		symbol: "ai_set_blind",
@@ -1115,7 +1236,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_set_blind"
 	},
 	{
 		symbol: "ai_migrate",
@@ -1124,7 +1246,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"ai"
-		]
+		],
+		id: "ai_migrate"
 	},
 	{
 		symbol: "ai_allegiance",
@@ -1133,7 +1256,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"team",
 			"team"
-		]
+		],
+		id: "ai_allegiance"
 	},
 	{
 		symbol: "ai_allegiance_remove",
@@ -1142,7 +1266,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"team",
 			"team"
-		]
+		],
+		id: "ai_allegiance_remove"
 	},
 	{
 		symbol: "ai_living_count",
@@ -1151,7 +1276,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "short"
+		returns: "short",
+		id: "ai_living_count"
 	},
 	{
 		symbol: "ai_living_fraction",
@@ -1160,7 +1286,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "real"
+		returns: "real",
+		id: "ai_living_fraction"
 	},
 	{
 		symbol: "ai_strength",
@@ -1169,7 +1296,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "real"
+		returns: "real",
+		id: "ai_strength"
 	},
 	{
 		symbol: "ai_swarm_count",
@@ -1178,7 +1306,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "short"
+		returns: "short",
+		id: "ai_swarm_count"
 	},
 	{
 		symbol: "ai_nonswarm_count",
@@ -1187,7 +1316,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "short"
+		returns: "short",
+		id: "ai_nonswarm_count"
 	},
 	{
 		symbol: "ai_actors",
@@ -1196,7 +1326,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "object_list"
+		returns: "object_list",
+		id: "ai_actors"
 	},
 	{
 		symbol: "ai_braindead",
@@ -1205,7 +1336,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_braindead"
 	},
 	{
 		symbol: "ai_braindead_by_unit",
@@ -1214,7 +1346,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list",
 			"boolean"
-		]
+		],
+		id: "ai_braindead_by_unit"
 	},
 	{
 		symbol: "ai_disregard",
@@ -1223,7 +1356,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list",
 			"boolean"
-		]
+		],
+		id: "ai_disregard"
 	},
 	{
 		symbol: "ai_prefer_target",
@@ -1232,7 +1366,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"object_list",
 			"boolean"
-		]
+		],
+		id: "ai_prefer_target"
 	},
 	{
 		symbol: "ai_renew",
@@ -1240,7 +1375,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Refreshes the health and grenade count of a group of actors, so they are as good as new",
 		arguments: [
 			"ai"
-		]
+		],
+		id: "ai_renew"
 	},
 	{
 		symbol: "ai_is_attacking",
@@ -1249,7 +1385,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "ai_is_attacking"
 	},
 	{
 		symbol: "ai_force_active",
@@ -1258,7 +1395,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_force_active"
 	},
 	{
 		symbol: "ai_force_active_by_unit",
@@ -1267,7 +1405,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"unit",
 			"boolean"
-		]
+		],
+		id: "ai_force_active_by_unit"
 	},
 	{
 		symbol: "ai_playfight",
@@ -1276,13 +1415,15 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_playfight"
 	},
 	{
 		symbol: "ai_reconnect",
 		name: "ai_reconnect",
 		description: "Reconnects all AI information to the current structure bsp (use this after you create encounters or command lists in sapien, or place new firing points or command list points)",
-		arguments: []
+		arguments: [],
+		id: "ai_reconnect"
 	},
 	{
 		symbol: "ai_berserk",
@@ -1291,7 +1432,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_berserk"
 	},
 	{
 		symbol: "ai_set_team",
@@ -1300,7 +1442,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"team"
-		]
+		],
+		id: "ai_set_team"
 	},
 	{
 		symbol: "ai_allow_dormant",
@@ -1309,7 +1452,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"ai",
 			"boolean"
-		]
+		],
+		id: "ai_allow_dormant"
 	},
 	{
 		symbol: "ai_allegiance_broken",
@@ -1319,7 +1463,8 @@ const CommonFunctions: FunctionType[] = [
 			"team",
 			"team"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "ai_allegiance_broken"
 	},
 	{
 		symbol: "camera_control",
@@ -1327,7 +1472,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Toggles script control of the camera.",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "camera_control"
 	},
 	{
 		symbol: "camera_set",
@@ -1336,7 +1482,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"cutscene_camera_point",
 			"short"
-		]
+		],
+		id: "camera_set"
 	},
 	{
 		symbol: "camera_set_relative",
@@ -1346,7 +1493,8 @@ const CommonFunctions: FunctionType[] = [
 			"cutscene_camera_point",
 			"short",
 			"object"
-		]
+		],
+		id: "camera_set_relative"
 	},
 	{
 		symbol: "camera_set_first_person",
@@ -1354,26 +1502,30 @@ const CommonFunctions: FunctionType[] = [
 		description: "Makes the scripted camera follow a unit.",
 		arguments: [
 			"unit"
-		]
+		],
+		id: "camera_set_first_person"
 	},
 	{
 		symbol: "camera_time",
 		name: "camera_time",
 		description: "Returns the number of ticks remaining in the current camera interpolation.",
 		arguments: [],
-		returns: "short"
+		returns: "short",
+		id: "camera_time"
 	},
 	{
 		symbol: "debug_camera_load",
 		name: "debug_camera_load",
 		description: "Loads the saved camera position and facing.",
-		arguments: []
+		arguments: [],
+		id: "debug_camera_load"
 	},
 	{
 		symbol: "debug_camera_save",
 		name: "debug_camera_save",
 		description: "Saves the camera position and facing.",
-		arguments: []
+		arguments: [],
+		id: "debug_camera_save"
 	},
 	{
 		symbol: "debug_camera_save_name",
@@ -1381,7 +1533,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Saves the camera position and facing to filename",
 		arguments: [
 			"string"
-		]
+		],
+		id: "debug_camera_save_name"
 	},
 	{
 		symbol: "debug_camera_load_name",
@@ -1389,7 +1542,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Loads the camera position and facing from filename",
 		arguments: [
 			"string"
-		]
+		],
+		id: "debug_camera_load_name"
 	},
 	{
 		symbol: "debug_camera_load_text",
@@ -1397,27 +1551,31 @@ const CommonFunctions: FunctionType[] = [
 		description: "Loads the camera position and facing from a passed in string",
 		arguments: [
 			"string"
-		]
+		],
+		id: "debug_camera_load_text"
 	},
 	{
 		symbol: "game_difficulty_get",
 		name: "game_difficulty_get",
 		description: "Returns the current difficulty setting, but lies to you and will never return easy, instead returning normal",
 		arguments: [],
-		returns: "game_difficulty"
+		returns: "game_difficulty",
+		id: "game_difficulty_get"
 	},
 	{
 		symbol: "game_difficulty_get_real",
 		name: "game_difficulty_get_real",
 		description: "Returns the actual current difficulty setting without lying",
 		arguments: [],
-		returns: "game_difficulty"
+		returns: "game_difficulty",
+		id: "game_difficulty_get_real"
 	},
 	{
 		symbol: "map_reset",
 		name: "map_reset",
 		description: "Starts the map from the beginning.",
-		arguments: []
+		arguments: [],
+		id: "map_reset"
 	},
 	{
 		symbol: "map_name",
@@ -1425,7 +1583,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "The same as game_start: launches a game for debugging purposes",
 		arguments: [
 			"string"
-		]
+		],
+		id: "map_name"
 	},
 	{
 		symbol: "crash",
@@ -1433,13 +1592,15 @@ const CommonFunctions: FunctionType[] = [
 		description: "Crashes (for debugging).",
 		arguments: [
 			"string"
-		]
+		],
+		id: "crash"
 	},
 	{
 		symbol: "version",
 		name: "version",
 		description: "Prints the build version.",
-		arguments: []
+		arguments: [],
+		id: "version"
 	},
 	{
 		symbol: "ai_grenades",
@@ -1447,7 +1608,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Turns grenade inventory on or off.",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "ai_grenades"
 	},
 	{
 		symbol: "fade_in",
@@ -1458,7 +1620,8 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real",
 			"short"
-		]
+		],
+		id: "fade_in"
 	},
 	{
 		symbol: "fade_out",
@@ -1469,31 +1632,36 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real",
 			"short"
-		]
+		],
+		id: "fade_out"
 	},
 	{
 		symbol: "cinematic_start",
 		name: "cinematic_start",
 		description: "Initializes game to start a cinematic (interruptive) cutscene",
-		arguments: []
+		arguments: [],
+		id: "cinematic_start"
 	},
 	{
 		symbol: "cinematic_stop",
 		name: "cinematic_stop",
 		description: "Initializes the game to end a cinematic (interruptive) cutscene",
-		arguments: []
+		arguments: [],
+		id: "cinematic_stop"
 	},
 	{
 		symbol: "cinematic_skip_start_internal",
 		name: "cinematic_skip_start_internal",
 		description: "NETWORK SAFE: Unknown, assumed unsafe",
-		arguments: []
+		arguments: [],
+		id: "cinematic_skip_start_internal"
 	},
 	{
 		symbol: "cinematic_skip_stop_internal",
 		name: "cinematic_skip_stop_internal",
 		description: "NETWORK SAFE: Unknown, assumed unsafe",
-		arguments: []
+		arguments: [],
+		id: "cinematic_skip_stop_internal"
 	},
 	{
 		symbol: "cinematic_show_letterbox",
@@ -1501,7 +1669,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Sets or removes the letterbox bars",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "cinematic_show_letterbox"
 	},
 	{
 		symbol: "cinematic_set_title",
@@ -1509,7 +1678,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Activates the chapter title",
 		arguments: [
 			"cutscene_title"
-		]
+		],
+		id: "cinematic_set_title"
 	},
 	{
 		symbol: "cinematic_set_title_delayed",
@@ -1518,7 +1688,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"cutscene_title",
 			"real"
-		]
+		],
+		id: "cinematic_set_title_delayed"
 	},
 	{
 		symbol: "cinematic_suppress_bsp_object_creation",
@@ -1526,91 +1697,105 @@ const CommonFunctions: FunctionType[] = [
 		description: "Suppresses or enables the automatic creation of objects during cutscenes due to a bsp switch",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "cinematic_suppress_bsp_object_creation"
 	},
 	{
 		symbol: "game_won",
 		name: "game_won",
 		description: "Causes the player to successfully finish the current level and move to the next",
-		arguments: []
+		arguments: [],
+		id: "game_won"
 	},
 	{
 		symbol: "game_safe_to_save",
 		name: "game_safe_to_save",
 		description: "Returns FALSE if it would be a bad idea to save the player's game right now",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_safe_to_save"
 	},
 	{
 		symbol: "game_all_quiet",
 		name: "game_all_quiet",
 		description: "Returns FALSE if there are bad guys around, projectiles in the air, etc.",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_all_quiet"
 	},
 	{
 		symbol: "game_safe_to_speak",
 		name: "game_safe_to_speak",
 		description: "Returns FALSE if it would be a bad idea to play mission dialog right now",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_safe_to_speak"
 	},
 	{
 		symbol: "game_is_cooperative",
 		name: "game_is_cooperative",
 		description: "Returns TRUE if the game is cooperative",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_is_cooperative"
 	},
 	{
 		symbol: "game_save",
 		name: "game_save",
 		description: "Checks to see if it is safe to save game, then saves (gives up after 8 seconds)",
-		arguments: []
+		arguments: [],
+		id: "game_save"
 	},
 	{
 		symbol: "game_save_cancel",
 		name: "game_save_cancel",
 		description: "Cancels any pending game_save, timeout or not",
-		arguments: []
+		arguments: [],
+		id: "game_save_cancel"
 	},
 	{
 		symbol: "game_save_no_timeout",
 		name: "game_save_no_timeout",
 		description: "Checks to see if it is safe to save game, then saves (this version never gives up)",
-		arguments: []
+		arguments: [],
+		id: "game_save_no_timeout"
 	},
 	{
 		symbol: "game_saving",
 		name: "game_saving",
 		description: "Checks to see if the game is trying to save the map.",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_saving"
 	},
 	{
 		symbol: "game_revert",
 		name: "game_revert",
 		description: "Causes the player to revert to their previous saved game (for testing and cinematic skipping only please!)",
-		arguments: []
+		arguments: [],
+		id: "game_revert"
 	},
 	{
 		symbol: "game_reverted",
 		name: "game_reverted",
 		description: "Don't use this for anything, you black-hearted bastards.",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "game_reverted"
 	},
 	{
 		symbol: "core_save",
 		name: "core_save",
 		description: "Saves debug game state to core\\core.bin",
-		arguments: []
+		arguments: [],
+		id: "core_save"
 	},
 	{
 		symbol: "core_load",
 		name: "core_load",
 		description: "Loads debug game state from core\\core.bin",
-		arguments: []
+		arguments: [],
+		id: "core_load"
 	},
 	{
 		symbol: "core_load_name",
@@ -1618,7 +1803,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Loads debug game state from core\\<path>",
 		arguments: [
 			"string"
-		]
+		],
+		id: "core_load_name"
 	},
 	{
 		symbol: "sound_impulse_start",
@@ -1628,7 +1814,8 @@ const CommonFunctions: FunctionType[] = [
 			"sound",
 			"object",
 			"real"
-		]
+		],
+		id: "sound_impulse_start"
 	},
 	{
 		symbol: "sound_impulse_time",
@@ -1637,7 +1824,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"sound"
 		],
-		returns: "long"
+		returns: "long",
+		id: "sound_impulse_time"
 	},
 	{
 		symbol: "sound_impulse_stop",
@@ -1645,7 +1833,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Stops the specified impulse sound.",
 		arguments: [
 			"sound"
-		]
+		],
+		id: "sound_impulse_stop"
 	},
 	{
 		symbol: "sound_looping_predict",
@@ -1653,7 +1842,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Your mom.",
 		arguments: [
 			"looping_sound"
-		]
+		],
+		id: "sound_looping_predict"
 	},
 	{
 		symbol: "sound_looping_start",
@@ -1663,7 +1853,8 @@ const CommonFunctions: FunctionType[] = [
 			"looping_sound",
 			"object",
 			"real"
-		]
+		],
+		id: "sound_looping_start"
 	},
 	{
 		symbol: "sound_looping_stop",
@@ -1671,7 +1862,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Stops the specified looping sound.",
 		arguments: [
 			"looping_sound"
-		]
+		],
+		id: "sound_looping_stop"
 	},
 	{
 		symbol: "sound_looping_set_scale",
@@ -1680,7 +1872,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"looping_sound",
 			"real"
-		]
+		],
+		id: "sound_looping_set_scale"
 	},
 	{
 		symbol: "sound_looping_set_alternate",
@@ -1689,7 +1882,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"looping_sound",
 			"boolean"
-		]
+		],
+		id: "sound_looping_set_alternate"
 	},
 	{
 		symbol: "debug_sounds_enable",
@@ -1698,7 +1892,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"string",
 			"boolean"
-		]
+		],
+		id: "debug_sounds_enable"
 	},
 	{
 		symbol: "sound_class_set_gain",
@@ -1708,7 +1903,8 @@ const CommonFunctions: FunctionType[] = [
 			"string",
 			"real",
 			"short"
-		]
+		],
+		id: "sound_class_set_gain"
 	},
 	{
 		symbol: "vehicle_hover",
@@ -1717,13 +1913,15 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"vehicle",
 			"boolean"
-		]
+		],
+		id: "vehicle_hover"
 	},
 	{
 		symbol: "players_unzoom_all",
 		name: "players_unzoom_all",
 		description: "Resets zoom levels on all players",
-		arguments: []
+		arguments: [],
+		id: "players_unzoom_all"
 	},
 	{
 		symbol: "player_enable_input",
@@ -1731,7 +1929,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "Toggle player input. the player can still free-look, but nothing else.",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "player_enable_input"
 	},
 	{
 		symbol: "player_camera_control",
@@ -1740,110 +1939,126 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"boolean"
 		],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_camera_control"
 	},
 	{
 		symbol: "player_action_test_reset",
 		name: "player_action_test_reset",
 		description: "Resets the player action test state so that all tests will return false.",
-		arguments: []
+		arguments: [],
+		id: "player_action_test_reset"
 	},
 	{
 		symbol: "player_action_test_jump",
 		name: "player_action_test_jump",
 		description: "Returns true if any player has jumped since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_jump"
 	},
 	{
 		symbol: "player_action_test_primary_trigger",
 		name: "player_action_test_primary_trigger",
 		description: "Returns true if any player has used primary trigger since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_primary_trigger"
 	},
 	{
 		symbol: "player_action_test_grenade_trigger",
 		name: "player_action_test_grenade_trigger",
 		description: "Returns true if any player has used grenade trigger since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_grenade_trigger"
 	},
 	{
 		symbol: "player_action_test_zoom",
 		name: "player_action_test_zoom",
 		description: "Returns true if any player has hit the zoom button since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_zoom"
 	},
 	{
 		symbol: "player_action_test_action",
 		name: "player_action_test_action",
 		description: "Returns true if any player has hit the action key since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_action"
 	},
 	{
 		symbol: "player_action_test_accept",
 		name: "player_action_test_accept",
 		description: "Returns true if any player has hit accept since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_accept"
 	},
 	{
 		symbol: "player_action_test_back",
 		name: "player_action_test_back",
 		description: "Returns true if any player has pressed the back button since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_back"
 	},
 	{
 		symbol: "player_action_test_look_relative_up",
 		name: "player_action_test_look_relative_up",
 		description: "Returns true if any player has looked up since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_look_relative_up"
 	},
 	{
 		symbol: "player_action_test_look_relative_down",
 		name: "player_action_test_look_relative_down",
 		description: "Returns true if any player has looked down since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_look_relative_down"
 	},
 	{
 		symbol: "player_action_test_look_relative_left",
 		name: "player_action_test_look_relative_left",
 		description: "Returns true if any player has looked left since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_look_relative_left"
 	},
 	{
 		symbol: "player_action_test_look_relative_right",
 		name: "player_action_test_look_relative_right",
 		description: "Returns true if any player has looked right since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_look_relative_right"
 	},
 	{
 		symbol: "player_action_test_look_relative_all_directions",
 		name: "player_action_test_look_relative_all_directions",
 		description: "Returns true if any player has looked up, down, left, and right since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_look_relative_all_directions"
 	},
 	{
 		symbol: "player_action_test_move_relative_all_directions",
 		name: "player_action_test_move_relative_all_directions",
 		description: "Returns true if any player has moved forward, backward, left, and right since the last call to (player_action_test_reset).",
 		arguments: [],
-		returns: "boolean"
+		returns: "boolean",
+		id: "player_action_test_move_relative_all_directions"
 	},
 	{
 		symbol: "cls",
 		name: "cls",
 		description: "Clears console text from the screen",
-		arguments: []
+		arguments: [],
+		id: "cls"
 	},
 	{
 		symbol: "player_effect_set_max_translation",
@@ -1853,7 +2068,8 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real",
 			"real"
-		]
+		],
+		id: "player_effect_set_max_translation"
 	},
 	{
 		symbol: "player_effect_set_max_rotation",
@@ -1863,7 +2079,8 @@ const CommonFunctions: FunctionType[] = [
 			"real",
 			"real",
 			"real"
-		]
+		],
+		id: "player_effect_set_max_rotation"
 	},
 	{
 		symbol: "player_effect_start",
@@ -1872,7 +2089,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"real",
 			"real"
-		]
+		],
+		id: "player_effect_start"
 	},
 	{
 		symbol: "player_effect_stop",
@@ -1880,7 +2098,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "<decay>",
 		arguments: [
 			"real"
-		]
+		],
+		id: "player_effect_stop"
 	},
 	{
 		symbol: "script_screen_effect_set_value",
@@ -1889,7 +2108,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"short",
 			"real"
-		]
+		],
+		id: "script_screen_effect_set_value"
 	},
 	{
 		symbol: "cinematic_screen_effect_start",
@@ -1897,13 +2117,15 @@ const CommonFunctions: FunctionType[] = [
 		description: "Starts screen effect pass TRUE to clear",
 		arguments: [
 			"boolean"
-		]
+		],
+		id: "cinematic_screen_effect_start"
 	},
 	{
 		symbol: "cinematic_screen_effect_stop",
 		name: "cinematic_screen_effect_stop",
 		description: "Returns control of the screen effects to the rest of the game",
-		arguments: []
+		arguments: [],
+		id: "cinematic_screen_effect_stop"
 	},
 	{
 		symbol: "cinematic_set_near_clip_distance",
@@ -1911,7 +2133,8 @@ const CommonFunctions: FunctionType[] = [
 		description: "NETWORK SAFE: Unknown, assumed unsafe",
 		arguments: [
 			"real"
-		]
+		],
+		id: "cinematic_set_near_clip_distance"
 	},
 	{
 		symbol: "TestPrintBool",
@@ -1920,7 +2143,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"string",
 			"boolean"
-		]
+		],
+		id: "TestPrintBool"
 	},
 	{
 		symbol: "TestPrintReal",
@@ -1929,7 +2153,8 @@ const CommonFunctions: FunctionType[] = [
 		arguments: [
 			"string",
 			"real"
-		]
+		],
+		id: "TestPrintReal"
 	}
 ];
 
