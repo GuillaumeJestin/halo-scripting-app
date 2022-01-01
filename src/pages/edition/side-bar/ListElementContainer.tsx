@@ -7,9 +7,10 @@ import mergeRefs from "react-merge-refs";
 type ListElementContainerProps = {
   children: React.ReactNode;
   onDragEnd?: (event: MouseEvent, offset: { x: number, y: number }) => void;
+  noDrag?: boolean;
 }
 
-const ListElementContainer = forwardRef<HTMLDivElement, ListElementContainerProps>(({ children, onDragEnd }, ref) => {
+const ListElementContainer = forwardRef<HTMLDivElement, ListElementContainerProps>(({ children, onDragEnd, noDrag }, ref) => {
 
   const [isDragging, setIsDragging] = useState(false);
   const [width, setWidth] = useState(0);
@@ -67,10 +68,10 @@ const ListElementContainer = forwardRef<HTMLDivElement, ListElementContainerProp
   return (
     <>
       <Container ref={mergeRefs([containerRef, ref])}>
-        <IconContainer ref={ellipsisRef}>
+        {!noDrag && <IconContainer ref={ellipsisRef}>
           <FaEllipsisV />
           <FaEllipsisV />
-        </IconContainer>
+        </IconContainer>}
         <ContentContainer>
           {children}
         </ContentContainer>

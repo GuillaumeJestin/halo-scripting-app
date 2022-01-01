@@ -5,7 +5,7 @@ import Functions from "../../../../functions/Functions";
 import FunctionCategoryType from "../../../../types/function-type/FunctionCategoryType";
 import FunctionType from "../../../../types/function-type/FunctionType";
 import CategoryChoice from "./CategoryChoice";
-import FunctionsListElement from "./FunctionsListElement";
+import FunctionsListElement, { getFunctionName } from "./FunctionsListElement";
 
 type FunctionsListProps = {
   onDragEnd: (event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => void;
@@ -26,7 +26,7 @@ const FunctionsList = ({ onDragEnd }: FunctionsListProps) => {
       </div>
       <VirtualizedList style={{ flex: 1, overflow: "auto", padding: "1rem", paddingTop: 0 }} expectedHeight={49}>
         {
-          Functions[category].map(func => {
+          Functions[category].filter(func => search ? getFunctionName(func.name).toLowerCase().includes(search.toLowerCase()) : true).map(func => {
             return (
               <VirtualizedListItem key={func.id} id={func.id}>
                 <FunctionsListElement category={category} onDragEnd={onDragEnd} function={func} />

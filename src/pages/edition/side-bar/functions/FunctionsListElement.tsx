@@ -32,7 +32,7 @@ const FunctionsListElement = forwardRef<HTMLDivElement, FunctionsListElementProp
   return (
     <ListElementContainer ref={ref} onDragEnd={(e, offset) => onDragEnd(e, offset, func, category)}>
       <div style={{ display: "flex" }}>
-        <div style={{ flex: 1, fontWeight: "bold", wordBreak: "break-all" }}>{getCategoryIcon(category)} {getName(func.name)}</div>
+        <div style={{ flex: 1, fontWeight: "bold", wordBreak: "break-all" }}>{getCategoryIcon(category)} {getFunctionName(func.name)}</div>
         <PressableDiv onPress={() => setOpen(o => !o)}>
           <motion.div initial={{ transform: `rotate(${open ? "-90" : "0"}deg)` }} animate={{ transform: `rotate(${open ? "-90" : "0"}deg)` }}>
             <HiOutlineChevronLeft />
@@ -80,7 +80,7 @@ const FunctionsListElement = forwardRef<HTMLDivElement, FunctionsListElementProp
 
 export default memo(FunctionsListElement);
 
-const getName = (name: string) => _.capitalize(name.split("_").join(" "));
+export const getFunctionName = (name: string) => _.capitalize(name.split("_").join(" "));
 
 const getCategoryIcon = (category: FunctionCategoryType) => {
   switch (category) {

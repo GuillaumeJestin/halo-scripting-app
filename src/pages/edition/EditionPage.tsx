@@ -9,10 +9,11 @@ import testState from "./editor/testState";
 import FunctionsList from "./side-bar/functions/FunctionsList";
 import { v4 as uuidv4 } from 'uuid';
 import FunctionCategoryType from "../../types/function-type/FunctionCategoryType";
+import VariablesList from "./side-bar/variables/VariablesList";
 
 const EditionPage = () => {
   const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
-  const [variables] = useState<VariableType[]>([
+  const [variables, setVariable] = useState<VariableType[]>([
     { id: "a", name: "My Device", type: "device" },
     { id: "b", name: "My number var", type: "real" },
     { id: "c", name: "TrueOrFalse", type: "boolean" },
@@ -23,7 +24,7 @@ const EditionPage = () => {
 
   console.log(elements);
 
-  const onDragEnd = useCallback((event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => {
+  const onFunctionDragEnd = useCallback((event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => {
     // Checking if the dragged function is inside the editor view
     const editorBoundingRect = editorRef.current?.getBoundingClientRect();
     const editorX = editorBoundingRect?.x ?? 0;
@@ -61,6 +62,10 @@ const EditionPage = () => {
     }
   }, []);
 
+  const onVariableChange = (variable: VariableType) => {
+    console.log(variable);
+  };
+
   return (
     <>
       <div>
@@ -74,7 +79,8 @@ const EditionPage = () => {
           <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
         </div>
         <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto" }}>
-          <FunctionsList onDragEnd={onDragEnd} />
+          {/* <FunctionsList onDragEnd={onFunctionDragEnd} /> */}
+          <VariablesList variables={variables} onVariableChange={onVariableChange} />
         </div>
       </div>
     </>
