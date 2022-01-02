@@ -1,5 +1,6 @@
 const ValueTypes = [
   'script',
+  'any',
   'void',
   'passthrough',
   'boolean',

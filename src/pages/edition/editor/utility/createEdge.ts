@@ -28,22 +28,14 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
 
     return { ...params, id: uuidv4(), type: "flow" } as EdgeType
   }
-  if (isOutputValueHandle(params.sourceHandle) && isInputValueHandle(params.targetHandle)) {
+  if (isValueEdge(params)) {
     // Checking if the target is not already connected
     if (elements.some(edge => isEdge(edge) && edge.target === params.target && edge.targetHandle === params.targetHandle)) {
       return undefined;
     }
 
     // Checking types
-    const sourceNode = elements.find(node => node.id === params.source);
-    const targetNode = elements.find(node => node.id === params.target);
-
-    if (!sourceNode || isEdge(sourceNode) || !targetNode || isEdge(targetNode)) return undefined;
-
-    console.log(getValueTypefromNode(sourceNode, params.sourceHandle, variables))
-    console.log(getValueTypefromNode(targetNode, params.targetHandle, variables))
-
-    if (_.intersection(getValueTypefromNode(sourceNode, params.sourceHandle, variables), getValueTypefromNode(targetNode, params.targetHandle, variables)).length < 1) {
+    if (!checkEdgeValueType(params, elements, variables)) {
       return undefined;
     }
 
@@ -53,3 +45,32 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
 }
 
 export default createEdge;
+
+export const isValueEdge = (params: Edge | Connection) => {
+  return isOutputValueHandle(params.sourceHandle) && isInputValueHandle(params.targetHandle);
+}
+
+export const checkEdgeValueType = (params: Edge | Connection, elements: (NodeType | EdgeType)[], variables: VariableType[]) => {
+  const sourceNode = elements.find(node => node.id === params.source);
+  const targetNode = elements.find(node => node.id === params.target);
+
+  if (!sourceNode || isEdge(sourceNode) || !targetNode || isEdge(targetNode)) return undefined;
+
+  console.log(getValueTypefromNode(sourceNode, params.sourceHandle, variables))
+  console.log(getValueTypefromNode(targetNode, params.targetHandle, variables))
+
+  const sourceTypes = getValueTypefromNode(sourceNode, params.sourceHandle, variables);
+  const targetTypes = getValueTypefromNode(targetNode, params.targetHandle, variables);
+
+  if (
+    !(
+      sourceTypes?.includes("any") ||
+      targetTypes?.includes("any")
+    ) &&
+    _.intersection(sourceTypes, targetTypes).length < 1
+  ) {
+    return undefined;
+  }
+
+  return true;
+}

@@ -1,6 +1,6 @@
 import { XYPosition } from "react-flow-renderer";
 
-const getCoords = (nodeId: string, handleId: string, project: (position: XYPosition) => XYPosition, container?: HTMLDivElement | undefined) => {
+const getCoords = (nodeId: string, handleId: string, project: (position: XYPosition) => XYPosition, container?: HTMLDivElement | undefined, zoom?: number) => {
   const node = document.getElementById(nodeId);
   const handle = node?.querySelector("#" + handleId);
 
@@ -15,7 +15,7 @@ const getCoords = (nodeId: string, handleId: string, project: (position: XYPosit
 
   const projected = project({ x, y });
 
-  return { x: projected.x - offsetX, y: projected.y - offsetY };
+  return { x: projected.x - offsetX / (zoom || 1), y: projected.y - offsetY / (zoom || 1) };
 }
 
 export default getCoords;

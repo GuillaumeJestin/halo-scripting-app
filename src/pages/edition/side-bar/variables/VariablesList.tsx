@@ -7,10 +7,11 @@ import { v4 as uuidv4 } from 'uuid';
 type VariablesListProps = {
   variables: VariableType[];
   onVariableChange: (variable: VariableType, start?: boolean) => void;
-  onVariableDragEnd: (event: MouseEvent, offset: { x: number; y: number; }, variable: VariableType) => void
+  onVariableDragEnd: (event: MouseEvent, offset: { x: number; y: number; }, variable: VariableType) => void;
+  onVariableDelete: (variable: VariableType) => void;
 };
 
-const VariablesList = ({ variables, onVariableChange, onVariableDragEnd }: VariablesListProps) => {
+const VariablesList = ({ variables, onVariableChange, onVariableDragEnd, onVariableDelete }: VariablesListProps) => {
 
   const addVariable = (start?: boolean) => {
     onVariableChange({
@@ -22,12 +23,12 @@ const VariablesList = ({ variables, onVariableChange, onVariableDragEnd }: Varia
 
   return (
     <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto", padding: "1rem" }}>
-      <Button primary onPress={() => addVariable(true)}><HiPlus /> Add Variable</Button>
+      <Button primary onPress={() => addVariable(true)} style={{ marginBottom: "0.75rem" }}><HiPlus /> Add Variable</Button>
       {
         variables.map(variable => {
 
           return (
-            <VariablesListElement key={variable.id} variable={variable} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} />
+            <VariablesListElement key={variable.id} variable={variable} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} onVariableDelete={onVariableDelete} />
           )
         })
       }

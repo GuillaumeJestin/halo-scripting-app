@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { CSSProperties, ReactNode } from "react";
 import { usePress } from '@react-aria/interactions';
 import styled from "styled-components";
 
@@ -6,9 +6,10 @@ type ButtonProps = {
   children?: ReactNode;
   onPress?: () => void;
   primary?: boolean;
+  style?: CSSProperties;
 }
 
-const Button = ({ children, onPress, primary }: ButtonProps) => {
+const Button = ({ children, onPress, primary, style }: ButtonProps) => {
 
   const { pressProps } = usePress({
     onPress: e => onPress?.()
@@ -18,7 +19,8 @@ const Button = ({ children, onPress, primary }: ButtonProps) => {
     <Container
       {...pressProps}
       style={{
-        ...(primary ? { background: "var(--primary)" } : {})
+        ...(primary ? { background: "var(--primary)" } : {}),
+        ...style
       }}
     >
       {children}

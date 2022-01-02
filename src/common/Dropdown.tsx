@@ -4,7 +4,6 @@ import _ from "lodash";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
-import PressableDiv from "./PressableDiv";
 
 type DropdownProps<T> = {
   options?: Readonly<T[]>;
@@ -84,6 +83,7 @@ function DropdownContent<T>({ options, optionDisplay: OptionDisplay, open, butto
         window.removeEventListener("resize", callback);
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [open]);
 
   return createPortal(

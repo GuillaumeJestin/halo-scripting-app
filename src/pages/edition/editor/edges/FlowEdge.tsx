@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useZoomPanHelper, XYPosition } from "react-flow-renderer";
+import { useStoreState, useZoomPanHelper, XYPosition } from "react-flow-renderer";
 import { useSelector, shallowEqual } from "react-redux";
 import { EditorReducerState } from "../store/EditorReducer";
 import createPath from "./createPath";
@@ -22,18 +22,19 @@ const FlowEdge = ({
   target, targetHandleId, targetX, targetY,
 }: FlowEdgeProps) => {
   const { project } = useZoomPanHelper();
+  const zoom = useStoreState(state => state.transform[2]);
   const container = useSelector<EditorReducerState, HTMLDivElement | undefined>(state => state.container, shallowEqual);
 
-  const [sourceCoords, setSourceCoords] = useState<XYPosition>(() => getCoords(source, sourceHandleId, project, container));
-  const [targetCoords, setTargetCoords] = useState<XYPosition>(() => getCoords(target, targetHandleId, project, container));
+  const [sourceCoords, setSourceCoords] = useState<XYPosition>(() => getCoords(source, sourceHandleId, project, container, zoom));
+  const [targetCoords, setTargetCoords] = useState<XYPosition>(() => getCoords(target, targetHandleId, project, container, zoom));
 
   useEffect(() => {
-    setSourceCoords(getCoords(source, sourceHandleId, project, container));
-  }, [sourceX, sourceY, project, source, sourceHandleId, container]);
+    setSourceCoords(getCoords(source, sourceHandleId, project, container, zoom));
+  }, [sourceX, sourceY, project, source, sourceHandleId, container, zoom]);
 
   useEffect(() => {
-    setTargetCoords(getCoords(target, targetHandleId, project, container));
-  }, [targetX, targetY, project, target, targetHandleId, container]);
+    setTargetCoords(getCoords(target, targetHandleId, project, container, zoom));
+  }, [targetX, targetY, project, target, targetHandleId, container, zoom]);
 
   return <path d={createPath(sourceCoords, targetCoords)} stroke="white" strokeWidth={4} fill="none" />;
 }

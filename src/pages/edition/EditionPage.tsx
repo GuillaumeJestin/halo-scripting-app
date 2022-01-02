@@ -1,15 +1,15 @@
 import { useCallback, useRef, useState } from "react";
-import { OnLoadParams } from "react-flow-renderer";
+import { isEdge, isNode, OnLoadParams } from "react-flow-renderer";
 import EdgeType from "../../types/edge-type/EdgeType";
 import FunctionType from "../../types/function-type/FunctionType";
 import NodeType from "../../types/node-type/NodeType";
 import VariableType from "../../types/variable-type/VariableType";
 import Editor from "./editor/Editor";
 import testState from "./editor/testState";
-import FunctionsList from "./side-bar/functions/FunctionsList";
 import { v4 as uuidv4 } from 'uuid';
 import FunctionCategoryType from "../../types/function-type/FunctionCategoryType";
-import VariablesList from "./side-bar/variables/VariablesList";
+import { checkEdgeValueType, isValueEdge } from "./editor/utility/createEdge";
+import SideBar from "./side-bar/SideBar";
 
 const EditionPage = () => {
   const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
@@ -63,7 +63,6 @@ const EditionPage = () => {
   }, []);
 
   const onVariableChange = (variable: VariableType, start?: boolean) => {
-    console.log(variable);
     setVariables(variables => {
       if (start) {
         return [variable, ...variables];
@@ -79,9 +78,49 @@ const EditionPage = () => {
         newVariables.push(variable);
       }
 
+      setElements(elements => {
+        return elements.filter(edge => {
+          if (isEdge(edge) && isValueEdge(edge)) {
+            return checkEdgeValueType(edge, elements, newVariables);
+          }
+          return true;
+        })
+      });
+
       return newVariables;
     });
   };
+
+  const onVariableDelete = (variable: VariableType) => {
+    setVariables(variables => {
+      const newVariables = [...variables];
+
+      const index = newVariables.findIndex(v => v.id === variable.id);
+
+      if (index >= 0) {
+        newVariables.splice(index, 1);
+      }
+
+      return newVariables;
+    });
+    setElements(elements => {
+      const newElements = [...elements];
+
+      const variableNodes = elements.filter(node => isNode(node) && node.type === "variable" && node.data.variableId === variable.id) as NodeType[];
+
+      return newElements.filter(
+        element => {
+          if (isNode(element) && element.type === "variable" && element.data.variableId === variable.id) {
+            return false;
+          } else if (isEdge(element) && variableNodes.some(node => node.id === element.target || node.id === element.source)) {
+            return false;
+          }
+
+          return true;
+        }
+      );
+    });
+  }
 
   const onVariableDragEnd = useCallback((event: MouseEvent, offset: { x: number, y: number }, variable: VariableType) => {
     // Checking if the dragged function is inside the editor view
@@ -128,10 +167,13 @@ const EditionPage = () => {
         <div style={{ flex: 1 }}>
           <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
         </div>
-        <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto" }}>
-          {/* <FunctionsList onDragEnd={onFunctionDragEnd} /> */}
-          <VariablesList variables={variables} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} />
-        </div>
+        <SideBar
+          onFunctionDragEnd={onFunctionDragEnd}
+          variables={variables}
+          onVariableChange={onVariableChange}
+          onVariableDragEnd={onVariableDragEnd}
+          onVariableDelete={onVariableDelete}
+        />
       </div>
     </>
   )

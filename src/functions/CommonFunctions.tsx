@@ -114,8 +114,8 @@ const CommonFunctions: FunctionType[] = [
 		name: "=",
 		description: "Returns true if two expressions are equal",
 		arguments: [
-			"boolean",
-			"boolean"
+			"any",
+			"any"
 		],
 		returns: "boolean",
 		id: "="
@@ -125,8 +125,8 @@ const CommonFunctions: FunctionType[] = [
 		name: "!=",
 		description: "Returns true if two expressions are not equal",
 		arguments: [
-			"boolean",
-			"boolean"
+			"any",
+			"any"
 		],
 		returns: "boolean",
 		id: "!="

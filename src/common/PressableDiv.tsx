@@ -1,4 +1,4 @@
-import { CSSProperties, ReactNode } from "react";
+import { CSSProperties, forwardRef, ReactNode } from "react";
 import { usePress } from '@react-aria/interactions';
 import styled from "styled-components";
 
@@ -8,18 +8,18 @@ type PressableDivProps = {
   style?: CSSProperties;
 }
 
-const PressableDiv = ({ children, onPress, style }: PressableDivProps) => {
+const PressableDiv = forwardRef<HTMLDivElement, PressableDivProps>(({ children, onPress, style }, ref) => {
 
   const { pressProps } = usePress({
     onPress: e => onPress?.()
   });
 
   return (
-    <Container style={style} {...pressProps} role="button" tabIndex={0}>
+    <Container ref={ref} style={style} {...pressProps} role="button" tabIndex={0}>
       {children}
     </Container>
   );
-}
+})
 
 
 const Container = styled.div`

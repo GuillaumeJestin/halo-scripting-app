@@ -32,6 +32,7 @@ const ValueEdge = ({
   id, data
 }: ValueEdgeProps) => {
   const { project } = useZoomPanHelper();
+  const zoom = useStoreState(state => state.transform[2]);
 
   const gradientId = source + sourceHandleId + target + targetHandleId;
 
@@ -48,22 +49,20 @@ const ValueEdge = ({
       , getColorFromNode(targetNode, targetHandleId, variables) || TypesColors.default];
   }, [sourceNode, sourceHandleId, targetNode, targetHandleId, variables]);
 
-  const [sourceCoords, setSourceCoords] = useState<XYPosition>(() => getCoords(source, sourceHandleId, project, container));
-  const [targetCoords, setTargetCoords] = useState<XYPosition>(() => getCoords(target, targetHandleId, project, container));
+  const [sourceCoords, setSourceCoords] = useState<XYPosition>(() => getCoords(source, sourceHandleId, project, container, zoom));
+  const [targetCoords, setTargetCoords] = useState<XYPosition>(() => getCoords(target, targetHandleId, project, container, zoom));
 
   useEffect(() => {
-    setSourceCoords(getCoords(source, sourceHandleId, project, container));
-  }, [sourceX, sourceY, project, source, sourceHandleId, container]);
+    setSourceCoords(getCoords(source, sourceHandleId, project, container, zoom));
+  }, [sourceX, sourceY, project, source, sourceHandleId, container, zoom]);
 
   useEffect(() => {
-    setTargetCoords(getCoords(target, targetHandleId, project, container));
-  }, [targetX, targetY, project, target, targetHandleId, container]);
+    setTargetCoords(getCoords(target, targetHandleId, project, container, zoom));
+  }, [targetX, targetY, project, target, targetHandleId, container, zoom]);
 
   const invertColor = sourceCoords.y < targetCoords.y;
 
   const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
-
-  const zoom = useStoreState(state => state.transform[2]);
 
   const onPathClick = (e: React.MouseEvent<SVGPathElement>) => {
     const coords = project({ x: e.clientX, y: e.clientY });

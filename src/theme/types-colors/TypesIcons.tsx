@@ -2,6 +2,7 @@ import { IconType } from "react-icons";
 import { HiOutlineCheck, HiVariable } from "react-icons/hi";
 import { MdOutlineTextFields } from "react-icons/md";
 import { AiOutlineNumber, AiOutlineFunction } from "react-icons/ai";
+import { BsQuestion } from "react-icons/bs";
 import ValueType from "../../types/value-type/ValueType"
 
 type TypesIconsType = {
@@ -12,6 +13,7 @@ type TypesIconsType = {
 
 const TypesIcons: TypesIconsType = {
   default: HiVariable,
+  any: BsQuestion,
   boolean: HiOutlineCheck,
   real: AiOutlineNumber,
   short: AiOutlineNumber,

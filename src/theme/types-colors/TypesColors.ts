@@ -8,6 +8,7 @@ type TypesColorsType = {
 
 const TypesColors: TypesColorsType = {
   default: [105, 91, 181],
+  any: [181, 23, 158],
   boolean: [183, 76, 67],
   real: [65, 176, 150],
   short: [65, 176, 150],
