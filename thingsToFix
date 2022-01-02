@@ -1,0 +1,10 @@
+Known things to fix :
+
+Make the dropdown prettier
+Add dynamic height for dropdown
+Make Checkbox pretty
+User confirmation when deleting stuff
+Fix edge path when subdivided
+Fix gradient for value edges
+Add subdivision for flow edges
+Add sorting for functions

@@ -10,6 +10,9 @@ import { v4 as uuidv4 } from 'uuid';
 import FunctionCategoryType from "../../types/function-type/FunctionCategoryType";
 import { checkEdgeValueType, isValueEdge } from "./editor/utility/createEdge";
 import SideBar from "./side-bar/SideBar";
+import ScriptNodeType from "../../types/node-type/ScriptNodeType";
+import { FlowOutput } from "./editor/constants/FlowHandlers";
+import removeFlowEdge from "./editor/utility/removeFlowEdge";
 
 const EditionPage = () => {
   const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
@@ -155,6 +158,65 @@ const EditionPage = () => {
     }
   }, []);
 
+  const scripts = elements.filter(element => isNode(element) && element.type === "script") as ScriptNodeType[];
+
+  const onScriptChange = (script: ScriptNodeType) => {
+    setElements(elements => {
+
+      const newElements = [...elements];
+
+      const index = newElements.findIndex(v => v.id === script.id);
+
+      if (index >= 0) {
+        newElements[index] = script;
+      }
+
+      return newElements;
+    })
+  }
+
+  const createScript = (start?: boolean) => {
+    setElements(elements => {
+
+      const editorPosition = instanceRef.current?.toObject().position || [0, 0];
+      const editorBoundingRect = editorRef.current?.getBoundingClientRect();
+      const editorWidth = editorBoundingRect?.width ?? 0;
+      const editorHeight = editorBoundingRect?.height ?? 0;
+
+      const position = { x: -editorPosition[0] + editorWidth / 2, y: -editorPosition[1] + editorHeight / 2 };
+
+      const script: ScriptNodeType = {
+        id: uuidv4(),
+        type: "script",
+        data: {
+          name: "New Script",
+          type: "startup"
+        },
+        position
+      }
+
+      if (start) return [script, ...elements]
+
+      return [...elements, script];
+    })
+  }
+
+  const onScriptDelete = (script: ScriptNodeType) => {
+    setElements(elements => {
+      let newElements = [...elements];
+
+      newElements = removeFlowEdge(newElements, script.id, FlowOutput, "source");
+
+      const index = newElements.findIndex(node => node.id === script.id);
+
+      if (index >= 0) {
+        newElements.splice(index, 1);
+      }
+
+      return newElements;
+    })
+  }
+
   return (
     <>
       <div>
@@ -173,6 +235,10 @@ const EditionPage = () => {
           onVariableChange={onVariableChange}
           onVariableDragEnd={onVariableDragEnd}
           onVariableDelete={onVariableDelete}
+          scripts={scripts}
+          onScriptChange={onScriptChange}
+          createScript={createScript}
+          onScriptDelete={onScriptDelete}
         />
       </div>
     </>

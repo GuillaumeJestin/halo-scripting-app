@@ -9,6 +9,7 @@ import EdgeType from '../../../../types/edge-type/EdgeType';
 import { ActionSetElements, EditorReducerAction } from '../store/EditorReducer';
 import getInputFlowFromNode from '../utility/getInputFlowFromNode';
 import getOutpuFlowFromNode from '../utility/getOutpuFlowFromNode';
+import removeFlowEdge from '../utility/removeFlowEdge';
 
 type FlowHandlerProp = {
   type: 'source' | 'target';
@@ -52,56 +53,7 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
 
         dispatch({
           type: ActionSetElements, setElements: elements => {
-            const newElements = [...elements];
-
-            // Gathering all edges to remove, we gotta remove all the flow from this node until the end of the execution line
-            const edgesToRemove: string[] = [];
-            const startingEdges: EdgeType[] = [];
-
-            if (type === "target") {
-              elements.forEach(edge => {
-                if (isEdge(edge) && edge.target === nodeId && edge.targetHandle === id) {
-                  startingEdges.push(edge);
-                }
-              })
-            } else {
-              const start = elements.find(edge => {
-                if (isEdge(edge) && edge.source === nodeId && edge.sourceHandle === id) {
-                  return true;
-                }
-                return false;
-              }) as EdgeType | undefined;
-              if (start) startingEdges.push(start);
-            }
-
-            startingEdges.forEach(edge => edgesToRemove.push(edge.id));
-
-            const recursiveWalk = (edge: EdgeType) => {
-              const node = elements.find(node => isNode(node) && node.id === edge.target);
-
-              if (node) {
-                const inputFlow = getInputFlowFromNode(elements, node.id);
-
-                const arWeContinuing = inputFlow.filter(edge => edgesToRemove.includes(edge.id)).length === inputFlow.length;
-
-                if (arWeContinuing) {
-                  const outputFlow = getOutpuFlowFromNode(elements, node.id);
-
-                  outputFlow.forEach(edge => edgesToRemove.push(edge.id));
-
-                  outputFlow.forEach(edge => recursiveWalk(edge));
-                }
-              }
-            };
-
-            startingEdges.forEach(edge => recursiveWalk(edge));
-
-            // Removing all connected edges to this handle :)
-            _.remove(newElements, edge => {
-              return isEdge(edge) && edgesToRemove.includes(edge.id)
-            });
-
-            return newElements;
+            return removeFlowEdge(elements, nodeId, id, type);
           }
         });
       }

@@ -3,6 +3,7 @@ import Button from "../../../../common/Button";
 import VariableType from "../../../../types/variable-type/VariableType";
 import VariablesListElement from "./VariablesListElement";
 import { v4 as uuidv4 } from 'uuid';
+import { memo } from "react";
 
 type VariablesListProps = {
   variables: VariableType[];
@@ -37,4 +38,4 @@ const VariablesList = ({ variables, onVariableChange, onVariableDragEnd, onVaria
   )
 }
 
-export default VariablesList;
+export default memo(VariablesList);

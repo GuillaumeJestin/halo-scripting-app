@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import _ from "lodash";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { HiOutlineChevronDown } from "react-icons/hi";
 import styled from "styled-components";
 
 type DropdownProps<T> = {
@@ -44,6 +45,9 @@ function Dropdown<T>({ options, selected: _selected, optionDisplay: OptionDispla
                 :
                 (message || "Open")
             }
+            <motion.div style={{ display: "flex", marginLeft: "0.5rem" }} initial={{ rotate: open ? 180 : 0 }} animate={{ rotate: open ? 180 : 0 }} >
+              <HiOutlineChevronDown />
+            </motion.div>
           </MenuButton>
           <DropdownContent {...{ options, optionDisplay: OptionDisplay, open, buttonRef, onSelection }} />
         </>
@@ -124,6 +128,7 @@ const MenuButton = styled(Menu.Button)`
   border-radius: 0.25rem;
   padding: 0.25rem 0.75rem;
   cursor: pointer;
+  display: flex;
 `;
 
 const Container = styled(motion.div)`
@@ -131,7 +136,7 @@ const Container = styled(motion.div)`
   background: var(--darker);
   color: var(--text-color);
   border-radius: 0.25rem;
-  height: 400px;
+  max-height: 400px;
   z-index: 10;
   box-shadow: 0px 0.25rem 0.5rem rgba(0,0,0,0.3);
   display: flex;

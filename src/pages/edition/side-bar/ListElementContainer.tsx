@@ -98,7 +98,7 @@ const ListElementContainer = forwardRef<HTMLDivElement, ListElementContainerProp
 
 const Container = styled.div`
   background-color: var(--lighter);
-  padding: 0.5rem;
+  padding: 0.5rem 0.75rem;
   border-radius: 0.5rem;
   margin-bottom: 0.75rem;
   display: flex;
@@ -109,7 +109,7 @@ const IconContainer = styled.div`
   display: flex;
   align-items: center;
   cursor: grab;
-  margin-right: 1rem;
+  margin-right: 0.75rem;
 
   & svg {
     margin: 0 -5px 0 -4px;

@@ -9,6 +9,7 @@ import { getArgumentName } from "../../editor/nodes/FunctionNode";
 import ListElementContainer from "../ListElementContainer";
 import { IoMdTrash } from "react-icons/io";
 import PressableDiv from "../../../../common/PressableDiv";
+import { memo } from "react";
 
 type VariablesListElementProps = {
   variable: VariableType;
@@ -56,4 +57,4 @@ const TypeDisplay = ({ option }: { option: ValueType }) => {
   return <><Icon color={`rgb(${color[0]},${color[1]},${color[2]})`} /> {getArgumentName(option)}</>
 }
 
-export default VariablesListElement;
+export default memo(VariablesListElement);
