@@ -1,14 +1,10 @@
-import _ from 'lodash';
 import { useRef, useEffect } from 'react';
-import { Handle, isEdge, isNode, Position } from 'react-flow-renderer';
+import { Handle, Position } from 'react-flow-renderer';
 import { useDispatch } from 'react-redux';
 import { Dispatch } from 'redux';
 import styled from 'styled-components';
 import useKeyPress from '../../../../common/useKeyPress';
-import EdgeType from '../../../../types/edge-type/EdgeType';
 import { ActionSetElements, EditorReducerAction } from '../store/EditorReducer';
-import getInputFlowFromNode from '../utility/getInputFlowFromNode';
-import getOutpuFlowFromNode from '../utility/getOutpuFlowFromNode';
 import removeFlowEdge from '../utility/removeFlowEdge';
 
 type FlowHandlerProp = {

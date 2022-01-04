@@ -5,9 +5,10 @@ type RadioProps = {
   value?: boolean;
   onChange?: (value: boolean) => void;
   style?: CSSProperties;
+  tabIndex?: number;
 };
 
-const Radio = ({ value, onChange, style }: RadioProps) => {
+const Radio = ({ value, onChange, style, tabIndex }: RadioProps) => {
 
   return (
     <Container
@@ -15,6 +16,7 @@ const Radio = ({ value, onChange, style }: RadioProps) => {
       checked={value}
       onChange={() => onChange?.(!value)}
       style={{ ...style }}
+      tabIndex={tabIndex}
     />
   )
 }

@@ -26,7 +26,7 @@ const FunctionsList = ({ onDragEnd }: FunctionsListProps) => {
       </div>
       <VirtualizedList style={{ flex: 1, overflow: "auto", padding: "1rem", paddingTop: 0 }} expectedHeight={49}>
         {
-          Functions[category].filter(func => search ? getFunctionName(func.name).toLowerCase().includes(search.toLowerCase()) : true).map(func => {
+          getFilteredFunctions(category, search).map(func => {
             return (
               <VirtualizedListItem key={func.id} id={func.id}>
                 <FunctionsListElement category={category} onDragEnd={onDragEnd} function={func} />
@@ -37,6 +37,10 @@ const FunctionsList = ({ onDragEnd }: FunctionsListProps) => {
       </VirtualizedList>
     </div >
   )
+}
+
+export const getFilteredFunctions = (category: FunctionCategoryType, search: string) => {
+  return Functions[category].filter(func => search ? getFunctionName(func.name).toLowerCase().includes(search.toLowerCase()) : true);
 }
 
 export default memo(FunctionsList);

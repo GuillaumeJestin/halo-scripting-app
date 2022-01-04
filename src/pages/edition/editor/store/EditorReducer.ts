@@ -8,6 +8,7 @@ export type EditorReducerState = {
   variables: VariableType[],
   macros: FileType[],
   container?: HTMLDivElement;
+  menuSelectionPosition?: { x: number, y: number };
 };
 
 const DefaultState: EditorReducerState = {
@@ -44,7 +45,14 @@ type ActionSetContainerType = {
   container: HTMLDivElement;
 };
 
-export type EditorReducerAction = ActionSetContainerType | ActionSetVariablesType | ActionSetElementsType | ActionSetStateType;
+export const ActionSetMenuSelectionPosition = 5;
+
+type ActionSetMenuSelectionPositionType = {
+  type: typeof ActionSetMenuSelectionPosition;
+  position?: { x: number, y: number };
+};
+
+export type EditorReducerAction = ActionSetContainerType | ActionSetVariablesType | ActionSetElementsType | ActionSetStateType | ActionSetMenuSelectionPositionType;
 
 const EditorReducer = (state: EditorReducerState = DefaultState, action: EditorReducerAction): EditorReducerState => {
   switch (action.type) {
@@ -65,6 +73,9 @@ const EditorReducer = (state: EditorReducerState = DefaultState, action: EditorR
     }
     case ActionSetContainer: {
       return { ...state, container: action.container };
+    }
+    case ActionSetMenuSelectionPosition: {
+      return { ...state, menuSelectionPosition: action.position };
     }
     default:
       return state;

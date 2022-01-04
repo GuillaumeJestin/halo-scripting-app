@@ -32,7 +32,7 @@ const Item = memo(({ category, setCategory, name, isSelected }: ItemProps) => {
 
   return (
     <PressableDiv onPress={() => setCategory(category)} >
-      <Radio value={isSelected} style={{ marginRight: "0.5rem" }} />
+      <Radio tabIndex={-1} value={isSelected} style={{ marginRight: "0.5rem" }} />
       {name}
     </PressableDiv>
   )

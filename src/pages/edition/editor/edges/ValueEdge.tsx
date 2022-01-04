@@ -7,11 +7,11 @@ import NodeType from "../../../../types/node-type/NodeType";
 import getColorFromNode from "../utility/getColorFromNode";
 import createPath from "./createPath";
 import getCoords from "./getCoords";
-import { useDrag } from '@use-gesture/react'
-import { shallowEqual, useDispatch, useSelector } from "react-redux";
-import { ActionSetElements, EditorReducerAction, EditorReducerState } from "../store/EditorReducer";
+import { shallowEqual, useSelector } from "react-redux";
+import { EditorReducerState } from "../store/EditorReducer";
 import VariableType from "../../../../types/variable-type/VariableType";
-import { Dispatch } from "redux";
+import EdgePoint from "./EdgePoint";
+import useOnPathClick from "../hooks/useOnPathClick";
 
 type ValueEdgeProps = {
   id: string;
@@ -62,36 +62,7 @@ const ValueEdge = ({
 
   const invertColor = sourceCoords.y < targetCoords.y;
 
-  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
-
-  const onPathClick = (e: React.MouseEvent<SVGPathElement>) => {
-    const coords = project({ x: e.clientX, y: e.clientY });
-
-    const containerRect = container?.getBoundingClientRect();
-    const offsetX = containerRect?.x ?? 0;
-    const offsetY = containerRect?.y ?? 0;
-
-    dispatch({
-      type: ActionSetElements, setElements: elements => {
-        const newElements = [...elements];
-
-        const index = newElements.findIndex(o => o.id === id);
-
-        if (index >= 0) {
-          const edge = newElements[index] as EdgeType;
-
-          edge.data = {
-            ...edge.data,
-            points: [...(edge.data?.points || []), { x: coords.x - offsetX / zoom, y: coords.y - offsetY / zoom }]
-          }
-
-          newElements[index] = { ...edge };
-        }
-
-        return newElements;
-      }
-    })
-  }
+  const onPathClick = useOnPathClick(id);
 
   const points = data?.points || [];
 
@@ -110,96 +81,10 @@ const ValueEdge = ({
     </g>
     {
       points?.map((point, index) => {
-        return <Point key={index} index={index} id={id} coords={point} color={startColor} />
+        return <EdgePoint size={9} key={index} index={index} id={id} coords={point} color={startColor} />
       })
     }
   </>);
-}
-
-type PointProps = {
-  index: number;
-  id: string;
-  coords: XYPosition;
-  color: number[];
-}
-
-const Point = ({ index, id, coords, color }: PointProps) => {
-
-  const zoom = useStoreState(state => state.transform[2]);
-
-  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
-
-  const bind = useDrag(({ delta }) => {
-    dispatch({
-      type: ActionSetElements, setElements: elements => {
-        const newElements = [...elements];
-
-        const edgeIndex = newElements.findIndex(o => o.id === id);
-
-        if (edgeIndex >= 0) {
-          const edge = newElements[edgeIndex] as EdgeType;
-
-          const points = [...(edge.data?.points || [])];
-
-          points[index] = { x: points[index].x + delta[0] / zoom, y: points[index].y + delta[1] / zoom };
-
-          edge.data = {
-            ...edge.data,
-            points
-          }
-
-          newElements[edgeIndex] = { ...edge };
-        }
-
-        return newElements;
-      }
-    });
-  })
-
-  const onClick = (e: React.MouseEvent<SVGPathElement>) => {
-    e.stopPropagation();
-    e.preventDefault();
-
-    if (e.metaKey || e.ctrlKey) {
-      dispatch({
-        type: ActionSetElements, setElements: elements => {
-          const newElements = [...elements];
-
-          const edgeIndex = newElements.findIndex(o => o.id === id);
-
-          if (edgeIndex >= 0) {
-            const edge = newElements[edgeIndex] as EdgeType;
-
-            const points = [...(edge.data?.points || [])];
-
-            points.splice(index, 1);
-
-            edge.data = {
-              ...edge.data,
-              points
-            }
-
-            newElements[edgeIndex] = { ...edge };
-          }
-
-          return newElements;
-        }
-      });
-    }
-  }
-
-  return (
-    <circle
-      onClick={onClick}
-      cx={coords.x}
-      cy={coords.y}
-      r={1}
-      style={{ cursor: "grab" }}
-      {...bind()}
-      stroke={`rgb(${color[0]},${color[1]},${color[2]})`}
-      strokeWidth={9}
-    />
-  )
 }
 
 export default ValueEdge;

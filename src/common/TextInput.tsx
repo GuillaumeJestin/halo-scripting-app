@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useRef, useState } from "react";
+import { CSSProperties, forwardRef, memo, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 
@@ -9,9 +9,10 @@ type TextInputProps = {
   fontSize?: number | string;
   placeholder?: string;
   noAdaptiveSize?: boolean;
+  autoFocus?: boolean;
 }
 
-const TextInput = ({ value, onChange, style, fontSize: _fontSize, placeholder, noAdaptiveSize }: TextInputProps) => {
+const TextInput = forwardRef<HTMLInputElement, TextInputProps>(({ value, onChange, style, fontSize: _fontSize, placeholder, noAdaptiveSize, autoFocus }, ref) => {
 
   const widthControlRef = useRef<HTMLDivElement>(null!);
   const [width, setWidth] = useState(0);
@@ -26,6 +27,8 @@ const TextInput = ({ value, onChange, style, fontSize: _fontSize, placeholder, n
   return (
     <>
       <Container
+        ref={ref}
+        autoFocus={autoFocus}
         placeholder={placeholder}
         style={{ ...(noAdaptiveSize ? {} : { width }), ...style, fontSize }}
         value={value || ""}
@@ -43,7 +46,7 @@ const TextInput = ({ value, onChange, style, fontSize: _fontSize, placeholder, n
       }
     </>
   )
-}
+})
 
 const Container = styled.input`
   color: var(--text-color);
@@ -53,4 +56,4 @@ const Container = styled.input`
   padding: 0.25rem 0.75rem;
 `;
 
-export default TextInput;
+export default memo(TextInput);

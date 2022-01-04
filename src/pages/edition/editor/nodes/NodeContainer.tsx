@@ -17,5 +17,5 @@ const Container = styled.div`
   overflow: hidden;
   background-color: var(--node-background-color);
   color: var(--text-color);
-  box-shadow: 0px 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0px 0.25rem 0.5rem rgba(0,0,0,0.2);
 `;

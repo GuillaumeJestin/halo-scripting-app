@@ -70,7 +70,7 @@ export default [
       ]
     },
     position: {
-      x: -50,
+      x: 0,
       y: 0
     }
   },

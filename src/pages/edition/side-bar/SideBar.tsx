@@ -30,7 +30,7 @@ const SideBar = ({ onFunctionDragEnd, variables, onVariableChange, onVariableDra
 
   return (
     <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto" }}>
-      <Tab.Group defaultIndex={1} >
+      <Tab.Group defaultIndex={2} >
         <Tab.List style={{ display: "flex", overflow: "auto", marginLeft: "-0.75rem", padding: "0.75rem", borderStyle: "none none solid none", borderWidth: "0.1rem", borderColor: "var(--lighter)" }} >
           <Tab as={Fragment}>
             {TabSelectionRender("Variables", HiVariable)}

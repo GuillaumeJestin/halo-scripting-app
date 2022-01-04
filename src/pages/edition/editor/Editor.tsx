@@ -1,4 +1,4 @@
-import ReactFlow, { Background, BackgroundVariant, OnLoadParams, ReactFlowProvider } from "react-flow-renderer";
+import ReactFlow, { Background, BackgroundVariant, OnLoadParams, ReactFlowProvider, useZoomPanHelper } from "react-flow-renderer";
 import NodeType from "../../../types/node-type/NodeType";
 import VariableType from "../../../types/variable-type/VariableType";
 import FunctionNode from "./nodes/FunctionNode";
@@ -8,11 +8,12 @@ import FlowEdge from "./edges/FlowEdge";
 import createEdge from "./utility/createEdge";
 import ValueEdge from "./edges/ValueEdge";
 import EdgeType from "../../../types/edge-type/EdgeType";
-import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer } from "./store/EditorReducer";
+import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer, ActionSetMenuSelectionPosition } from "./store/EditorReducer";
 import { applyMiddleware, createStore, Dispatch } from "redux";
 import { Provider, useSelector, useDispatch, shallowEqual } from "react-redux";
 import { forwardRef, ForwardedRef, useEffect, useMemo, useRef } from "react";
 import _ from "lodash";
+import FunctionsMenu from "./menu/FunctionsMenu";
 
 const nodeTypes = {
   script: ScriptNode,
@@ -33,8 +34,18 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
 
   const elements = useSelector<EditorReducerState, (NodeType | EdgeType)[]>(state => state.elements, shallowEqual);
   const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
+  const container = useSelector<EditorReducerState, HTMLDivElement | undefined>(state => state.container, shallowEqual);
 
   const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
+
+  const { project } = useZoomPanHelper();
+
+  const onPanelLeftClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const boundingRect = container?.getBoundingClientRect();
+    const offsetX = boundingRect?.x || 0;
+    const offsetY = boundingRect?.y || 0;
+    dispatch({ type: ActionSetMenuSelectionPosition, position: project({ x: e.clientX - offsetX, y: e.clientY - offsetY }) })
+  }
 
   return (<>
     <ReactFlow
@@ -69,7 +80,16 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
           dispatch({ type: ActionSetElements, elements: [...elements, edge] });
         }
       }}
+      onMouseDown={e => {
+        const element = document.elementFromPoint(e.clientX, e.clientY);
+        if (element && document.elementFromPoint(e.clientX, e.clientY)?.classList.contains("react-flow__pane")) {
+          if (e.button === 2) {
+            onPanelLeftClick(e);
+          }
+        }
+      }}
     >
+      <FunctionsMenu />
       <Background
         variant={BackgroundVariant.Lines}
         gap={48}
