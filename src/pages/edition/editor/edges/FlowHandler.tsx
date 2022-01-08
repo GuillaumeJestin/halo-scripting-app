@@ -69,7 +69,7 @@ const FlowHandler = ({ type, id, connected, isConnectable, nodeId }: FlowHandler
   }, [isContolPressed, id, dispatch, type, nodeId]);
 
   return (
-    <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id}>
+    <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id} data-node-handle >
       <StyledHandle
         ref={handleRef}
         isConnectable={isConnectable && !isContolPressed}

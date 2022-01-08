@@ -1,4 +1,4 @@
-import ReactFlow, { Background, BackgroundVariant, OnLoadParams, ReactFlowProvider, useZoomPanHelper } from "react-flow-renderer";
+import ReactFlow, { Background, BackgroundVariant, ConnectionLineComponentProps, OnLoadParams, ReactFlowProvider, useZoomPanHelper } from "react-flow-renderer";
 import NodeType from "../../../types/node-type/NodeType";
 import VariableType from "../../../types/variable-type/VariableType";
 import FunctionNode from "./nodes/FunctionNode";
@@ -8,12 +8,14 @@ import FlowEdge from "./edges/FlowEdge";
 import createEdge from "./utility/createEdge";
 import ValueEdge from "./edges/ValueEdge";
 import EdgeType from "../../../types/edge-type/EdgeType";
-import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer, ActionSetMenuSelectionPosition } from "./store/EditorReducer";
+import EditorReducer, { EditorReducerState, EditorReducerAction, ActionSetElements, ActionSetState, ActionSetContainer, ActionSetMenuSelectionPosition, ActionSetTempConnection } from "./store/EditorReducer";
 import { applyMiddleware, createStore, Dispatch } from "redux";
 import { Provider, useSelector, useDispatch, shallowEqual } from "react-redux";
 import { forwardRef, ForwardedRef, useEffect, useMemo, useRef } from "react";
 import _ from "lodash";
 import FunctionsMenu from "./menu/FunctionsMenu";
+import DragEdge, { DragEdgeStandaloneContainer } from "./edges/DragEdge";
+import isElementHandle from "./utility/isElementHandle";
 
 const nodeTypes = {
   script: ScriptNode,
@@ -35,6 +37,7 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
   const elements = useSelector<EditorReducerState, (NodeType | EdgeType)[]>(state => state.elements, shallowEqual);
   const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
   const container = useSelector<EditorReducerState, HTMLDivElement | undefined>(state => state.container, shallowEqual);
+  const tempConnection = useSelector<EditorReducerState, ConnectionLineComponentProps | undefined>(state => state.tempConnection, shallowEqual);
 
   const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
@@ -47,14 +50,17 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
     dispatch({ type: ActionSetMenuSelectionPosition, position: project({ x: e.clientX - offsetX, y: e.clientY - offsetY }) })
   }
 
+  const instance = useRef<OnLoadParams<NodeType | EdgeType>>();
+
   return (<>
     <ReactFlow
-      onLoad={(instance: OnLoadParams<NodeType | EdgeType>) => {
+      onLoad={(flowInstance: OnLoadParams<NodeType | EdgeType>) => {
+        instance.current = flowInstance;
         if (instanceRef) {
           if (typeof instanceRef === "function") {
-            instanceRef(instance);
+            instanceRef(flowInstance);
           } else {
-            instanceRef.current = instance;
+            instanceRef.current = flowInstance;
           }
         }
       }}
@@ -67,6 +73,12 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
             ref.current = flowRef;
           }
         }
+        if (flowRef) {
+          flowRef.addEventListener("scroll", () => {
+            flowRef.scrollLeft = 0;
+            flowRef.scrollTop = 0;
+          })
+        }
       }}
       style={{ backgroundColor: "var(--darker)" }}
       elements={elements}
@@ -74,7 +86,6 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
       edgeTypes={edgeTypes}
       defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
       onConnect={params => {
-        console.log(params);
         const edge = createEdge(params, elements, variables);
         if (edge) {
           dispatch({ type: ActionSetElements, elements: [...elements, edge] });
@@ -88,7 +99,24 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
           }
         }
       }}
+      onNodeDragStop={() => {
+        if (instance.current) {
+          dispatch({ type: ActionSetElements, elements: instance.current.getElements() as (EdgeType | NodeType)[] })
+        }
+      }}
+      connectionLineComponent={DragEdge}
+      onConnectEnd={(e) => {
+        const element = document.elementFromPoint(e.clientX, e.clientY);
+        if (!(element && isElementHandle(element))) {
+          dispatch({ type: ActionSetTempConnection });
+        }
+      }}
     >
+      {
+        tempConnection && <DragEdgeStandaloneContainer>
+          <DragEdge {...tempConnection} />
+        </DragEdgeStandaloneContainer>
+      }
       <FunctionsMenu />
       <Background
         variant={BackgroundVariant.Lines}
@@ -114,7 +142,7 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
 
   const store = useMemo(() => createStore(
     EditorReducer,
-    { elements, variables, macros: [] },
+    { elements, variables, macros: [], tempConnectionPropsRef: {}, },
     applyMiddleware(
       store => next => action => {
         const result: EditorReducerState = next(action);
@@ -132,7 +160,7 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
       !_.isEqual(elements, store.getState().elements) ||
       !_.isEqual(variables, store.getState().variables)
     ) {
-      store.dispatch({ type: ActionSetState, elements, variables, macros: [] })
+      store.dispatch({ type: ActionSetState, elements, variables, macros: [], tempConnectionPropsRef: {}, })
     }
   }, [elements, variables, store]);
 

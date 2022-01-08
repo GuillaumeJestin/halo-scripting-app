@@ -75,7 +75,7 @@ const ValueHandler = ({ type, id, connected, valueType, isConnectable, nodeId }:
   }, [isContolPressed, id, dispatch, type, nodeId]);
 
   return (
-    <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id}>
+    <div ref={containerRef} style={{ position: "relative", display: "inline-flex", ...(isContolPressed ? { cursor: "pointer" } : {}) }} id={id} data-node-handle>
       <StyledHandle
         ref={handleRef}
         type={type}

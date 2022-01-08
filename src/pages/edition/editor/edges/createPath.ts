@@ -5,10 +5,10 @@ const OFFSET = 30;
 const MIN_CURVE_OFFSET = 30;
 const MAX_CURVE_OFFSET = 150;
 
-const createPath = (sourceCoords: XYPosition, targetCoords: XYPosition, points?: XYPosition[]) => {
+const createPath = (sourceCoords: XYPosition, targetCoords: XYPosition, points?: XYPosition[], noOffset?: number) => {
 
-  const start = { x: sourceCoords.x + OFFSET, y: sourceCoords.y };
-  const end = { x: targetCoords.x - OFFSET, y: targetCoords.y };
+  const start = { x: noOffset === 1 ? sourceCoords.x : sourceCoords.x + OFFSET, y: sourceCoords.y };
+  const end = { x: noOffset === 2 ? targetCoords.x : targetCoords.x - OFFSET, y: targetCoords.y };
 
   const intervals = createIntervals(start, end, points);
 

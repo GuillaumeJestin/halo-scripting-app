@@ -25,7 +25,7 @@ const ScriptNode = ({ data, id }: NodeProps<ScriptNodeType>) => {
         </div>
       </NodeHeader>
       <NodeContent style={{ display: "flex", justifyContent: "flex-end" }}>
-        <FlowHandler nodeId={id} type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} />
+        <FlowHandler nodeId={id} type="source" id={FlowOutput} connected={!!edges.outgoers[FlowOutput]} isConnectable={!edges.outgoers[FlowOutput]} />
       </NodeContent>
     </NodeContainer>
   )

@@ -3,6 +3,7 @@ import { Edge, Connection, isEdge } from "react-flow-renderer";
 import { v4 as uuidv4 } from 'uuid';
 import EdgeType from "../../../../types/edge-type/EdgeType";
 import NodeType from "../../../../types/node-type/NodeType";
+import ValueType from "../../../../types/value-type/ValueType";
 import VariableType from "../../../../types/variable-type/VariableType";
 import checkForFlowLoop from "./checkForFlowLoop";
 import getValueTypefromNode from "./getValueTypefromNode";
@@ -62,14 +63,21 @@ export const checkEdgeValueType = (params: Edge | Connection, elements: (NodeTyp
   const sourceTypes = getValueTypefromNode(sourceNode, params.sourceHandle, variables);
   const targetTypes = getValueTypefromNode(targetNode, params.targetHandle, variables);
 
+  return doValueTypesMatch(sourceTypes, targetTypes);
+}
+
+export const doValueTypesMatch = (a: ValueType | ValueType[] | undefined, b: ValueType | ValueType[] | undefined) => {
+  const _a = Array.isArray(a) ? a : [a];
+  const _b = Array.isArray(b) ? b : [b];
+
   if (
     !(
-      sourceTypes?.includes("any") ||
-      targetTypes?.includes("any")
+      _a?.includes("any") ||
+      _b?.includes("any")
     ) &&
-    _.intersection(sourceTypes, targetTypes).length < 1
+    _.intersection(_a, _b).length < 1
   ) {
-    return undefined;
+    return false;
   }
 
   return true;

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { memo, useCallback, useEffect, useRef, useState } from "react";
-import { useStoreState } from "react-flow-renderer";
+import { ConnectionLineComponentProps, useStoreState } from "react-flow-renderer";
 import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "redux";
 import styled from "styled-components";
@@ -13,6 +13,8 @@ import CategoryChoice from "../../side-bar/functions/CategoryChoice";
 import { getFilteredFunctions } from "../../side-bar/functions/FunctionsList";
 import { ActionSetElements, ActionSetMenuSelectionPosition, EditorReducerAction, EditorReducerState } from "../store/EditorReducer";
 import { v4 as uuidv4 } from 'uuid';
+import buildEdgeForNewNode from "./buildEdgeForNewNode";
+import FunctionNodeType from "../../../../types/node-type/FunctionNodeType";
 
 const FunctionsMenu = () => {
 
@@ -26,25 +28,35 @@ const FunctionsMenu = () => {
 
   const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
 
+  const tempConnectionPropsRef = useSelector<EditorReducerState, { current?: ConnectionLineComponentProps }>(state => state.tempConnectionPropsRef, () => true);
+
   const onFunctionPress = useCallback((category: FunctionCategoryType, func: FunctionType) => {
     dispatch({
-      type: ActionSetElements, setElements: (elements) => {
+      type: ActionSetElements, setElements: (elements, variables) => {
+
+        const connectionProps = tempConnectionPropsRef.current;
+
+        const node: FunctionNodeType = {
+          id: uuidv4(),
+          type: "function",
+          data: {
+            function: func.symbol,
+            category: category
+          },
+          position: position || { x: 0, y: 0 }
+        }
+
+        const edge = buildEdgeForNewNode(connectionProps, node, func, variables);
+
         return [
           ...elements,
-          {
-            id: uuidv4(),
-            type: "function",
-            data: {
-              function: func.symbol,
-              category: category
-            },
-            position: position || { x: 0, y: 0 }
-          }
+          node,
+          ...(edge ? [edge] : [])
         ]
       }
     });
     dispatch({ type: ActionSetMenuSelectionPosition });
-  }, [dispatch, position])
+  }, [dispatch, position, tempConnectionPropsRef])
 
   return (
     <AnimatePresence>
@@ -81,6 +93,8 @@ const FunctionsMenuContent = ({ onFunctionPress }: FunctionsMenuContentProps) =>
   const [category, setCategory] = useState<FunctionCategoryType>("common");
 
   useEffect(() => {
+    let isAlive = true;
+
     setTimeout(() => {
       inputRef.current?.focus();
     }, 200)
@@ -91,9 +105,13 @@ const FunctionsMenuContent = ({ onFunctionPress }: FunctionsMenuContentProps) =>
       }
     };
 
-    window.addEventListener("click", callback);
+    setTimeout(() => {
+      if (isAlive)
+        window.addEventListener("click", callback);
+    }, 100)
 
     return () => {
+      isAlive = false;
       window.removeEventListener("click", callback);
     }
   }, [dispatch]);
@@ -148,3 +166,7 @@ const Container = styled.div`
   flex-direction: column;
   overflow: hidden;
 `;
+
+function connectionProps(connectionProps: ConnectionLineComponentProps | undefined, elementId: string) {
+  throw new Error("Function not implemented.");
+}
