@@ -11,6 +11,7 @@ import isOutputValueHandle from "../utility/isOutputValueHandle";
 import { doValueTypesMatch } from "../utility/createEdge"
 import { v4 as uuidv4 } from 'uuid';
 import FunctionNodeType from "../../../../types/node-type/FunctionNodeType";
+import getValueInputFromFunctionByType from "../utility/getValueInputFromFunctionByType";
 
 const buildEdgeForNewNode = (connectionProps: ConnectionLineComponentProps | undefined, node: FunctionNodeType, func: FunctionType, variables: VariableType[]): EdgeType | undefined => {
   if (connectionProps) {
@@ -30,27 +31,22 @@ const buildEdgeForNewNode = (connectionProps: ConnectionLineComponentProps | und
 
       const sourceTypes = getValueTypefromNode(connectionProps.sourceNode! as any, connectionProps.sourceHandle! as any, variables);
 
-      let argumentIndex = func.arguments.findIndex(types => {
-        return doValueTypesMatch(sourceTypes, types);
-      });
+      const [handle, shouldAddExtraArg] = getValueInputFromFunctionByType(func, sourceTypes);
 
-      if (argumentIndex < 0 && func.additionalArguments && doValueTypesMatch(sourceTypes, func.additionalArguments)) {
-        argumentIndex = 0;
-        node.data = { ...node.data, argumentsValue: [{ index: 0 }] };
-      }
-
-      if (argumentIndex >= 0) {
+      if (handle) {
+        if (shouldAddExtraArg) {
+          node.data = { ...node.data, argumentsValue: [{ index: 0 }] };
+        }
         return {
           id: uuidv4(),
           type: "value",
           source: connectionProps.sourceNode!.id,
           target: node.id,
           sourceHandle: connectionProps.sourceHandle!.id,
-          targetHandle: ArgumentValue + "-" + argumentIndex,
+          targetHandle: handle,
           data: {}
         }
       }
-
     }
   }
 

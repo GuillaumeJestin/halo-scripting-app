@@ -85,6 +85,9 @@ const EditorReducer = (state: EditorReducerState = DefaultState, action: EditorR
       return { ...state, container: action.container };
     }
     case ActionSetMenuSelectionPosition: {
+      if (!action.position) {
+        state.tempConnectionPropsRef.current = undefined;
+      }
       return { ...state, menuSelectionPosition: action.position, ...(action.position ? {} : { tempConnection: undefined }) };
     }
     case ActionSetTempConnection: {

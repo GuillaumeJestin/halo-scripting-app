@@ -30,6 +30,8 @@ const FunctionsMenu = () => {
 
   const tempConnectionPropsRef = useSelector<EditorReducerState, { current?: ConnectionLineComponentProps }>(state => state.tempConnectionPropsRef, () => true);
 
+  console.log(tempConnectionPropsRef)
+
   const onFunctionPress = useCallback((category: FunctionCategoryType, func: FunctionType) => {
     dispatch({
       type: ActionSetElements, setElements: (elements, variables) => {
@@ -101,6 +103,7 @@ const FunctionsMenuContent = ({ onFunctionPress }: FunctionsMenuContentProps) =>
 
     const callback = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as any)) {
+        console.log("bonjour");
         dispatch({ type: ActionSetMenuSelectionPosition });
       }
     };
