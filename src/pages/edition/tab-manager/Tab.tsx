@@ -1,17 +1,23 @@
-import { motion, useMotionValue } from "framer-motion";
-import { useRef, useState } from "react";
+import { Reorder } from "framer-motion";
 import styled from "styled-components";
 import FileType from "../../../types/file-type/FileType";
 
 type TabProps = {
   file: FileType;
+  isCurrent: boolean;
+  onClick: () => void;
 };
 
-const Tab = ({ file }: TabProps) => {
+const Tab = ({ file, isCurrent, onClick }: TabProps) => {
 
   return (
-    <MasterContainer>
-      <Container >
+    <MasterContainer
+      value={file}
+    >
+      <Container
+        onClick={onClick}
+        style={{ background: isCurrent ? "var(--lighter)" : "var(--darker)" }}
+      >
         {file.name}
       </Container>
     </MasterContainer>
@@ -20,13 +26,7 @@ const Tab = ({ file }: TabProps) => {
 
 export default Tab;
 
-const onTop = { zIndex: 1 };
-const flat = {
-  zIndex: 0,
-  transition: { delay: 0.3 }
-};
-
-const MasterContainer = styled(motion.div)`
+const MasterContainer = styled(Reorder.Item)`
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -36,10 +36,10 @@ const MasterContainer = styled(motion.div)`
 
 const Container = styled.div`
   height: 75%;
-  background: var(--darker);
   padding: 0 3rem;
   display: flex;
   justify-content: center;
   align-items: center;
   border-radius: 0.5rem 0.5rem 0 0;
+  white-space: nowrap;
 `;

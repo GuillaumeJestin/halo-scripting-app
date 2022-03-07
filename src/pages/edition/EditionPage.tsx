@@ -19,9 +19,11 @@ type EditionPageProps = {
   file: FileType;
   setFile: React.Dispatch<React.SetStateAction<FileType>>;
   files: FileType[];
+  onFileSelection: (file: FileType) => void;
 }
 
-const EditionPage = ({ file, setFile, files }: EditionPageProps) => {
+const EditionPage = ({ file, setFile, files, onFileSelection }: EditionPageProps) => {
+
   const { variables, elements } = file;
 
   const editorRef = useRef<HTMLDivElement>(null);
@@ -77,7 +79,7 @@ const EditionPage = ({ file, setFile, files }: EditionPageProps) => {
         return { ...file, variables: [variable, ...file.variables] };
       }
 
-      const newVariables = [...variables];
+      const newVariables = [...file.variables];
 
       const index = newVariables.findIndex(v => v.id === variable.id);
 
@@ -251,8 +253,8 @@ const EditionPage = ({ file, setFile, files }: EditionPageProps) => {
 
   return (
     <>
-      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
-        <TabManager {...{ files }} />
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto" }}>
+        <TabManager {...{ files, onFileSelection }} currentFile={file} />
         <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
       </div>
       <SideBar

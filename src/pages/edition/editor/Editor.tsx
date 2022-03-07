@@ -80,7 +80,7 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
           })
         }
       }}
-      style={{ backgroundColor: "var(--darker)" }}
+      style={{ backgroundColor: "var(--darker)", overflow: "hidden" }}
       elements={elements}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
