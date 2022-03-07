@@ -30,8 +30,6 @@ const FunctionsMenu = () => {
 
   const tempConnectionPropsRef = useSelector<EditorReducerState, { current?: ConnectionLineComponentProps }>(state => state.tempConnectionPropsRef, () => true);
 
-  console.log(tempConnectionPropsRef)
-
   const onFunctionPress = useCallback((category: FunctionCategoryType, func: FunctionType) => {
     dispatch({
       type: ActionSetElements, setElements: (elements, variables) => {
@@ -169,7 +167,3 @@ const Container = styled.div`
   flex-direction: column;
   overflow: hidden;
 `;
-
-function connectionProps(connectionProps: ConnectionLineComponentProps | undefined, elementId: string) {
-  throw new Error("Function not implemented.");
-}

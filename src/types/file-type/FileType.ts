@@ -7,6 +7,7 @@ type FileType = {
   elements: (NodeType | EdgeType)[];
   variables: VariableType[];
   macros: FileType[];
+  id: string;
 };
 
 export default FileType;

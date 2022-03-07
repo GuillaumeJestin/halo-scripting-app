@@ -139,6 +139,8 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
 
   const setElementsRef = useRef(setElements);
   useEffect(() => { setElementsRef.current = setElements }, [setElements]);
+  const elementsRef = useRef(elements);
+  useEffect(() => { elementsRef.current = elements }, [elements]);
 
   const store = useMemo(() => createStore(
     EditorReducer,
@@ -147,7 +149,10 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
       store => next => action => {
         const result: EditorReducerState = next(action);
 
-        setElementsRef.current((store.getState() as EditorReducerState).elements);
+        const elements = (store.getState() as EditorReducerState).elements;
+        if(!_.isEqual(elements, elementsRef.current)){
+          setElementsRef.current(elements);
+        }
 
         return result;
       }

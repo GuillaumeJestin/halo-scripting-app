@@ -1,11 +1,10 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef } from "react";
 import { isEdge, isNode, OnLoadParams } from "react-flow-renderer";
 import EdgeType from "../../types/edge-type/EdgeType";
 import FunctionType from "../../types/function-type/FunctionType";
 import NodeType from "../../types/node-type/NodeType";
 import VariableType from "../../types/variable-type/VariableType";
 import Editor from "./editor/Editor";
-import testState from "./editor/testState";
 import { v4 as uuidv4 } from 'uuid';
 import FunctionCategoryType from "../../types/function-type/FunctionCategoryType";
 import { checkEdgeValueType, isValueEdge } from "./editor/utility/createEdge";
@@ -13,19 +12,20 @@ import SideBar from "./side-bar/SideBar";
 import ScriptNodeType from "../../types/node-type/ScriptNodeType";
 import { FlowOutput } from "./editor/constants/FlowHandlers";
 import removeFlowEdge from "./editor/utility/removeFlowEdge";
+import FileType from "../../types/file-type/FileType";
+import TabManager from "./tab-manager/TabManager";
 
-const EditionPage = () => {
-  const [elements, setElements] = useState<(NodeType | EdgeType)[]>(testState);
-  const [variables, setVariables] = useState<VariableType[]>([
-    { id: "a", name: "My Device", type: "device" },
-    { id: "b", name: "My number var", type: "real" },
-    { id: "c", name: "TrueOrFalse", type: "boolean" },
-  ]);
+type EditionPageProps = {
+  file: FileType;
+  setFile: React.Dispatch<React.SetStateAction<FileType>>;
+  files: FileType[];
+}
+
+const EditionPage = ({ file, setFile, files }: EditionPageProps) => {
+  const { variables, elements } = file;
 
   const editorRef = useRef<HTMLDivElement>(null);
   const instanceRef = useRef<OnLoadParams<NodeType | EdgeType>>(null);
-
-  console.log(elements);
 
   const onFunctionDragEnd = useCallback((event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => {
     // Checking if the dragged function is inside the editor view
@@ -45,30 +45,36 @@ const EditionPage = () => {
       const coords = instanceRef.current?.project({ x: event.clientX - offset.x, y: event.clientY - offset.y }) || { x: 0, y: 0 };
       const zoom = instanceRef.current?.toObject().zoom ?? 1;
 
-      setElements((elements) => {
-        return [
-          {
-            id: uuidv4(),
-            type: "function",
-            data: {
-              function: func.symbol,
-              category: category
+      setFile(file => {
+        const { elements } = file;
+
+        return {
+          ...file,
+          elements: [
+            {
+              id: uuidv4(),
+              type: "function",
+              data: {
+                function: func.symbol,
+                category: category
+              },
+              position: {
+                x: coords.x - editorX / zoom,
+                y: coords.y - editorY / zoom,
+              }
             },
-            position: {
-              x: coords.x - editorX / zoom,
-              y: coords.y - editorY / zoom,
-            }
-          },
-          ...elements
-        ];
-      })
+            ...elements
+          ]
+        }
+      });
     }
-  }, []);
+  }, [setFile]);
 
   const onVariableChange = (variable: VariableType, start?: boolean) => {
-    setVariables(variables => {
+    setFile(file => {
+
       if (start) {
-        return [variable, ...variables];
+        return { ...file, variables: [variable, ...file.variables] };
       }
 
       const newVariables = [...variables];
@@ -81,21 +87,26 @@ const EditionPage = () => {
         newVariables.push(variable);
       }
 
-      setElements(elements => {
-        return elements.filter(edge => {
+      const elements = file.elements;
+
+      return {
+        ...file,
+        variables: newVariables,
+        elements: elements.filter(edge => {
           if (isEdge(edge) && isValueEdge(edge)) {
             return checkEdgeValueType(edge, elements, newVariables);
           }
           return true;
         })
-      });
-
-      return newVariables;
+      };
     });
   };
 
   const onVariableDelete = (variable: VariableType) => {
-    setVariables(variables => {
+
+    setFile(file => {
+      const { variables, elements } = file;
+
       const newVariables = [...variables];
 
       const index = newVariables.findIndex(v => v.id === variable.id);
@@ -104,24 +115,25 @@ const EditionPage = () => {
         newVariables.splice(index, 1);
       }
 
-      return newVariables;
-    });
-    setElements(elements => {
       const newElements = [...elements];
 
       const variableNodes = elements.filter(node => isNode(node) && node.type === "variable" && node.data.variableId === variable.id) as NodeType[];
 
-      return newElements.filter(
-        element => {
-          if (isNode(element) && element.type === "variable" && element.data.variableId === variable.id) {
-            return false;
-          } else if (isEdge(element) && variableNodes.some(node => node.id === element.target || node.id === element.source)) {
-            return false;
-          }
+      return {
+        ...file,
+        variables: newVariables,
+        elements: newElements.filter(
+          element => {
+            if (isNode(element) && element.type === "variable" && element.data.variableId === variable.id) {
+              return false;
+            } else if (isEdge(element) && variableNodes.some(node => node.id === element.target || node.id === element.source)) {
+              return false;
+            }
 
-          return true;
-        }
-      );
+            return true;
+          }
+        )
+      }
     });
   }
 
@@ -139,31 +151,38 @@ const EditionPage = () => {
       const coords = instanceRef.current?.project({ x: event.clientX - offset.x, y: event.clientY - offset.y }) || { x: 0, y: 0 };
       const zoom = instanceRef.current?.toObject().zoom ?? 1;
 
-      setElements((elements) => {
-        return [
-          {
-            id: uuidv4(),
-            type: "variable",
-            data: {
-              variableId: variable.id
+      setFile(file => {
+
+        const { elements } = file;
+
+        return {
+          ...file,
+          elements: [
+            {
+              id: uuidv4(),
+              type: "variable",
+              data: {
+                variableId: variable.id
+              },
+              position: {
+                x: coords.x - editorX / zoom,
+                y: coords.y - editorY / zoom,
+              }
             },
-            position: {
-              x: coords.x - editorX / zoom,
-              y: coords.y - editorY / zoom,
-            }
-          },
-          ...elements
-        ];
-      })
+            ...elements
+          ]
+        }
+      });
     }
-  }, []);
+  }, [setFile]);
 
   const scripts = elements.filter(element => isNode(element) && element.type === "script") as ScriptNodeType[];
 
   const onScriptChange = (script: ScriptNodeType) => {
-    setElements(elements => {
 
-      const newElements = [...elements];
+    setFile(file => {
+
+      const newElements = [...file.elements];
 
       const index = newElements.findIndex(v => v.id === script.id);
 
@@ -171,13 +190,16 @@ const EditionPage = () => {
         newElements[index] = script;
       }
 
-      return newElements;
-    })
+      return {
+        ...file,
+        elements: newElements
+      }
+    });
   }
 
   const createScript = (start?: boolean) => {
-    setElements(elements => {
 
+    setFile(file => {
       const editorPosition = instanceRef.current?.toObject().position || [0, 0];
       const editorBoundingRect = editorRef.current?.getBoundingClientRect();
       const editorWidth = editorBoundingRect?.width ?? 0;
@@ -193,17 +215,20 @@ const EditionPage = () => {
           type: "startup"
         },
         position
-      }
+      };
 
-      if (start) return [script, ...elements]
+      const { elements } = file;
 
-      return [...elements, script];
-    })
+      if (start) return { ...file, elements: [script, ...elements] };
+
+      return { ...file, elements: [...elements, script] };
+    });
   }
 
   const onScriptDelete = (script: ScriptNodeType) => {
-    setElements(elements => {
-      let newElements = [...elements];
+
+    setFile(file => {
+      let newElements = [...file.elements];
 
       newElements = removeFlowEdge(newElements, script.id, FlowOutput, "source");
 
@@ -213,34 +238,34 @@ const EditionPage = () => {
         newElements.splice(index, 1);
       }
 
-      return newElements;
-    })
-  }
+      return { ...file, elements: newElements };
+    });
+  };
+
+  const setElements = useCallback((elements: (NodeType | EdgeType)[]) => {
+    setFile(file => ({
+      ...file,
+      elements
+    }));
+  }, [setFile]);
 
   return (
     <>
-      <div>
-        HELLO WORLD
+      <div style={{ flex: 1, display: "flex", flexDirection: "column" }}>
+        <TabManager {...{ files }} />
+        <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
       </div>
-      <div style={{ flex: 1, display: "flex", overflow: "auto" }}>
-        <div >
-          fedasfwe
-        </div>
-        <div style={{ flex: 1 }}>
-          <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
-        </div>
-        <SideBar
-          onFunctionDragEnd={onFunctionDragEnd}
-          variables={variables}
-          onVariableChange={onVariableChange}
-          onVariableDragEnd={onVariableDragEnd}
-          onVariableDelete={onVariableDelete}
-          scripts={scripts}
-          onScriptChange={onScriptChange}
-          createScript={createScript}
-          onScriptDelete={onScriptDelete}
-        />
-      </div>
+      <SideBar
+        onFunctionDragEnd={onFunctionDragEnd}
+        variables={variables}
+        onVariableChange={onVariableChange}
+        onVariableDragEnd={onVariableDragEnd}
+        onVariableDelete={onVariableDelete}
+        scripts={scripts}
+        onScriptChange={onScriptChange}
+        createScript={createScript}
+        onScriptDelete={onScriptDelete}
+      />
     </>
   )
 }

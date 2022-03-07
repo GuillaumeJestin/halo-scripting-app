@@ -1,10 +1,10 @@
 import { Routes, Route } from "react-router-dom";
-import EditionPage from "./pages/edition/EditionPage";
+import Main from "./pages/Main";
 
 export default function App() {
 	return (
 		<Routes>
-			<Route path="/" element={<EditionPage />} />
+			<Route path="/" element={<Main />} />
 		</Routes>
 	)
 }

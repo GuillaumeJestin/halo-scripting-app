@@ -1,14 +1,11 @@
-import _ from "lodash";
 import { ConnectionLineComponentProps } from "react-flow-renderer";
 import EdgeType from "../../../../types/edge-type/EdgeType";
 import FunctionType from "../../../../types/function-type/FunctionType";
 import VariableType from "../../../../types/variable-type/VariableType";
 import { FlowInput } from "../constants/FlowHandlers";
-import { ArgumentValue } from "../constants/ValueHandlers";
 import getValueTypefromNode from "../utility/getValueTypefromNode";
 import isOutputFlowHandle from "../utility/isOutputFlowHandle";
 import isOutputValueHandle from "../utility/isOutputValueHandle";
-import { doValueTypesMatch } from "../utility/createEdge"
 import { v4 as uuidv4 } from 'uuid';
 import FunctionNodeType from "../../../../types/node-type/FunctionNodeType";
 import getValueInputFromFunctionByType from "../utility/getValueInputFromFunctionByType";

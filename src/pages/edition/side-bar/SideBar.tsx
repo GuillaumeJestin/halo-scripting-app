@@ -29,7 +29,7 @@ type SideBarProps = {
 const SideBar = ({ onFunctionDragEnd, variables, onVariableChange, onVariableDragEnd, onVariableDelete, scripts, onScriptChange, createScript, onScriptDelete }: SideBarProps) => {
 
   return (
-    <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto" }}>
+    <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto", boxShadow: "0px 0px 1rem rgba(0,0,0,0.5)", zIndex: 10 }}>
       <Tab.Group defaultIndex={2} >
         <Tab.List style={{ display: "flex", overflow: "auto", marginLeft: "-0.75rem", padding: "0.75rem", borderStyle: "none none solid none", borderWidth: "0.1rem", borderColor: "var(--lighter)" }} >
           <Tab as={Fragment}>
