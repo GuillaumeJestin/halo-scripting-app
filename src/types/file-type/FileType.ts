@@ -8,6 +8,8 @@ type FileType = {
   variables: VariableType[];
   macros: FileType[];
   id: string;
+  zoom?: number;
+  position?: [number, number];
 };
 
 export default FileType;

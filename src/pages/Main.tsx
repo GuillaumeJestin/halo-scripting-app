@@ -15,7 +15,9 @@ const _files: FileType[] = [
       { id: "b", name: "My number var", type: "real" },
       { id: "c", name: "TrueOrFalse", type: "boolean" },
     ],
-    macros: []
+    macros: [],
+    position: [451.37862705675957, 489.0628835309243],
+    zoom: 1.148698354997035
   },
   {
     id: uuidv4(),
@@ -43,7 +45,7 @@ const Main = () => {
     setFiles(files => {
       const index = files.findIndex(file => file.id === selected);
 
-      if(index >= 0) {
+      if (index >= 0) {
         const newFiles = [...files];
 
         newFiles[index] = typeof value === "function" ? value(files[index]) : value;
@@ -59,7 +61,7 @@ const Main = () => {
     setSelected(file.id);
   }
 
-  console.log(file);
+  console.log(file.elements);
 
   return (
     <>

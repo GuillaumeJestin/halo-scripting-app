@@ -251,11 +251,28 @@ const EditionPage = ({ file, setFile, files, onFileSelection }: EditionPageProps
     }));
   }, [setFile]);
 
+  const onMoveEnd = useCallback((value?: { x: number, y: number, zoom: number }) => {
+    if (value) {
+      setFile(file => ({
+        ...file,
+        zoom: value.zoom,
+        position: [value.x, value.y]
+      }));
+    }
+  }, [setFile]);
+
   return (
     <>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto" }}>
         <TabManager {...{ files, onFileSelection }} currentFile={file} />
-        <Editor ref={editorRef} {...{ variables, elements, setElements }} instanceRef={instanceRef} />
+        <Editor
+          key={file.id}
+          ref={editorRef}
+          {...{ variables, elements, setElements, onMoveEnd }}
+          defaultZoom={file.zoom}
+          defaultPosition={file.position}
+          instanceRef={instanceRef}
+        />
       </div>
       <SideBar
         onFunctionDragEnd={onFunctionDragEnd}

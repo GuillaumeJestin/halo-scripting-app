@@ -16,6 +16,7 @@ import _ from "lodash";
 import FunctionsMenu from "./menu/FunctionsMenu";
 import DragEdge, { DragEdgeStandaloneContainer } from "./edges/DragEdge";
 import isElementHandle from "./utility/isElementHandle";
+import removeElements from "./utility/removeElements";
 
 const nodeTypes = {
   script: ScriptNode,
@@ -30,9 +31,12 @@ const edgeTypes = {
 
 type EditorProps = {
   instanceRef?: ForwardedRef<OnLoadParams<NodeType | EdgeType>>;
+  defaultZoom?: number;
+  defaultPosition?: [number, number];
+  onMoveEnd?: (value?: { x: number, y: number, zoom: number }) => void;
 }
 
-const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) => {
+const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef, defaultZoom, defaultPosition, onMoveEnd }, ref) => {
 
   const elements = useSelector<EditorReducerState, (NodeType | EdgeType)[]>(state => state.elements, shallowEqual);
   const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
@@ -84,7 +88,7 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
       elements={elements}
       nodeTypes={nodeTypes}
       edgeTypes={edgeTypes}
-      defaultPosition={[window.innerWidth / 2, window.innerHeight / 2]}
+      defaultPosition={defaultPosition || [window.innerWidth / 2, window.innerHeight / 2]}
       onConnect={params => {
         const edge = createEdge(params, elements, variables);
         if (edge) {
@@ -111,6 +115,10 @@ const Editor = forwardRef<HTMLDivElement, EditorProps>(({ instanceRef }, ref) =>
           dispatch({ type: ActionSetTempConnection });
         }
       }}
+      defaultZoom={defaultZoom}
+      onMoveEnd={onMoveEnd}
+      onElementsRemove={elementsToRemove => dispatch({ type: ActionSetElements, elements: removeElements(elementsToRemove as (EdgeType | NodeType)[], elements) })}
+      deleteKeyCode={46}
     >
       {
         tempConnection && <DragEdgeStandaloneContainer>
@@ -133,9 +141,12 @@ type EditorWrapperProps = {
   setElements: (elements: (NodeType | EdgeType)[]) => void;
   variables: VariableType[];
   instanceRef?: ForwardedRef<OnLoadParams<NodeType | EdgeType>>;
+  defaultZoom?: number;
+  defaultPosition?: [number, number];
+  onMoveEnd?: (value?: { x: number, y: number, zoom: number }) => void;
 }
 
-const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements, setElements, variables, instanceRef }, ref) => {
+const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements, setElements, variables, instanceRef, defaultZoom, defaultPosition, onMoveEnd }, ref) => {
 
   const setElementsRef = useRef(setElements);
   useEffect(() => { setElementsRef.current = setElements }, [setElements]);
@@ -150,7 +161,7 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
         const result: EditorReducerState = next(action);
 
         const elements = (store.getState() as EditorReducerState).elements;
-        if(!_.isEqual(elements, elementsRef.current)){
+        if (!_.isEqual(elements, elementsRef.current)) {
           setElementsRef.current(elements);
         }
 
@@ -172,7 +183,7 @@ const EditorWrapper = forwardRef<HTMLDivElement, EditorWrapperProps>(({ elements
   return (
     <ReactFlowProvider>
       <Provider store={store}>
-        <Editor ref={ref} instanceRef={instanceRef} />
+        <Editor ref={ref} {...{ instanceRef, defaultZoom, defaultPosition, onMoveEnd }} />
       </Provider>
     </ReactFlowProvider>
   )
