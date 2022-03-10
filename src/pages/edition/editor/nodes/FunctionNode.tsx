@@ -275,17 +275,12 @@ const updateNode = (elements: (NodeType | EdgeType)[], id: string | undefined, u
 
   const element = elements[index];
 
-  console.log("HAYA")
-  console.log(element)
-
   if (element) {
     const updatedElement = updater?.(element);
 
     if (updatedElement) {
       elements[index] = updatedElement;
     } else {
-      console.log("deleting")
-      console.log(element)
       elements.splice(index, 1);
     }
   }
@@ -297,7 +292,7 @@ export const getArgumentName = (arg: ValueType | ValueType[]) => {
   return _.isEqual(arg, ["real", "short", "long"]) ? "Number" : _.capitalize(type.split("_").join(" "));
 }
 
-const FlowContainer = styled.div`
+export const FlowContainer = styled.div`
   display: flex;
   justify-content: space-between;
 `

@@ -5,6 +5,7 @@ import EdgeType from "../../../../types/edge-type/EdgeType";
 import NodeType from "../../../../types/node-type/NodeType";
 import ValueType from "../../../../types/value-type/ValueType";
 import VariableType from "../../../../types/variable-type/VariableType";
+import { VariableValue } from "../constants/ValueHandlers";
 import checkForFlowLoop from "./checkForFlowLoop";
 import getValueTypefromNode from "./getValueTypefromNode";
 import isInputFlowHandle from "./isInputFlowHandle";
@@ -29,9 +30,9 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
 
     return { ...params, id: uuidv4(), type: "flow" } as EdgeType
   }
-  if (isValueEdge(params)) {
+  if (isValueEdge(params) || isVariableEdge(params)) {
     // Checking if the target is not already connected
-    if (elements.some(edge => isEdge(edge) && edge.target === params.target && edge.targetHandle === params.targetHandle)) {
+    if (isTargetAlreadyConnected(params, elements)) {
       return undefined;
     }
 
@@ -47,6 +48,14 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
 
 export default createEdge;
 
+const isTargetAlreadyConnected = (params: Edge | Connection, elements: (NodeType | EdgeType)[]) => {
+  return elements.some(edge => isEdge(edge) && edge.target === params.target && edge.targetHandle === params.targetHandle);
+}
+
+export const isVariableEdge = (params: Edge | Connection) => {
+  return params.sourceHandle === VariableValue && params.targetHandle === VariableValue;
+}
+
 export const isValueEdge = (params: Edge | Connection) => {
   return isOutputValueHandle(params.sourceHandle) && isInputValueHandle(params.targetHandle);
 }
@@ -57,11 +66,11 @@ export const checkEdgeValueType = (params: Edge | Connection, elements: (NodeTyp
 
   if (!sourceNode || isEdge(sourceNode) || !targetNode || isEdge(targetNode)) return undefined;
 
-  console.log(getValueTypefromNode(sourceNode, params.sourceHandle, variables))
-  console.log(getValueTypefromNode(targetNode, params.targetHandle, variables))
-
-  const sourceTypes = getValueTypefromNode(sourceNode, params.sourceHandle, variables);
-  const targetTypes = getValueTypefromNode(targetNode, params.targetHandle, variables);
+  const sourceTypes = getValueTypefromNode(sourceNode, params.sourceHandle, variables, elements);
+  const targetTypes = getValueTypefromNode(targetNode, params.targetHandle, variables, elements);
+  
+  console.log(sourceTypes)
+  console.log(targetTypes)
 
   return doValueTypesMatch(sourceTypes, targetTypes);
 }

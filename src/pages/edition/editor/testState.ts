@@ -48,14 +48,14 @@ export default [
       y: -150
     }
   },
-  // {
-  //   id: "4",
-  //   type: "setVariable",
-  //   position: {
-  //     x: 100,
-  //     y: -50
-  //   }
-  // },
+  {
+    id: "4",
+    type: "setVariable",
+    position: {
+      x: 350,
+      y: 50
+    }
+  },
   {
     id: "5",
     type: "function",
@@ -108,28 +108,28 @@ export default [
       y: 200
     }
   },
-  {
-    "source": "1",
-    "sourceHandle": "flow-output",
-    "target": "get_power",
-    "targetHandle": "flow-input",
-    "id": "02e1cf74-bf15-4aa2-bcb9-f82ef2e4a3e6",
-    "type": "flow"
-  },
-  {
-    "source": "get_power",
-    "sourceHandle": "flow-output",
-    "target": "5",
-    "targetHandle": "flow-input",
-    "id": "b611e233-745f-43c8-a08c-2ec40ade2f1d",
-    "type": "flow"
-  },
-  {
-    "source": "5",
-    "sourceHandle": "flow-output",
-    "target": "8",
-    "targetHandle": "flow-input",
-    "id": "07d1be68-6d97-4dc6-ada5-bb78b54503fc",
-    "type": "flow"
-  }
+  // {
+  //   "source": "1",
+  //   "sourceHandle": "flow-output",
+  //   "target": "get_power",
+  //   "targetHandle": "flow-input",
+  //   "id": "02e1cf74-bf15-4aa2-bcb9-f82ef2e4a3e6",
+  //   "type": "flow"
+  // },
+  // {
+  //   "source": "get_power",
+  //   "sourceHandle": "flow-output",
+  //   "target": "5",
+  //   "targetHandle": "flow-input",
+  //   "id": "b611e233-745f-43c8-a08c-2ec40ade2f1d",
+  //   "type": "flow"
+  // },
+  // {
+  //   "source": "5",
+  //   "sourceHandle": "flow-output",
+  //   "target": "8",
+  //   "targetHandle": "flow-input",
+  //   "id": "07d1be68-6d97-4dc6-ada5-bb78b54503fc",
+  //   "type": "flow"
+  // }
 ] as NodeType[]

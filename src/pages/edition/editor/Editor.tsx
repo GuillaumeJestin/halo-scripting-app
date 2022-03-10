@@ -17,11 +17,13 @@ import FunctionsMenu from "./menu/FunctionsMenu";
 import DragEdge, { DragEdgeStandaloneContainer } from "./edges/DragEdge";
 import isElementHandle from "./utility/isElementHandle";
 import removeElements from "./utility/removeElements";
+import SetVariableNode from "./nodes/SetVariableNode";
 
 const nodeTypes = {
   script: ScriptNode,
   variable: VariableNode,
   function: FunctionNode,
+  setVariable: SetVariableNode,
 };
 
 const edgeTypes = {
