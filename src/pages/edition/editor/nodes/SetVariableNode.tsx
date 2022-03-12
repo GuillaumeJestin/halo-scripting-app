@@ -16,8 +16,6 @@ import useTypeFromEdge from "../hooks/useTypeFromEdge";
 
 const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
 
-  const scriptColor = TypesColors.script || TypesColors.default;
-
   const edges = useEdges(id);
 
   const valueType = useTypeFromEdge(edges.incomers[ArgumentValue], "source");
@@ -27,9 +25,11 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
 
   const isFlowConnected = !!edges.incomers[FlowInput];
 
+  const color = TypesColors[type[0]] || TypesColors.default;
+
   return (
     <NodeContainer style={{ minWidth: 250 }} id={id}>
-      <NodeHeader style={{ display: "flex", alignItems: "center" }} leftColor={scriptColor} rightColor={scriptColor} >
+      <NodeHeader style={{ display: "flex", alignItems: "center" }} leftColor={color} rightColor={color} >
         <div style={{ fontWeight: "bold", fontSize: "1.25rem" }}>Set Variable</div>
       </NodeHeader>
       <NodeContent>

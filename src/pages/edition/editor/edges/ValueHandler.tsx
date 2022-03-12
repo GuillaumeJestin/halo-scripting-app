@@ -101,6 +101,7 @@ const Circle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  transition: background-color .2s;
 `
 
 const InnerCircle = styled.div`
