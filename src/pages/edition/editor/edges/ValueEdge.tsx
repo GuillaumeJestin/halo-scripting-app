@@ -32,7 +32,7 @@ const ValueEdge = ({
   id, data
 }: ValueEdgeProps) => {
   const { project } = useZoomPanHelper();
-  const zoom = useStoreState(state => state.transform[2]);
+  const zoom = useStoreState(state => state.transform[2], shallowEqual);
 
   const gradientId = source + sourceHandleId + target + targetHandleId;
 
@@ -44,10 +44,12 @@ const ValueEdge = ({
     (a, b) => _.isEqual(_.pick(a, ["id", "data", "type"]), _.pick(b, ["id", "data", "type"]))
   ) as [NodeType, NodeType];
 
-  const [startColor, endColor] = useMemo(() => {
-    return [getColorFromNode(sourceNode, sourceHandleId, variables) || TypesColors.default
-      , getColorFromNode(targetNode, targetHandleId, variables) || TypesColors.default];
-  }, [sourceNode, sourceHandleId, targetNode, targetHandleId, variables]);
+  const [startColor, endColor] = useStoreState((state) => {
+    const elements = [...state.edges, ...state.nodes] as (NodeType | EdgeType)[];
+
+    return [getColorFromNode(sourceNode, sourceHandleId, variables, elements) || TypesColors.default
+      , getColorFromNode(targetNode, targetHandleId, variables, elements) || TypesColors.default];
+  }, shallowEqual);
 
   const [sourceCoords, setSourceCoords] = useState<XYPosition>(() => getCoords(source, sourceHandleId, project, container, zoom));
   const [targetCoords, setTargetCoords] = useState<XYPosition>(() => getCoords(target, targetHandleId, project, container, zoom));

@@ -11,8 +11,8 @@ import { FlowContainer } from "./FunctionNode";
 import styled from "styled-components";
 import ValueHandler from "../edges/ValueHandler";
 import { ArgumentValue, VariableValue } from "../constants/ValueHandlers";
-import { useStoreState } from "react-flow-renderer";
 import _ from "lodash";
+import useTypeFromEdge from "../hooks/useTypeFromEdge";
 
 const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
 
@@ -20,10 +20,10 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
 
   const edges = useEdges(id);
 
-  // TODO: COLOR OF VAR
-  useStoreState(state => {
-    
-  }, _.isEqual);
+  const valueType = useTypeFromEdge(edges.incomers[ArgumentValue], "source");
+  const variableType = useTypeFromEdge(edges.incomers[VariableValue], "source");
+
+  const type = valueType || variableType || ["any"];
 
   const isFlowConnected = !!edges.incomers[FlowInput];
 
@@ -42,11 +42,11 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
         </div>
         <div>
           <HandlerContainer>
-            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={"any"} connected={false} isConnectable={!false} />
+            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
             <div style={{ marginLeft: "0.25rem" }}>Value</div>
           </HandlerContainer>
           <HandlerContainer>
-            <ValueHandler nodeId={id} type="target" id={VariableValue} valueType={"any"} connected={false} isConnectable={!false} />
+            <ValueHandler nodeId={id} type="target" id={VariableValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
             <div style={{ marginLeft: "0.25rem" }}>Variable</div>
           </HandlerContainer>
         </div>
