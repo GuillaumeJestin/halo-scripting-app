@@ -9,14 +9,6 @@ const getColorFromNode = (node: NodeType | undefined, handle: string, variables:
   if (!node) return undefined;
 
   const types = getValueTypefromNode(node, handle, variables, elements);
-  
-  // if (node.id === "4") {
-  //   console.log(node);
-  //   console.log(handle);
-  //   console.log(variables);
-  //   console.log(elements);
-  //   console.log(types);
-  // }
 
   return types?.[0] ? (TypesColors[types?.[0]] || TypesColors.default) : TypesColors.default;
 }

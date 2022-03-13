@@ -54,20 +54,21 @@ const getValueTypefromNode = (node: NodeType, handle: string | null | undefined,
 
     if (handle === ArgumentValue) {
       // Let's first check if that handle is connected to any edge
-      if (valueNode) return getValueTypefromNode(valueNode, valueEdge.sourceHandle, variables, elements);
+      if (valueNode) return getValueTypefromNode(valueNode, valueEdge.sourceHandle, variables, elements) || ["any"] as ValueType[];
 
       if (!variableEdge) return ["any"] as ValueType[];
 
-      if (variableNode) return getValueTypefromNode(variableNode, variableEdge.sourceHandle, variables, elements);
+      if (variableNode) return getValueTypefromNode(variableNode, variableEdge.sourceHandle, variables, elements) || ["any"] as ValueType[];
     } else if (handle === VariableValue) {
       // Let's first check if that handle is connected to any edge
-      if (variableNode) return getValueTypefromNode(variableNode, variableEdge.sourceHandle, variables, elements);
+      if (variableNode) return getValueTypefromNode(variableNode, variableEdge.sourceHandle, variables, elements) || ["any"] as ValueType[];
 
       if (!valueEdge) return ["any"] as ValueType[];
 
-      if (valueNode) return getValueTypefromNode(valueNode, valueEdge.sourceHandle, variables, elements);
+      if (valueNode) return getValueTypefromNode(valueNode, valueEdge.sourceHandle, variables, elements) || ["any"] as ValueType[];
     }
 
+    return ["any"] as ValueType[];
   }
 
   return undefined;

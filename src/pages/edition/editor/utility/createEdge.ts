@@ -28,6 +28,9 @@ const createEdge = (params: Edge | Connection, elements: (NodeType | EdgeType)[]
       return undefined;
     }
 
+    console.log("baba ")
+    console.log(params)
+
     return { ...params, id: uuidv4(), type: "flow" } as EdgeType
   }
   if (isValueEdge(params) || isVariableEdge(params)) {

@@ -13,6 +13,13 @@ import ValueHandler from "../edges/ValueHandler";
 import { ArgumentValue, VariableValue } from "../constants/ValueHandlers";
 import _ from "lodash";
 import useTypeFromEdge from "../hooks/useTypeFromEdge";
+import { isNode, useUpdateNodeInternals } from "react-flow-renderer";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { Dispatch } from "redux";
+import { ActionSetElements, EditorReducerAction } from "../store/EditorReducer";
+import Checkbox from "../../../../common/Checkbox";
+import TextInput from "../../../../common/TextInput";
 
 const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
 
@@ -26,6 +33,40 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
   const isFlowConnected = !!edges.incomers[FlowInput];
 
   const color = TypesColors[type[0]] || TypesColors.default;
+
+  const updateNodeInternals = useUpdateNodeInternals();
+
+  useEffect(() => {
+    updateNodeInternals(id);
+  }, [isFlowConnected, id, updateNodeInternals]);
+
+  const isValueConnected = !!edges.incomers[ArgumentValue];
+
+  const value = data?.argumentValues?.[type[0]];
+
+  const dispatch = useDispatch<Dispatch<EditorReducerAction>>();
+
+  const onValueChange = (value: string) => {
+    dispatch({
+      type: ActionSetElements, setElements: elements => {
+        const newElements = [...elements];
+
+        const index = newElements.findIndex(node => isNode(node) && node.id === id);
+
+        if (index >= 0) {
+          const node = newElements[index] as SetVariableNodeType;
+
+          const argumentValues = { ...(node.data?.argumentValues || {}), [type[0]]: value };
+
+          const newNode = { ...node, data: { ...node.data, argumentValues } };
+
+          newElements[index] = newNode;
+        }
+
+        return newElements;
+      }
+    })
+  }
 
   return (
     <NodeContainer style={{ minWidth: 250 }} id={id}>
@@ -42,12 +83,18 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
         </div>
         <div>
           <HandlerContainer>
-            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
-            <div style={{ marginLeft: "0.25rem" }}>Value</div>
-          </HandlerContainer>
-          <HandlerContainer>
             <ValueHandler nodeId={id} type="target" id={VariableValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
             <div style={{ marginLeft: "0.25rem" }}>Variable</div>
+          </HandlerContainer>
+          <HandlerContainer>
+            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
+            <div style={{ marginLeft: "0.25rem" }}>Value</div>
+            {!isValueConnected &&
+              (type[0] === "boolean" ?
+                <Checkbox value={value === "true"} onChange={value => onValueChange(value ? "true" : "false")} style={{ margin: "0 .25rem" }} />
+                :
+                <TextInput value={value} onChange={onValueChange} style={{ margin: "0 .25rem" }} />)
+            }
           </HandlerContainer>
         </div>
       </NodeContent>

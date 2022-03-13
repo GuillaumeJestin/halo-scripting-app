@@ -2,6 +2,8 @@ import { ReactNode } from "react";
 import { ConnectionLineComponentProps, Position, useStoreState, XYPosition } from "react-flow-renderer";
 import { shallowEqual, useSelector } from "react-redux";
 import TypesColors from "../../../../theme/types-colors/TypesColors";
+import EdgeType from "../../../../types/edge-type/EdgeType";
+import NodeType from "../../../../types/node-type/NodeType";
 import VariableType from "../../../../types/variable-type/VariableType";
 import { EditorReducerState } from "../store/EditorReducer";
 import getColorFromNode from "../utility/getColorFromNode";
@@ -82,7 +84,11 @@ const ValueDragEdge = ({
 
   const variables = useSelector<EditorReducerState, VariableType[]>(state => state.variables, shallowEqual);
 
-  const color = getColorFromNode(sourceNode as any, sourceHandle?.id || "", variables) || TypesColors.default;
+  const color = useStoreState((state) => {
+    const elements = [...state.edges, ...state.nodes] as (NodeType | EdgeType)[];
+
+    return getColorFromNode(sourceNode as any, sourceHandle?.id || "", variables, elements) || TypesColors.default;
+  }, shallowEqual);
 
   const path = createPath(start, end, [], sourcePosition === Position.Left ? 1 : 2);
 

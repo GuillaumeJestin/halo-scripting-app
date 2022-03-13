@@ -61,7 +61,7 @@ const Main = () => {
     setSelected(file.id);
   }
 
-  //console.log(file.elements);
+  console.log(file.elements);
 
   return (
     <>
