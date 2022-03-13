@@ -14,15 +14,17 @@ import { FlowOutput } from "./editor/constants/FlowHandlers";
 import removeFlowEdge from "./editor/utility/removeFlowEdge";
 import FileType from "../../types/file-type/FileType";
 import TabManager from "./tab-manager/TabManager";
+import FileTypeMacro, { FILE_TYPE_MACRO } from "../../types/file-type/FileTypeMacro";
 
 type EditionPageProps = {
   file: FileType;
   setFile: React.Dispatch<React.SetStateAction<FileType>>;
   files: FileType[];
   onFileSelection: (file: FileType) => void;
+  onMacroEdition: (macro: FileTypeMacro) => void;
 }
 
-const EditionPage = ({ file, setFile, files, onFileSelection }: EditionPageProps) => {
+const EditionPage = ({ file, setFile, files, onFileSelection, onMacroEdition }: EditionPageProps) => {
 
   const { variables, elements } = file;
 
@@ -261,6 +263,19 @@ const EditionPage = ({ file, setFile, files, onFileSelection }: EditionPageProps
     }
   }, [setFile]);
 
+  const macros = (() => {
+    if (file.type === FILE_TYPE_MACRO) {
+      const parentFile = files.find(f => f.id === file.parentFile);
+      if (parentFile && parentFile.type === undefined) {
+        return parentFile.macros;
+      }
+    }
+    if (file.type === undefined) {
+      return file.macros;
+    }
+    return [];
+  })()
+
   return (
     <>
       <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "auto" }}>
@@ -284,6 +299,8 @@ const EditionPage = ({ file, setFile, files, onFileSelection }: EditionPageProps
         onScriptChange={onScriptChange}
         createScript={createScript}
         onScriptDelete={onScriptDelete}
+        macros={macros}
+        onMacroEdition={onMacroEdition}
       />
     </>
   )

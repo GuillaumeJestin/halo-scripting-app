@@ -18,12 +18,16 @@ import DragEdge, { DragEdgeStandaloneContainer } from "./edges/DragEdge";
 import isElementHandle from "./utility/isElementHandle";
 import removeElements from "./utility/removeElements";
 import SetVariableNode from "./nodes/SetVariableNode";
+import MacroStartNode from "./nodes/MacroStartNode";
+import MacroEndNode from "./nodes/MacroEndNode";
 
 const nodeTypes = {
   script: ScriptNode,
   variable: VariableNode,
   function: FunctionNode,
   setVariable: SetVariableNode,
+  macroStart: MacroStartNode,
+  macroEnd: MacroEndNode,
 };
 
 const edgeTypes = {

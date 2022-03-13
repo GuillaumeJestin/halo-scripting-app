@@ -4,10 +4,13 @@ import { v4 as uuidv4 } from 'uuid';
 import testState from "./edition/editor/testState";
 import FileType from "../types/file-type/FileType";
 import { useCallback } from "react";
+import FileTypeMacro from "../types/file-type/FileTypeMacro";
+
+const id = uuidv4();
 
 const _files: FileType[] = [
   {
-    id: uuidv4(),
+    id: id,
     name: "My File 1",
     elements: testState,
     variables: [
@@ -15,23 +18,31 @@ const _files: FileType[] = [
       { id: "b", name: "My number var", type: "real" },
       { id: "c", name: "TrueOrFalse", type: "boolean" },
     ],
-    macros: [],
+    macros: [{
+      id: uuidv4(),
+      name: "Macro 1",
+      variables: [],
+      elements: [{
+        id: uuidv4(),
+        type: "macroStart",
+        position: {
+          x: -350,
+          y: -250
+        }
+      }, {
+        id: uuidv4(),
+        type: "macroEnd",
+        position: {
+          x: 150,
+          y: 200
+        }
+      }],
+      type: "macro",
+      parentFile: id,
+    }],
     position: [451.37862705675957, 489.0628835309243],
     zoom: 1.148698354997035
-  },
-  {
-    id: uuidv4(),
-    name: "Foo Bar",
-    elements: [],
-    variables: [],
-    macros: [],
-  }, {
-    id: uuidv4(),
-    name: "Weirdo file",
-    elements: [],
-    variables: [],
-    macros: [],
-  },
+  }
 ]
 
 const Main = () => {
@@ -61,6 +72,14 @@ const Main = () => {
     setSelected(file.id);
   }
 
+  const onMacroEdition = (macro: FileTypeMacro) => {
+    setFiles(files => {
+      if (files.some(file => file.id === macro.id)) return files;
+      return [macro, ...files];
+    });
+    setSelected(macro.id);
+  }
+
   console.log(file.elements);
 
   return (
@@ -72,7 +91,7 @@ const Main = () => {
         <div >
           fedasfwe
         </div>
-        <EditionPage {...{ file, setFile, onFileSelection }} files={files} />
+        <EditionPage {...{ file, setFile, onFileSelection, onMacroEdition }} files={files} />
       </div>
     </>
   )

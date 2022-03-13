@@ -68,6 +68,9 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
     })
   }
 
+  const variableConnected = !!edges.incomers[VariableValue];
+  const valueConnected = !!edges.incomers[ArgumentValue];
+
   return (
     <NodeContainer style={{ minWidth: 250 }} id={id}>
       <NodeHeader style={{ display: "flex", alignItems: "center" }} leftColor={color} rightColor={color} >
@@ -83,11 +86,11 @@ const SetVariableNode = ({ data, id }: NodeProps<SetVariableNodeType>) => {
         </div>
         <div>
           <HandlerContainer>
-            <ValueHandler nodeId={id} type="target" id={VariableValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
+            <ValueHandler nodeId={id} type="target" id={VariableValue} valueType={type[0] || "any"} connected={variableConnected} isConnectable={!variableConnected} />
             <div style={{ marginLeft: "0.25rem" }}>Variable</div>
           </HandlerContainer>
           <HandlerContainer>
-            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={type[0] || "any"} connected={false} isConnectable={!false} />
+            <ValueHandler nodeId={id} type="target" id={ArgumentValue} valueType={type[0] || "any"} connected={valueConnected} isConnectable={!valueConnected} />
             <div style={{ marginLeft: "0.25rem" }}>Value</div>
             {!isValueConnected &&
               (type[0] === "boolean" ?

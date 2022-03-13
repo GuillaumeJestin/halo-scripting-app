@@ -13,6 +13,8 @@ import { IoMdReturnRight } from "react-icons/io";
 import { MdFunctions } from "react-icons/md";
 import ScriptsList from "./scripts/ScriptsList";
 import ScriptNodeType from "../../../types/node-type/ScriptNodeType";
+import MacrosList from "./macros/MacrosList";
+import FileTypeMacro from "../../../types/file-type/FileTypeMacro";
 
 type SideBarProps = {
   onFunctionDragEnd: (event: MouseEvent, offset: { x: number, y: number }, func: FunctionType, category: FunctionCategoryType) => void;
@@ -24,22 +26,25 @@ type SideBarProps = {
   onScriptChange: (script: ScriptNodeType) => void;
   createScript: (start?: boolean) => void;
   onScriptDelete: (script: ScriptNodeType) => void;
+  macros: FileTypeMacro[];
+  onMacroEdition: (macro: FileTypeMacro) => void;
+
 }
 
-const SideBar = ({ onFunctionDragEnd, variables, onVariableChange, onVariableDragEnd, onVariableDelete, scripts, onScriptChange, createScript, onScriptDelete }: SideBarProps) => {
+const SideBar = ({ onFunctionDragEnd, variables, onVariableChange, onVariableDragEnd, onVariableDelete, scripts, onScriptChange, createScript, onScriptDelete, macros, onMacroEdition }: SideBarProps) => {
 
   return (
     <div style={{ background: "var(--dark)", width: 400, display: "flex", flexDirection: "column", overflow: "auto", boxShadow: "0px 0px 1rem rgba(0,0,0,0.5)", zIndex: 10 }}>
-      <Tab.Group defaultIndex={2} >
+      <Tab.Group defaultIndex={3} >
         <Tab.List style={{ display: "flex", overflow: "auto", marginLeft: "-0.75rem", padding: "0.75rem", borderStyle: "none none solid none", borderWidth: "0.1rem", borderColor: "var(--lighter)" }} >
           <Tab as={Fragment}>
-            {TabSelectionRender("Variables", HiVariable)}
+            {TabSelectionRender("Functions", AiOutlineFunction)}
           </Tab>
           <Tab as={Fragment}>
             {TabSelectionRender("Scripts", IoMdReturnRight)}
           </Tab>
           <Tab as={Fragment}>
-            {TabSelectionRender("Functions", AiOutlineFunction)}
+            {TabSelectionRender("Variables", HiVariable)}
           </Tab>
           <Tab as={Fragment}>
             {TabSelectionRender("Macros", MdFunctions)}
@@ -47,16 +52,16 @@ const SideBar = ({ onFunctionDragEnd, variables, onVariableChange, onVariableDra
         </Tab.List>
         <Tab.Panels as={Fragment}>
           <Tab.Panel as={TabContainer}>
-            <VariablesList variables={variables} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} onVariableDelete={onVariableDelete} />
+            <FunctionsList onDragEnd={onFunctionDragEnd} />
           </Tab.Panel>
           <Tab.Panel as={TabContainer}>
             <ScriptsList scripts={scripts} onScriptChange={onScriptChange} createScript={createScript} onScriptDelete={onScriptDelete} />
           </Tab.Panel>
           <Tab.Panel as={TabContainer}>
-            <FunctionsList onDragEnd={onFunctionDragEnd} />
+            <VariablesList variables={variables} onVariableChange={onVariableChange} onVariableDragEnd={onVariableDragEnd} onVariableDelete={onVariableDelete} />
           </Tab.Panel>
           <Tab.Panel as={TabContainer}>
-            Coming soon
+            <MacrosList {...{ macros, onMacroEdition }} />
           </Tab.Panel>
         </Tab.Panels>
       </Tab.Group>
