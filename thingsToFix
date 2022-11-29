@@ -8,6 +8,4 @@ Fix edge path when subdivided
 Fix gradient for value edges
 Add subdivision for flow edges
 Add sorting for functions
-Straight edge disapear wtf
-
-BIG BUG WITH ADDING NODE FROM DROPDOWN FROM NOTHING IT GETS CONNECTED TO SOMETHING LIKE WTF
+Straight edge disapear
